@@ -23,22 +23,11 @@ const NavLeftGroup = styled.div`
 	text-align: center;
 `;
 
-const NavLeftButton = styled.button`
-	background: url(${LeftArrowIcon}) no-repeat;
-	background-size: 44px;
-	width: 44px;
-	height: 44px;
-`;
-
 const NavTitle = styled.h1`
 	margin-left: 20px;
 	font-weight: normal;
 	font-size: 3.6rem;
 	margin-top: 4px;
-`;
-
-const NavRightButton = styled.div`
-	margin-left: auto;
 `;
 
 const CommonInput = styled.input`
@@ -133,11 +122,26 @@ const PostModalOption = styled.button`
 	padding: 30px 52px;
 `;
 
-export const NavigationBar = ({ title, rightButton, className }) => {
+export const NavigationBar = ({
+	title,
+	rightButton,
+	className,
+	leftButton,
+}) => {
+	const defaultLeftButton = (
+		<button>
+			<img
+				src={LeftArrowIcon}
+				alt="뒤로가기"
+				style={{ width: '44px', height: '44px' }}
+			/>
+		</button>
+	);
+
 	return (
 		<NavBar className={className}>
 			<NavLeftGroup>
-				<NavLeftButton type="button" aria-label="뒤로가기" />
+				{leftButton || defaultLeftButton}
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
 			{rightButton && <NavRightButton>{rightButton}</NavRightButton>}
@@ -145,17 +149,18 @@ export const NavigationBar = ({ title, rightButton, className }) => {
 	);
 };
 
-export const Input = styled(({ className, type, placeholder, value, onChange }) => {
-	return (
-		<CommonInput
-			className={className}
-			type={type}
-			placeholder={placeholder}
-			value={value}
-			onChange={onChange}
-		/>
-	);
-}
+export const Input = styled(
+	({ className, type, placeholder, value, onChange }) => {
+		return (
+			<CommonInput
+				className={className}
+				type={type}
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+			/>
+		);
+	}
 )``;
 
 export const AlertModal = ({

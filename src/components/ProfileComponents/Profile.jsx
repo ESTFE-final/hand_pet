@@ -6,6 +6,7 @@ import profileImage from '../../icons/profile-img.svg';
 import messageIcon from '../../icons/message-btn.svg';
 import shareIcon from '../../icons/share-btn.svg';
 import menuIcon from '../../icons/icon-more-vertical.svg';
+import leftArrowIcon from '../../icons/icon-arrow-left-w.svg';
 
 const dummyProfile = {
 	username: '애완 간식 수제샵',
@@ -23,9 +24,16 @@ const ProfileWrapper = styled.article`
 `;
 
 const CustomProfileNavBar = styled(NavigationBar)`
-	background-color: var(--primary);
+	background-color: transparent;
 	border: none;
 	padding: 32px;
+
+	.nav-left-button {
+		background: url(${leftArrowIcon}) no-repeat;
+		background-size: contain;
+		width: 44px;
+		height: 44px;
+	}
 `;
 
 const ProfileMain = styled.section`
@@ -132,15 +140,17 @@ const Profile = ({ profile = dummyProfile }) => {
 		followingCount,
 	} = profile;
 
-	const MenuButton = () => {
-		<button type="button" aria-label="더보기 메뉴"></button>;
-	};
+	// const MenuButton = () => {
+	// 	<button type="button" aria-label="더보기 메뉴"></button>;
+	// };
 
 	return (
 		<ProfileWrapper>
-			<CustomProfileNavBar>
-				<NavigationBar rightButton={<MenuButton />} />
-			</CustomProfileNavBar>
+			<CustomProfileNavBar
+				leftButton={
+					<button className="nav-left-button" aria-label="뒤로 가기" />
+				}
+			/>
 
 			<ProfileMain>
 				<ProfileInfo>
