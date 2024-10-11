@@ -9,8 +9,16 @@ const InputField = styled.input`
 	border: 1px solid #e5e5e5;
 
 	/* Size & Spacing */
+
+	/* Size & Spacing */
 	width: 644px;
 	height: 72px;
+	padding: 8px 16px;
+	margin-bottom: 50px;
+
+	/* Background & Font */
+	background-color: #22222222;
+	font-size: 1.5rem;
 	padding: 8px 16px;
 	margin-bottom: 50px;
 

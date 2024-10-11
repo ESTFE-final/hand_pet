@@ -3,17 +3,27 @@ import styled from 'styled-components';
 import img from '../../icons/upload-file.svg';
 
 const StyledButton = styled.button`
+	/* Layout */
 	display: flex;
 	position: static;
 	align-items: center;
 	justify-content: center;
+	transform: translate(255px, -155px);
 
+	/* Size */
 	/* Size */
 	width: 322px;
 	height: 204px;
 
+	/* Spacing */
+	gap: 0px;
+
 	/* Position */
 	top: 32px;
+
+	/* Appearance */
+	opacity: 0px;
+	z-index: 200;
 	transform: translate(255px, -35px);
 
 	/* Appearance */

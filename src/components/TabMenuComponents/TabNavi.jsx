@@ -47,6 +47,7 @@ const TabNaviButton = styled.button`
 	word-break: keep-all;
 `;
 
+// Icon 스타일
 const TabNaviIcon = styled.img`
 	// Icon 스타일
 	min-width: 48px;
