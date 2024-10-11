@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { NavigationBar } from '../SharedComponents/CommonComponents';
+import { NavigationBar, PostModal } from '../SharedComponents/CommonComponents';
 import Button from '../SharedComponents/Button';
 import profileImage from '../../icons/profile-img.svg';
 import messageIcon from '../../icons/message-btn.svg';
 import shareIcon from '../../icons/share-btn.svg';
-import menuIcon from '../../icons/icon-more-vertical.svg';
 import leftArrowIcon from '../../icons/icon-arrow-left-w.svg';
+import RightmenuIcon from '../../icons/icon-more-vertical.svg';
 
 const dummyProfile = {
 	username: '애완 간식 수제샵',
@@ -33,6 +33,13 @@ const CustomProfileNavBar = styled(NavigationBar)`
 		background-size: contain;
 		width: 44px;
 		height: 44px;
+	}
+
+	.nav-right-button {
+		background: url(${RightmenuIcon}) no-repeat;
+		background-size: contain;
+		width: 48px;
+		height: 48px;
 	}
 `;
 
@@ -129,7 +136,7 @@ const ProfileFollow = styled.div`
 	}
 `;
 
-const Profile = ({ profile = dummyProfile }) => {
+const Profile = ({ profile = dummyProfile, openModal }) => {
 	const {
 		username,
 		accountname,
@@ -140,15 +147,25 @@ const Profile = ({ profile = dummyProfile }) => {
 		followingCount,
 	} = profile;
 
-	// const MenuButton = () => {
-	// 	<button type="button" aria-label="더보기 메뉴"></button>;
-	// };
+	const rightBtnClick = () => {
+		openModal([
+			{ text: '설정 및 개인정보', onClick: () => {} },
+			{ text: '로그아웃', onClick: () => {} },
+		]);
+	};
 
 	return (
 		<ProfileWrapper>
 			<CustomProfileNavBar
 				leftButton={
 					<button className="nav-left-button" aria-label="뒤로 가기" />
+				}
+				rightButton={
+					<button
+						className="nav-right-button"
+						aria-label="더보기 메뉴"
+						onClick={rightBtnClick}
+					/>
 				}
 			/>
 
