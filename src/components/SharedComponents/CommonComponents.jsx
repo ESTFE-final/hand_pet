@@ -10,6 +10,7 @@ const NavBar = styled.nav`
 	padding: 0 32px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	background-color: var(--white);
 	border-bottom: 2px solid var(--gray);
 	box-sizing: border-box;
@@ -23,22 +24,11 @@ const NavLeftGroup = styled.div`
 	text-align: center;
 `;
 
-const NavLeftButton = styled.button`
-	background: url(${LeftArrowIcon}) no-repeat;
-	background-size: 44px;
-	width: 44px;
-	height: 44px;
-`;
-
 const NavTitle = styled.h1`
 	margin-left: 20px;
 	font-weight: normal;
 	font-size: 3.6rem;
 	margin-top: 4px;
-`;
-
-const NavRightButton = styled.div`
-	margin-left: auto;
 `;
 
 const CommonInput = styled.input`
@@ -93,19 +83,39 @@ const AlertButtonRight = styled.button`
 	color: var(--primary);
 `;
 
+const PostModalOverlay = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.3s,
+		visibility 0.3s;
+	z-index: 998;
+
+	&.visible {
+		opacity: 1;
+		visibility: visible;
+	}
+`;
+
 const PostModalContainer = styled.aside`
-	position: fixed;
+	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	background-color: var(--white);
-	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 	border-radius: 20px 20px 0 0;
 	opacity: 0;
 	transform: translateY(100%);
 	transition:
 		opacity 0.3s,
 		transform 0.3s;
+	z-index: 999;
 
 	&.visible {
 		opacity: 1;
@@ -131,15 +141,32 @@ const PostModalOption = styled.button`
 	width: 100%;
 	text-align: left;
 	padding: 30px 52px;
+	font-size: 2.8rem;
 `;
-export const NavigationBar = ({ title, rightButton, className }) => {
+
+export const NavigationBar = ({
+	title,
+	rightButton,
+	className,
+	leftButton,
+}) => {
+	const defaultLeftButton = (
+		<button>
+			<img
+				src={LeftArrowIcon}
+				alt="뒤로가기"
+				style={{ width: '44px', height: '44px' }}
+			/>
+		</button>
+	);
+
 	return (
 		<NavBar className={className}>
 			<NavLeftGroup>
-				<NavLeftButton type="button" aria-label="뒤로가기" />
+				{leftButton || defaultLeftButton}
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
-			{rightButton && <NavRightButton>{rightButton}</NavRightButton>}
+			{rightButton}
 		</NavBar>
 	);
 };
@@ -237,35 +264,41 @@ export const PostModal = ({ isOpen, onClose, options = [] }) => {
 	const handleMouseUp = handleEnd;
 
 	return (
-		<PostModalContainer
-			className={isVisible ? 'visible' : ''}
-			onTouchStart={handleTouchStart}
-			onTouchMove={handleTouchMove}
-			onTouchEnd={handleTouchEnd}
-			onMouseDown={handleMouseDown}
-			onMouseMove={handleMouseMove}
-			onMouseUp={handleMouseUp}
-			onMouseLeave={handleMouseUp}
-		>
-			<PostModalContent role="dialog" aria-modal="true">
-				<PostModalHandle
-					type="button"
-					onClick={handleClose}
-					aria-label="닫기"
-				/>
-				<ul>
-					{options.map((option, index) => (
-						<li key={index}>
-							<PostModalOption
-								type="button"
-								onClick={() => handleOptionClick(option)}
-							>
-								{option.text}
-							</PostModalOption>
-						</li>
-					))}
-				</ul>
-			</PostModalContent>
-		</PostModalContainer>
+		<>
+			<PostModalOverlay
+				className={isVisible ? 'visible' : ''}
+				onClick={handleClose}
+			/>
+			<PostModalContainer
+				className={isVisible ? 'visible' : ''}
+				onTouchStart={handleTouchStart}
+				onTouchMove={handleTouchMove}
+				onTouchEnd={handleTouchEnd}
+				onMouseDown={handleMouseDown}
+				onMouseMove={handleMouseMove}
+				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseUp}
+			>
+				<PostModalContent role="dialog" aria-modal="true">
+					<PostModalHandle
+						type="button"
+						onClick={handleClose}
+						aria-label="닫기"
+					/>
+					<ul>
+						{options.map((option, index) => (
+							<li key={index}>
+								<PostModalOption
+									type="button"
+									onClick={() => handleOptionClick(option)}
+								>
+									{option.text}
+								</PostModalOption>
+							</li>
+						))}
+					</ul>
+				</PostModalContent>
+			</PostModalContainer>
+		</>
 	);
 };
