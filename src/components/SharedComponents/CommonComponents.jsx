@@ -6,14 +6,14 @@ const NavBar = styled.nav`
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 90px;
-	padding: 0 16px;
+	height: 96px;
+	padding: 0 32px;
 	display: flex;
 	align-items: center;
 	background-color: var(--white);
-	border-bottom: 1px solid var(--gray);
+	border-bottom: 2px solid var(--gray);
 	box-sizing: border-box;
-	margin-bottom: 48px;
+	margin-bottom: 32px;
 `;
 
 const NavLeftGroup = styled.div`
@@ -25,15 +25,16 @@ const NavLeftGroup = styled.div`
 
 const NavLeftButton = styled.button`
 	background: url(${LeftArrowIcon}) no-repeat;
-	width: 22px;
-	height: 22px;
+	background-size: 44px;
+	width: 44px;
+	height: 44px;
 `;
 
 const NavTitle = styled.h1`
-	margin-left: 10px;
+	margin-left: 20px;
 	font-weight: normal;
-	font-size: 3rem;
-	margin-top: 2px;
+	font-size: 3.6rem;
+	margin-top: 4px;
 `;
 
 const NavRightButton = styled.div`
@@ -42,10 +43,10 @@ const NavRightButton = styled.div`
 
 const CommonInput = styled.input`
 	width: 100%;
-	padding: 1.063rem 1rem;
+	padding: 2.126rem 2rem;
 	background-color: var(--graylight);
-	border: 1px solid var(--graylight-100);
-	border-radius: 44px;
+	border: 2px solid var(--graylight-100);
+	border-radius: 88px;
 	outline: none;
 
 	&::placeholder {
@@ -59,8 +60,8 @@ const CommonInput = styled.input`
 `;
 
 const AlertModalContainer = styled.dialog`
-	width: 252px;
-	border-radius: 10px;
+	width: 504px;
+	border-radius: 20px;
 	border: none;
 	padding: 0;
 	margin: auto;
@@ -72,23 +73,23 @@ const ModalWrap = styled.form`
 	align-items: center;
 
 	p {
-		padding: 24px 0;
+		padding: 48px 0;
 	}
 `;
 
 const AlertButtonLeft = styled.button`
-	width: 126px;
+	width: 252px;
 	background-color: transparent;
-	padding: 15px 0;
-	border-top: 0.5px solid var(--gray);
+	padding: 30px 0;
+	border-top: 1px solid var(--gray);
 `;
 
 const AlertButtonRight = styled.button`
-	width: 126px;
+	width: 252px;
 	background-color: transparent;
-	padding: 15px 0;
-	border-top: 0.5px solid var(--gray);
-	border-left: 0.5px solid var(--gray);
+	padding: 30px 0;
+	border-top: 1px solid var(--gray);
+	border-left: 1px solid var(--gray);
 	color: var(--primary);
 `;
 
@@ -98,8 +99,8 @@ const PostModalContainer = styled.aside`
 	left: 0;
 	width: 100%;
 	background-color: var(--white);
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-	border-radius: 10px 10px 0 0;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+	border-radius: 20px 20px 0 0;
 	opacity: 0;
 	transform: translateY(100%);
 	transition:
@@ -113,28 +114,28 @@ const PostModalContainer = styled.aside`
 `;
 
 const PostModalContent = styled.div`
-	padding: 16px 0 24px 0;
+	padding: 32px 0 48px 0;
 	display: flex;
 	flex-direction: column;
 `;
 
 const PostModalHandle = styled.button`
-	width: 50px;
-	height: 4px;
+	width: 100px;
+	height: 8px;
 	background-color: var(--gray);
-	border-radius: 5px;
-	margin: 0 auto 12px;
+	border-radius: 10px;
+	margin: 0 auto 24px;
 `;
 
 const PostModalOption = styled.button`
 	width: 100%;
 	text-align: left;
-	padding: 15px 26px;
+	padding: 30px 52px;
 `;
 
-export const NavigationBar = ({ title, rightButton }) => {
+export const NavigationBar = ({ title, rightButton, className }) => {
 	return (
-		<NavBar>
+		<NavBar className={className}>
 			<NavLeftGroup>
 				<NavLeftButton type="button" aria-label="뒤로가기" />
 				<NavTitle>{title}</NavTitle>
@@ -144,16 +145,18 @@ export const NavigationBar = ({ title, rightButton }) => {
 	);
 };
 
-export const Input = ({ type, placeholder, value, onChange }) => {
+export const Input = styled(({ className, type, placeholder, value, onChange }) => {
 	return (
 		<CommonInput
+			className={className}
 			type={type}
 			placeholder={placeholder}
 			value={value}
 			onChange={onChange}
 		/>
 	);
-};
+}
+)``;
 
 export const AlertModal = ({
 	modalShow,

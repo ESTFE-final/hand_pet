@@ -8,11 +8,10 @@ import {
 import MainPage from './pages/MainPage';
 import LoginEmailPage from './pages/LoginEmailPage';
 import SignUpPage from './pages/SignUpPage';
-import MyProfilePage from './pages/MyProfilePage';
+import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import AddProductPage from './pages/AddProductPage';
 import PostUploadPage from './pages/PostUploadPage';
-import UserProfilePage from './pages/UserProfilePage';
 import FollowerListPage from './pages/FollowerListPage';
 import LoginPage from './pages/LoginPage'; 
 import NewprofilePage from './pages/NewprofilePage';
@@ -33,9 +32,8 @@ function App() {
 				<Route path="/newprofile" element={<NewprofilePage />} /> 
 				<Route path="/loginemail" element={<LoginEmailPage />} /> 
 				<Route path="/signup" element={<SignUpPage />} />
-				<Route path="/myprofile" element={<MyProfilePage />} />
+				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/editprofile" element={<EditProfilePage />} />
-				<Route path="/profile/user" element={<UserProfilePage />} />
 				<Route path="/postupload" element={<PostUploadPage />} />
 				<Route path="/addproduct" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
