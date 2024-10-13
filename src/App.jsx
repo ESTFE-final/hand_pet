@@ -18,6 +18,7 @@ import FollowerListPage from './pages/FollowerListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
 	return (
@@ -29,7 +30,8 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
-				<Route path="/login" element={<LoginEmailPage />} />
+				<Route path="/loginemail" element={<LoginEmailPage />} />
+				<Route path="/login" element={<LoginPage />} />
 				<Route path="/signup" element={<SignUpPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/editprofile" element={<EditProfilePage />} />

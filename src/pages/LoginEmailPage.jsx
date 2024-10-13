@@ -5,12 +5,12 @@ import {
 	TitleWrap,
 	ContentWrap,
 	InputWrap,
-	Input,
 	BottomButton,
 } from '../components/LoginComponents/loginindex';
 import { Link } from 'react-router-dom';
+import { Input } from '../components/SharedComponents/CommonComponents';
 
-const LoginPage = () => {
+const LoginEmailPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isButtonDisabled, setButtonDisabled] = useState(true);
@@ -60,91 +60,31 @@ const LoginPage = () => {
 	};
 
 	return (
-		<Page>
-			<TitleWrap
-				style={{
-					width: '140px',
-					height: '56px',
-					position: 'absolute',
-					top: '56px',
-					left: '50%',
-					transform: 'translateX(-50%)',
-					textAlign: 'center',
-				}}
-			>
-				로그인
-			</TitleWrap>
-
-			<ContentWrap
-				style={{
-					position: 'absolute',
-					top: '38%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-				}}
-			>
-				<InputWrap
-					style={{
-						width: '644px',
-						height: '96px',
-						marginBottom: '20px',
-					}}
-				>
-					<Input
-						type="email"
-						placeholder="이메일을 입력하세요"
-						value={email}
-						onChange={handleInputChange(setEmail)}
-						style={{ height: '100%' }}
-					/>
-				</InputWrap>
-
-				<InputWrap
-					style={{
-						width: '644px',
-						height: '96px',
-						marginBottom: '20px',
-					}}
-				>
-					<Input
-						type="password"
-						placeholder="비밀번호를 입력하세요"
-						value={password}
-						onChange={handleInputChange(setPassword)}
-						style={{ height: '100%' }}
-					/>
-				</InputWrap>
-
+		<>
+			<TitleWrap>로그인</TitleWrap>
+			<InputWrap>
+				<Input
+					type="email"
+					placeholder="이메일을 입력하세요"
+					value={email}
+					onChange={handleInputChange(setEmail)}
+				/>
+				<Input
+					type="password"
+					placeholder="비밀번호를 입력하세요"
+					value={password}
+					onChange={handleInputChange(setPassword)}
+				/>
 				<BottomButton
 					onClick={handleSubmit}
 					disabled={isButtonDisabled || isSubmitting}
 				>
 					{isSubmitting ? '로그인 중...' : '로그인'}
 				</BottomButton>
-
-				<Link
-					to="/SignUp"
-					style={{
-						width: '210px',
-						height: '28px',
-						position: 'absolute',
-						top: '320px',
-						left: '50%',
-						transform: 'translateX(-50%)',
-						textAlign: 'center',
-						color: 'gray',
-						textDecoration: 'none',
-						marginTop: '40px',
-					}}
-				>
-					이메일로 회원가입
-				</Link>
-			</ContentWrap>
-		</Page>
+				<Link to="/SignUp">이메일로 회원가입</Link>
+			</InputWrap>
+		</>
 	);
 };
 
-export default LoginPage;
+export default LoginEmailPage;
