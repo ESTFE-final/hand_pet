@@ -18,7 +18,6 @@ import FollowerListPage from './pages/FollowerListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
-import NewprofilePage from './pages/NewprofilePage';
 
 function App() {
 	return (
@@ -38,7 +37,6 @@ function App() {
 				<Route path="/addproduct" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
 				<Route path="/post" element={<PostListPage />} />
-				<Route path="/newprofile" element={<NewprofilePage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/1" element={<PostDetailPage />} />
 			</Routes>
