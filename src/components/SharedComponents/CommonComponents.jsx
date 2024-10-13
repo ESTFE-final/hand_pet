@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import LeftArrowIcon from '../../icons/icon-arrow-left.svg';
+import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 
 const NavBar = styled.nav`
 	top: 0;

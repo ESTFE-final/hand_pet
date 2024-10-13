@@ -1,28 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavigationBar, Input } from '../components/SharedComponents/CommonComponents';
-import basicprofileimg from '../icons/basic-profile-img.svg';
-import uploadIcon from '../icons/upload-file.svg';
+import {
+	NavigationBar,
+	Input,
+} from '../components/SharedComponents/CommonComponents';
+import basicprofileimg from '../assets/icons/profile-img.svg';
+import uploadIcon from '../assets/icons/upload-file.svg';
 
 const EditProfilePage = () => (
 	<>
-
 		<InnerWMobileFull>
 			<ProfileTitle>프로필 설정</ProfileTitle> {/* 제목 */}
-            <ProfileText>나중에 언제든지 변경할수있습니다.</ProfileText>
+			<ProfileText>나중에 언제든지 변경할수있습니다.</ProfileText>
 			<ProfileModifyContent>
 				<ProfileImageContent>
 					<ProfileImage src={basicprofileimg} alt="프로필 없을때" />
 					<ProfileImageLabel htmlFor="profileimg"></ProfileImageLabel>
-					<ProfileImageInput
-						id="profileimg"
-						type="file"
-						accept="image/*"
-					/>
+					<ProfileImageInput id="profileimg" type="file" accept="image/*" />
 				</ProfileImageContent>
 
 				<ProfileModifyInputBox>
-					<ProfileModifyLabel htmlFor="username">사용자 이름</ProfileModifyLabel>
+					<ProfileModifyLabel htmlFor="username">
+						사용자 이름
+					</ProfileModifyLabel>
 					<ProfileModifyInput
 						id="username"
 						type="text"
@@ -48,9 +48,7 @@ const EditProfilePage = () => (
 					/>
 				</ProfileModifyInputBox>
 
-				<BottomButton type="button">
-					저장
-				</BottomButton>
+				<BottomButton type="button">저장</BottomButton>
 			</ProfileModifyContent>
 		</InnerWMobileFull>
 	</>
@@ -64,18 +62,18 @@ const InnerWMobileFull = styled.div`
 `;
 
 const ProfileTitle = styled.h2`
-	width: 100%; 
-	text-align: center; 
-	color: black; 
-	font-size: 4.8rem; 
+	width: 100%;
+	text-align: center;
+	color: black;
+	font-size: 4.8rem;
 `;
 const ProfileText = styled.h3`
-	width: 100%; 
-	text-align: center; 
-	color: black; 
-	font-size: 2.4rem; 
+	width: 100%;
+	text-align: center;
+	color: black;
+	font-size: 2.4rem;
 	margin: 10px 0;
-    color: gray;
+	color: gray;
 `;
 
 const ProfileModifyContent = styled.div`
@@ -99,8 +97,8 @@ const ProfileModifyInput = styled(Input)`
 `;
 
 const ProfileModifyInputBox = styled.div`
-	width: 644px;  /* 입력 필드 너비 */
-	height: 96px;  /* 입력 필드 높이 */
+	width: 644px; /* 입력 필드 너비 */
+	height: 96px; /* 입력 필드 높이 */
 	margin-bottom: 20px;
 `;
 
@@ -135,9 +133,9 @@ const ProfileImageInput = styled.input`
 
 // 저장 버튼 스타일
 const BottomButton = styled.button`
-	width: 644px;  /* 두배값 */
-	height: 96px;  
-	margin-top: 20px;  /* 간격 */
+	width: 644px; /* 두배값 */
+	height: 96px;
+	margin-top: 20px; /* 간격 */
 	display: block;
 	padding: 1.8rem 2rem;
 	font-size: 1.6rem;

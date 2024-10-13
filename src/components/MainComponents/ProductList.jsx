@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Cart from '../../icons/icon-main-shopping-cart.svg';
+import Cart from '../../assets/icons/icon-main-shopping-cart.svg';
 
 const ProductContainer = styled.div`
 	display: grid;

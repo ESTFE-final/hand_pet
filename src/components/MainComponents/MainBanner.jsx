@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BannerImg from '../../icons/img-main-banner.png';
+import BannerImg from '../../assets/images/img-main-banner.png';
 
 const BannerContainer = styled.div`
 	display: flex;
