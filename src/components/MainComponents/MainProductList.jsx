@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Product1 from '../../icons/img-main-category(1).png';
 import Product2 from '../../icons/img-main-category(2).png';
-import ProductList from './ProductList';
+import Cart from '../../icons/icon-main-shopping-cart.svg';
 
 const Container = styled.div`
 	width: 90%;
@@ -33,6 +33,45 @@ const Button = styled.button`
 	}
 `;
 
+const ProductContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+	cursor: pointer;
+`;
+
+const ProductWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	border-radius: 8px;
+	position: relative;
+`;
+
+const ProductImage = styled.img`
+	object-fit: cover;
+	margin-bottom: 10px;
+`;
+
+const ProductName = styled.p`
+	font-size: 2rem;
+	margin-bottom: 5px;
+`;
+
+const ProductPrice = styled.p`
+	font-size: 3rem;
+	font-weight: bold;
+`;
+
+const ShoppingCart = styled.img`
+	position: absolute;
+	right: 25px;
+	bottom: 110px;
+	width: 72px;
+	height: 72px;
+	cursor: pointer;
+`;
+
 const MainProductList = () => {
 	const [selected, setSelected] = useState('인기순');
 	const products = [
@@ -55,6 +94,7 @@ const MainProductList = () => {
 	return (
 		<Container>
 			<Title>판매 중인 상품</Title>
+
 			<ButtonContainer>
 				{options.map((option) => (
 					<Button
@@ -66,7 +106,17 @@ const MainProductList = () => {
 					</Button>
 				))}
 			</ButtonContainer>
-			<ProductList products={products} />
+
+			<ProductContainer>
+				{products.map((product, index) => (
+					<ProductWrapper key={index}>
+						<ProductImage src={product.img} alt={product.name} />
+						<ShoppingCart src={Cart} />
+						<ProductName>{product.name}</ProductName>
+						<ProductPrice>{product.price}</ProductPrice>
+					</ProductWrapper>
+				))}
+			</ProductContainer>
 		</Container>
 	);
 };
