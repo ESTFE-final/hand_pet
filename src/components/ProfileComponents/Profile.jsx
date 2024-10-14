@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
 import profileImage from '../../assets/icons/profile-img.svg';
@@ -185,8 +185,9 @@ const Profile = ({
 	openModal,
 	onLogout,
 	isMyProfile,
-	onEditProfile,
 }) => {
+	if (!profile) return null;
+
 	const {
 		username,
 		accountname,
@@ -196,12 +197,6 @@ const Profile = ({
 		followerCount,
 		followingCount,
 	} = profile;
-
-	const [isFollowing, setIsFollowing] = useState(false);
-
-	const handleFollowToggle = () => {
-		setIsFollowing(!isFollowing);
-	};
 
 	const rightBtnClick = () => {
 		openModal([
@@ -229,7 +224,10 @@ const Profile = ({
 				<ProfileInfo>
 					<ProfileInfoText>
 						<UserImage href="#">
-							<img src={image} alt={`${username}의 프로필 이미지`} />
+							<img
+								src={image || profileImage}
+								alt={`${username}의 프로필 이미지`}
+							/>
 						</UserImage>
 						<ProfileName>
 							<h1 className="profile-username">{username}</h1>
@@ -264,15 +262,10 @@ const Profile = ({
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
 					{isMyProfile ? (
-						<EditProfileButton onClick={onEditProfile}>
-							프로필 편집
-						</EditProfileButton>
+						<EditProfileButton>프로필 편집</EditProfileButton>
 					) : (
-						<FollowButton
-							onClick={handleFollowToggle}
-							isFollowing={isFollowing}
-						>
-							{isFollowing ? '언팔로우' : '팔로우'}
+						<FollowButton isFollowing={isfollow}>
+							{isfollow ? '언팔로우' : '팔로우'}
 						</FollowButton>
 					)}
 				</ProfileStats>
