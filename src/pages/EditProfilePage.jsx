@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import basicprofileimg from '../icons/basic-profile-img.svg';
-import uploadIcon from '../icons/upload-file.svg';
+import basicprofileimg from '../assets/icons/profile-img.svg';
+import uploadIcon from '../assets/icons/upload-file.svg';
 
 const EditProfilePage = () => {
 	const location = useLocation();

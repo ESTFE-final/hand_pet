@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedItem from './FeedItem'; // FeedItem 컴포넌트 import
-import PostImg1 from '../../icons/img-main-feed(1).png';
-import PostImg2 from '../../icons/img-main-feed(2).png';
+import PostImg1 from '../../assets/images/img-main-feed(1).png';
+import PostImg2 from '../../assets/images/img-main-feed(2).png';
 
 const MainFeed = () => {
 	return (

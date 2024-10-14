@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import postListBtnOn from '../../icons/icon-post-list-on.svg';
-import postListBtnOff from '../../icons/icon-post-list-off.svg';
-import postAlbumBtnOn from '../../icons/icon-post-album-on.svg';
-import postAlbumBtnOff from '../../icons/icon-post-album-off.svg';
+import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
+import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
+import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
+import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
 import MainProductList from '../MainComponents/MainProductList';
 
 const ProfileUserContent = styled.article`

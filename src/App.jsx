@@ -18,7 +18,7 @@ import FollowerListPage from './pages/FollowerListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
-import NewprofilePage from './pages/NewprofilePage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
 	return (
@@ -30,17 +30,17 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
-				<Route path="/login" element={<LoginEmailPage />} />
+				<Route path="/login/email" element={<LoginEmailPage />} />
+				<Route path="/login" element={<LoginPage />} />
 				<Route path="/signup" element={<SignUpPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
-				<Route path="/editprofile" element={<EditProfilePage />} />
-				<Route path="/postupload" element={<PostUploadPage />} />
-				<Route path="/addproduct" element={<AddProductPage />} />
+				<Route path="/profile/edit" element={<EditProfilePage />} />
+				<Route path="/post/upload" element={<PostUploadPage />} />
+				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
 				<Route path="/post" element={<PostListPage />} />
-				<Route path="/newprofile" element={<NewprofilePage />} />
 				<Route path="/search" element={<SearchPage />} />
-				<Route path="/post/1" element={<PostDetailPage />} />
+				<Route path="/post/:id" element={<PostDetailPage />} />
 			</Routes>
 		</BrowserRouter>
 	);
