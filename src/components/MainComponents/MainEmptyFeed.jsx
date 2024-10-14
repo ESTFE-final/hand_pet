@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import FeedLogo from '../../icons/icon-feed-logo.svg';
+import FeedLogo from '../../assets/icons/icon-feed-logo.svg';
 import Button from '../SharedComponents/Button';
 import { Link } from 'react-router-dom';
 

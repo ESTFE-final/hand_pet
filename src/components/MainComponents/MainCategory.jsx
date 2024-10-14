@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import React from 'react';
-import PetFood from '../../icons/icon-main-pet-food.svg';
-import PetJerky from '../../icons/icon-main-pet-jerky.svg';
-import PetChew from '../../icons/icon-main-pet-chew.svg';
-import PetCookie from '../../icons/icon-main-pet-cookie.svg';
-import PetCake from '../../icons/icon-main-pet-cake.svg';
-import PetPowder from '../../icons/icon-main-pet-powder.svg';
-import Sale from '../../icons/icon-main-sale.svg';
+import PetFood from '../../assets/icons/icon-main-pet-food.svg';
+import PetJerky from '../../assets/icons/icon-main-pet-jerky.svg';
+import PetChew from '../../assets/icons/icon-main-pet-chew.svg';
+import PetCookie from '../../assets/icons/icon-main-pet-cookie.svg';
+import PetCake from '../../assets/icons/icon-main-pet-cake.svg';
+import PetPowder from '../../assets/icons/icon-main-pet-powder.svg';
+import Sale from '../../assets/icons/icon-main-sale.svg';
 
 const CategoryContainer = styled.div`
 	display: grid;

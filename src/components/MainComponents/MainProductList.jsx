@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Product1 from '../../icons/img-main-category(1).png';
-import Product2 from '../../icons/img-main-category(2).png';
+import Product1 from '../../assets/images/img-main-category(1).png';
+import Product2 from '../../assets/images/img-main-category(2).png';
 import ProductList from './ProductList';
 
 const Container = styled.div`

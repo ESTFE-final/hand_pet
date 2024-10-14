@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeartIcon from '../../icons/icon-feed-heart.svg';
-import MessageIcon from '../../icons/icon-feed-message.svg';
-import ProfileImg from '../../icons/icon-main-feed-profile.png';
+import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
+import MessageIcon from '../../assets/icons/icon-feed-message.svg';
+import ProfileImg from '../../assets/icons/profile-img.svg';
 import { Link } from 'react-router-dom';
 
 const FeedWrapper = styled.div`
