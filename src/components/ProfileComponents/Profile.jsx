@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
-import Button from '../SharedComponents/Button';
 import profileImage from '../../assets/icons/profile-img.svg';
 import messageIcon from '../../assets/icons/message-btn.svg';
 import shareIcon from '../../assets/icons/share-btn.svg';
@@ -136,7 +135,58 @@ const ProfileFollow = styled.div`
 	}
 `;
 
-const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
+const ProductButton = styled.button`
+	background-color: var(--white);
+	border: 2px solid var(--gray);
+	/* color: var(--primary); */
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2.2rem;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: var(--gray);
+		/* color: var(--gray-300); */
+	}
+`;
+
+const EditProfileButton = styled.button`
+	background-color: var(--white);
+	border: 2px solid var(--gray);
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2.2rem;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: var(--gray);
+	}
+`;
+
+const FollowButton = styled.button`
+	background-color: ${(props) =>
+		props.isFollowing ? 'var(--white)' : 'var(--primary)'};
+	border: 2px solid
+		${(props) => (props.isFollowing ? 'var(--gray)' : 'var(--primary)')};
+	color: ${(props) => (props.isFollowing ? 'var(--gray-300)' : 'var(--white)')};
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2rem;
+	transition: all 0.3s ease;
+	width: 176px;
+
+	&:active {
+		opacity: 0.8;
+	}
+`;
+
+const Profile = ({
+	profile = dummyProfile,
+	openModal,
+	onLogout,
+	isMyProfile,
+	onEditProfile,
+}) => {
 	const {
 		username,
 		accountname,
@@ -146,6 +196,12 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 		followerCount,
 		followingCount,
 	} = profile;
+
+	const [isFollowing, setIsFollowing] = useState(false);
+
+	const handleFollowToggle = () => {
+		setIsFollowing(!isFollowing);
+	};
 
 	const rightBtnClick = () => {
 		openModal([
@@ -180,18 +236,22 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 							<p className="profile-account">{accountname}</p>
 						</ProfileName>
 					</ProfileInfoText>
-					<ProfileButtons>
-						<button
-							type="button"
-							aria-label="채팅하기"
-							className="message-btn"
-						></button>
-						<button
-							type="button"
-							aria-label="공유하기"
-							className="share-btn"
-						></button>
-					</ProfileButtons>
+					{isMyProfile ? (
+						<ProductButton>상품등록</ProductButton>
+					) : (
+						<ProfileButtons>
+							<button
+								type="button"
+								aria-label="채팅하기"
+								className="message-btn"
+							></button>
+							<button
+								type="button"
+								aria-label="공유하기"
+								className="share-btn"
+							></button>
+						</ProfileButtons>
+					)}
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
@@ -203,10 +263,17 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
-					{!isfollow && (
-						<Button size="sm" className="follow-btn">
-							팔로우
-						</Button>
+					{isMyProfile ? (
+						<EditProfileButton onClick={onEditProfile}>
+							프로필 편집
+						</EditProfileButton>
+					) : (
+						<FollowButton
+							onClick={handleFollowToggle}
+							isFollowing={isFollowing}
+						>
+							{isFollowing ? '언팔로우' : '팔로우'}
+						</FollowButton>
 					)}
 				</ProfileStats>
 			</ProfileMain>
