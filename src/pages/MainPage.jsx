@@ -6,7 +6,6 @@ import MainCategory from '../components/MainComponents/MainCategory';
 import MainProductList from '../components/MainComponents/MainProductList';
 import { Link } from 'react-router-dom';
 import { BodyContainer } from '../components/SharedComponents/CommonComponents';
-import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 
 const MainPage = () => (
 	<>
@@ -15,7 +14,6 @@ const MainPage = () => (
 		<MainCategory />
 		<MainProductList />
 		<Link to="/post">포스트 페이지 이동</Link>
-		<TabNaviComponent />
 	</>
 );
 
