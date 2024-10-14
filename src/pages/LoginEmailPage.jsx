@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-	Page,
 	TitleWrap,
-	ContentWrap,
 	InputWrap,
 	BottomButton,
 } from '../components/LoginComponents/loginindex';
@@ -81,7 +79,7 @@ const LoginEmailPage = () => {
 				>
 					{isSubmitting ? '로그인 중...' : '로그인'}
 				</BottomButton>
-				<Link to="/SignUp">이메일로 회원가입</Link>
+				<Link to="/signup">이메일로 회원가입</Link>
 			</InputWrap>
 		</>
 	);

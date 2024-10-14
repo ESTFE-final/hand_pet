@@ -65,8 +65,8 @@ const LoginPage = () => (
 		<Logo src={logo2} alt="Logo2" />
 		<BottomBox>
 			<ButtonWrapper>
-				<StyledLink to="/LoginEmail">이메일 로그인</StyledLink>
-				<StyledLink to="/SignUp">회원가입</StyledLink>
+				<StyledLink to="/login/email">이메일 로그인</StyledLink>
+				<StyledLink to="/signup">회원가입</StyledLink>
 			</ButtonWrapper>
 		</BottomBox>
 	</LoginContainer>

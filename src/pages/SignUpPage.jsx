@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
 	TitleWrap,
 	InputWrap,
@@ -13,6 +14,7 @@ const SignupPage = () => {
 	const [password, setPassword] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
+	const [serverMessage, setServerMessage] = useState('');
 	const [isButtonDisabled, setButtonDisabled] = useState(true);
 
 	const navigate = useNavigate();
@@ -47,10 +49,33 @@ const SignupPage = () => {
 		setButtonDisabled(!isValid);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setServerMessage('');
+
 		if (!isButtonDisabled) {
-			navigate('/editprofile', { state: { email, password } });
+			try {
+				const response = await axios.post(
+					'https://estapi.mandarin.weniv.co.kr/user/emailvalid',
+					{
+						user: { email: email },
+					},
+					{
+						headers: {
+							'Content-type': 'application/json',
+						},
+					}
+				);
+
+				setServerMessage(response.data.message);
+				console.log(response);
+
+				if (response.data.message === '사용 가능한 이메일 입니다.') {
+					navigate('/profile/edit', { state: { email, password } });
+				}
+			} catch (error) {
+				setServerMessage('이메일 확인 중 오류가 발생했습니다.');
+			}
 		}
 	};
 
@@ -63,7 +88,6 @@ const SignupPage = () => {
 					placeholder="이메일을 입력하세요"
 					value={email}
 					onChange={handleEmailChange}
-					style={{ height: '100%' }}
 				/>
 				<ErrorMessageWrap>{emailError}</ErrorMessageWrap>
 				<Input
@@ -71,12 +95,12 @@ const SignupPage = () => {
 					placeholder="비밀번호를 입력하세요"
 					value={password}
 					onChange={handlePasswordChange}
-					style={{ height: '100%' }}
 				/>
 				<ErrorMessageWrap>{passwordError}</ErrorMessageWrap>
 				<BottomButton onClick={handleSubmit} disabled={isButtonDisabled}>
 					다음
 				</BottomButton>
+				<ErrorMessageWrap>{serverMessage}</ErrorMessageWrap>
 			</InputWrap>
 		</>
 	);
