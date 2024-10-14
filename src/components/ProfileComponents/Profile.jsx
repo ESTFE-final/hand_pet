@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { NavigationBar, PostModal } from '../SharedComponents/CommonComponents';
+import { NavigationBar } from '../SharedComponents/CommonComponents';
 import Button from '../SharedComponents/Button';
 import profileImage from '../../assets/icons/profile-img.svg';
 import messageIcon from '../../assets/icons/message-btn.svg';
@@ -136,7 +136,7 @@ const ProfileFollow = styled.div`
 	}
 `;
 
-const Profile = ({ profile = dummyProfile, openModal }) => {
+const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 	const {
 		username,
 		accountname,
@@ -150,7 +150,7 @@ const Profile = ({ profile = dummyProfile, openModal }) => {
 	const rightBtnClick = () => {
 		openModal([
 			{ text: '설정 및 개인정보', onClick: () => {} },
-			{ text: '로그아웃', onClick: () => {} },
+			{ text: '로그아웃', onClick: onLogout },
 		]);
 	};
 
