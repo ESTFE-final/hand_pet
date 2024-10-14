@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
 import Button from '../SharedComponents/Button';
-import profileImage from '../../icons/profile-img.svg';
-import messageIcon from '../../icons/message-btn.svg';
-import shareIcon from '../../icons/share-btn.svg';
-import leftArrowIcon from '../../icons/icon-arrow-left-w.svg';
-import RightmenuIcon from '../../icons/icon-more-vertical.svg';
+import profileImage from '../../assets/icons/profile-img.svg';
+import messageIcon from '../../assets/icons/message-btn.svg';
+import shareIcon from '../../assets/icons/share-btn.svg';
+import leftArrowIcon from '../../assets/icons/icon-arrow-left-w.svg';
+import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
 
 const dummyProfile = {
 	username: '애완 간식 수제샵',

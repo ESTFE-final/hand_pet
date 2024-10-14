@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BannerImg from '../../icons/img-main-banner.png';
+import BannerImg from '../../assets/images/img-main-banner.png';
 
 const BannerContainer = styled.div`
 	display: flex;
@@ -43,7 +43,7 @@ const MainBanner = () => {
 	const images = [BannerImg, BannerImg, BannerImg, BannerImg];
 
 	const handleNextSlide = () => {
-		setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1)); // 마지막 이미지에서 다시 처음으로
+		setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
 	};
 
 	return (
