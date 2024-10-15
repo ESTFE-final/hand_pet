@@ -8,6 +8,7 @@ import {
 	PostModal,
 	AlertModal,
 } from '../components/SharedComponents/CommonComponents';
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 
 const PageWrapper = styled.div`
 	position: relative;
@@ -87,6 +88,7 @@ const ProfilePage = () => {
 				buttonText="로그아웃"
 				modalClose={closeAlertModal}
 			/>
+			<TabNaviComponent />
 		</PageWrapper>
 	);
 };
