@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
 import profileImage from '../../assets/icons/profile-img.svg';
@@ -60,7 +61,7 @@ const ProfileInfoText = styled.div`
 	gap: 34px;
 `;
 
-const UserImage = styled.a`
+const UserImage = styled(Link)`
 	width: 148px;
 	height: 148px;
 	border-radius: 50%;
@@ -119,10 +120,11 @@ const ProfileStats = styled.section`
 	margin-top: 56px;
 `;
 
-const ProfileFollow = styled.div`
+const ProfileFollow = styled(Link)`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	transition: all 0.3s ease;
 
 	.stat-value {
 		font-size: 3rem;
@@ -133,12 +135,16 @@ const ProfileFollow = styled.div`
 		font-size: 2rem;
 		color: var(--graydark-200);
 	}
+
+	&:hover {
+		color: var(--white);
+	}
 `;
 
-const ProductButton = styled.button`
+const ProductLink = styled(Link)`
 	background-color: var(--white);
 	border: 2px solid var(--gray);
-	/* color: var(--primary); */
+	color: var(--black);
 	border-radius: 60px;
 	padding: 18px 40px;
 	font-size: 2.2rem;
@@ -146,13 +152,13 @@ const ProductButton = styled.button`
 
 	&:hover {
 		background-color: var(--gray);
-		/* color: var(--gray-300); */
 	}
 `;
 
-const EditProfileButton = styled.button`
+const EditProfileLink = styled(Link)`
 	background-color: var(--white);
 	border: 2px solid var(--gray);
+	color: var(--black);
 	border-radius: 60px;
 	padding: 18px 40px;
 	font-size: 2.2rem;
@@ -223,7 +229,7 @@ const Profile = ({
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage href="#">
+						<UserImage to="/profile">
 							<img
 								src={image || profileImage}
 								alt={`${username}의 프로필 이미지`}
@@ -235,7 +241,7 @@ const Profile = ({
 						</ProfileName>
 					</ProfileInfoText>
 					{isMyProfile ? (
-						<ProductButton>상품등록</ProductButton>
+						<ProductLink to="/product/add">상품등록</ProductLink>
 					) : (
 						<ProfileButtons>
 							<button
@@ -253,7 +259,7 @@ const Profile = ({
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow>
+					<ProfileFollow to="/follower">
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
@@ -262,7 +268,7 @@ const Profile = ({
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
 					{isMyProfile ? (
-						<EditProfileButton>프로필 편집</EditProfileButton>
+						<EditProfileLink to="/profile/edit">프로필 편집</EditProfileLink>
 					) : (
 						<FollowButton isFollowing={isfollow}>
 							{isfollow ? '언팔로우' : '팔로우'}
