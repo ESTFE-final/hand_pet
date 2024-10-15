@@ -7,12 +7,16 @@ import {
 } from '../components/LoginComponents/loginindex';
 import { Link } from 'react-router-dom';
 import { Input } from '../components/SharedComponents/CommonComponents';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slices/authSlice';
 
 const LoginEmailPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isButtonDisabled, setButtonDisabled] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const dispatch = useDispatch();
 
 	const toggleButtonState = (emailValue, passwordValue) => {
 		setButtonDisabled(!(emailValue && passwordValue));
@@ -49,7 +53,7 @@ const LoginEmailPage = () => {
 			console.log('로그인 성공:', response.data);
 
 			const token = response.data.user.token;
-			localStorage.setItem('authToken', token);
+			dispatch(login(token));
 		} catch (error) {
 			console.error('로그인 실패:', error);
 		} finally {
