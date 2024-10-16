@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
+import { useSelector } from 'react-redux'; // useSelector 가져오기
+import axios from 'axios'; // axios 가져오기
 
 const PostContainer = styled.section``;
 
@@ -77,29 +79,40 @@ const PostAlbum = styled.ul`
 
 const PostTab = () => {
 	const [postView, setPostView] = useState('list');
+	const [posts, setPosts] = useState([]); // 게시물 상태 추가
+	const [loading, setLoading] = useState(true); // 로딩 상태 추가
+	const [error, setError] = useState(null); // 오류 상태 추가
 
-	const posts = [
-		{
-			id: 1,
-			content: '수제 케이크 제작 가능합니다.',
-			image:
-				'https://images.unsplash.com/photo-1726672936070-a9b65f47b7c2?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-		{
-			id: 2,
-			content: '이미지 없으면 ~? 앨범형에는 안뜬다!',
-			image: '',
-		},
-		{
-			id: 3,
-			content:
-				'강아지 케이크 클래스 이번주 예약 마감! 다음주부터 예약 가능합니다. 🎂🧁🍰👩🏻‍🍳',
-			image:
-				'https://images.unsplash.com/photo-1560398327-9fad15439ada?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-	];
+	const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+	const accountName = useSelector((state) => state.auth.accountName); // Redux에서 계정 이름 가져오기
 
-	const postsWithImages = posts.filter((post) => post.image);
+	useEffect(() => {
+		const fetchPosts = async () => {
+			try {
+				const response = await axios.get(`https://estapi.mandarin.weniv.co.kr/post/${accountName}/userpost`, {
+					headers: {
+						'Authorization': `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				});
+				setPosts(response.data); // 응답 데이터를 상태에 설정
+			} catch (err) {
+				setError(err.message); // 오류 메시지 설정
+			} finally {
+				setLoading(false); // 로딩 상태 종료
+			}
+		};
+
+		fetchPosts();
+	}, [token, accountName]); // token과 accountName이 변경될 때마다 실행
+
+	if (loading) {
+		return <p>로딩 중...</p>; // 로딩 중일 때 메시지 표시
+	}
+
+	if (error) {
+		return <p>{error}</p>; // 오류 메시지 표시
+	}
 
 	return (
 		<PostContainer aria-label="게시물 목록">
@@ -119,7 +132,7 @@ const PostTab = () => {
 						</PostButton>
 						<PostButton
 							type="button"
-							className={postView === 'album' ? 'active' : ''}
+							className={postView === 'album' ? 'active' : ''} 
 							onClick={() => setPostView('album')}
 							aria-pressed={postView === 'album'}
 						>
@@ -140,7 +153,7 @@ const PostTab = () => {
 						</PostList>
 					) : (
 						<PostAlbum className="album-post-view">
-							{postsWithImages.map((post) => (
+							{posts.filter(post => post.image).map((post) => (
 								<li key={post.id} className="post-album-item">
 									<img src={post.image} alt="" />
 								</li>

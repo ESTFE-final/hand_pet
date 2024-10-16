@@ -1,22 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
-import Button from '../SharedComponents/Button';
 import profileImage from '../../assets/icons/profile-img.svg';
 import messageIcon from '../../assets/icons/message-btn.svg';
 import shareIcon from '../../assets/icons/share-btn.svg';
 import leftArrowIcon from '../../assets/icons/icon-arrow-left-w.svg';
 import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
-
-const dummyProfile = {
-	username: '애완 간식 수제샵',
-	accountname: '@pet_handmade',
-	intro: '모든 제품은 직접 디자인하고 제작합니다 :)',
-	image: profileImage,
-	isfollow: false,
-	followerCount: 2950,
-	followingCount: 128,
-};
 
 const ProfileWrapper = styled.article`
 	background-color: var(--primary);
@@ -61,10 +51,12 @@ const ProfileInfoText = styled.div`
 	gap: 34px;
 `;
 
-const UserImage = styled.a`
+const UserImage = styled(Link)`
 	width: 148px;
 	height: 148px;
 	border-radius: 50%;
+	border: 2px solid var(--gray);
+	overflow: hidden;
 
 	img {
 		width: 100%;
@@ -77,6 +69,7 @@ const ProfileName = styled.div`
 	.profile-username {
 		color: var(--white);
 		font-size: 2.8rem;
+		margin-bottom: 5px;
 	}
 
 	.profile-account {
@@ -120,10 +113,11 @@ const ProfileStats = styled.section`
 	margin-top: 56px;
 `;
 
-const ProfileFollow = styled.div`
+const ProfileFollow = styled(Link)`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	transition: all 0.3s ease;
 
 	.stat-value {
 		font-size: 3rem;
@@ -134,9 +128,60 @@ const ProfileFollow = styled.div`
 		font-size: 2rem;
 		color: var(--graydark-200);
 	}
+
+	&:hover {
+		color: var(--white);
+	}
 `;
 
-const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
+const ProductLink = styled(Link)`
+	background-color: var(--white);
+	border: 2px solid var(--gray);
+	color: var(--black);
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2.2rem;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: var(--gray);
+	}
+`;
+
+const EditProfileLink = styled(Link)`
+	background-color: var(--white);
+	border: 2px solid var(--gray);
+	color: var(--black);
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2.2rem;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: var(--gray);
+	}
+`;
+
+const FollowButton = styled.button`
+	background-color: ${(props) =>
+		props.isFollowing ? 'var(--white)' : 'var(--primary)'};
+	border: 2px solid
+		${(props) => (props.isFollowing ? 'var(--gray)' : 'var(--primary)')};
+	color: ${(props) => (props.isFollowing ? 'var(--gray-300)' : 'var(--white)')};
+	border-radius: 60px;
+	padding: 18px 40px;
+	font-size: 2rem;
+	transition: all 0.3s ease;
+	width: 176px;
+
+	&:active {
+		opacity: 0.8;
+	}
+`;
+
+const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
+	if (!profile) return null;
+
 	const {
 		username,
 		accountname,
@@ -172,30 +217,37 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage href="#">
-							<img src={image} alt={`${username}의 프로필 이미지`} />
+						<UserImage to="/profile">
+							<img
+								src={image || profileImage}
+								alt={`${username}의 프로필 이미지`}
+							/>
 						</UserImage>
 						<ProfileName>
 							<h1 className="profile-username">{username}</h1>
-							<p className="profile-account">{accountname}</p>
+							<p className="profile-account">@ {accountname}</p>
 						</ProfileName>
 					</ProfileInfoText>
-					<ProfileButtons>
-						<button
-							type="button"
-							aria-label="채팅하기"
-							className="message-btn"
-						></button>
-						<button
-							type="button"
-							aria-label="공유하기"
-							className="share-btn"
-						></button>
-					</ProfileButtons>
+					{isMyProfile ? (
+						<ProductLink to="/product/add">상품등록</ProductLink>
+					) : (
+						<ProfileButtons>
+							<button
+								type="button"
+								aria-label="채팅하기"
+								className="message-btn"
+							></button>
+							<button
+								type="button"
+								aria-label="공유하기"
+								className="share-btn"
+							></button>
+						</ProfileButtons>
+					)}
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow>
+					<ProfileFollow to="/follower">
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
@@ -203,10 +255,15 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
-					{!isfollow && (
-						<Button size="sm" className="follow-btn">
-							팔로우
-						</Button>
+					{isMyProfile ? (
+						<EditProfileLink to="/profile/edit">프로필 편집</EditProfileLink>
+					) : (
+						<FollowButton
+							isFollowing={isfollow}
+							onClick={() => (isfollow ? onUnFollow() : onFollow())}
+						>
+							{isfollow ? '언팔로우' : '팔로우'}
+						</FollowButton>
 					)}
 				</ProfileStats>
 			</ProfileMain>
