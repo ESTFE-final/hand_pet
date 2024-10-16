@@ -6,8 +6,8 @@ import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
 // 선언부 구조분해 할당
-function FollowerListPage() {
-	const [followers, setFollowers] = useState([]);
+function FollowingListPage() {
+	const [following, setFollowing] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const images = require.context(
@@ -22,11 +22,11 @@ function FollowerListPage() {
 		const accountname = 'Test33'; // 실제 계정 이름으로 교체
 
 		// 예외처리 필수
-		const fetchFollowers = async () => {
+		const fetchFollowing = async () => {
 			setLoading(true); // API 호출 시작 시 로딩 상태 설정
 			try {
 				const response = await axios.get(
-					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
+					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/following`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -35,16 +35,16 @@ function FollowerListPage() {
 					}
 				);
 				console.log(response.data);
-				setFollowers(response.data);
+				setFollowing(response.data);
 			} catch (err) {
 				setError(err.response?.data?.message || err.message);
-				consolog.error(err);
+				console.error(err);
 			} finally {
 				setLoading(false); // API 호출 완료 시 로딩 상태 해제
 			}
 		};
 
-		fetchFollowers();
+		fetchFollowing();
 	}, []);
 
 	//아하.. 이게 에러처리  throw    try catch finally 안쓰고 하는 경우군
@@ -59,32 +59,32 @@ function FollowerListPage() {
 	// 렌더링 부분
 	return (
 		<>
-			<NavigationBar title="팔로워" />
+			<NavigationBar title="팔로잉" />
 			<InnerWMobileFull>
-				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
-				<FollowerListContent>
-					{followers.length === 0 ? (
-						<div>팔로워가 없습니다.</div>
+				<h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
+				<FollowingListContent>
+					{following.length === 0 ? (
+						<div>팔로잉이 없습니다.</div>
 					) : (
-						followers.map((follower) => (
-							<FollowerListItem key={follower._id}>
-								<FollowerInfo>
-									<FollowerImg
-										// src={images(`./${follower.image}`)
-										alt={follower.username}
+						following.map((follow) => (
+							<FollowingListItem key={follow._id}>
+								<FollowingInfo>
+									<FollowingImg
+										// src={images(`./${follow.image}`)
+										alt={follow.username}
 									/>
-									<FollowerText>
-										<FollowerShopName>{follower.username}</FollowerShopName>
-										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
-									</FollowerText>
-								</FollowerInfo>
+									<FollowingText>
+										<FollowingShopName>{follow.username}</FollowingShopName>
+										<FollowingShopDesc>{follow.intro}</FollowingShopDesc>
+									</FollowingText>
+								</FollowingInfo>
 								<Button size="sm" type="button">
-									{follower.isfollow ? '언팔로우' : '팔로우'}
+									{follow.isfollow ? '언팔로우' : '팔로우'}
 								</Button>
-							</FollowerListItem>
+							</FollowingListItem>
 						))
 					)}
-				</FollowerListContent>
+				</FollowingListContent>
 			</InnerWMobileFull>
 		</>
 	);
@@ -96,16 +96,16 @@ const InnerWMobileFull = styled.div`
 	position: relative;
 	padding-bottom: 10rem;
 `;
-const FollowerInfo = styled.div`
+const FollowingInfo = styled.div`
 	display: flex;
 	align-items: flex-start;
 	gap: 1.6rem;
 `;
-const FollowerListContent = styled.ul`
+const FollowingListContent = styled.ul`
 	padding: 0 1.6rem;
 `;
 
-const FollowerListItem = styled.li`
+const FollowingListItem = styled.li`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -114,7 +114,7 @@ const FollowerListItem = styled.li`
 	}
 `;
 
-const FollowerImg = styled.img`
+const FollowingImg = styled.img`
 	background: var(--gray);
 	width: 72px;
 	height: 72px;
@@ -122,16 +122,16 @@ const FollowerImg = styled.img`
 	border-radius: 50%;
 	flex-shrink: 0;
 `;
-const FollowerText = styled.div`
+const FollowingText = styled.div`
 	padding-top: 0.7rem;
 `;
-const FollowerShopName = styled.p`
+const FollowingShopName = styled.p`
 	font-size: 2rem;
 	margin-bottom: 0.6rem;
 `;
-const FollowerShopDesc = styled.p`
+const FollowingShopDesc = styled.p`
 	color: var(--gray-300);
 	font-size: 1.8rem;
 `;
 
-export default FollowerListPage;
+export default FollowingListPage;

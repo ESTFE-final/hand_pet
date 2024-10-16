@@ -15,6 +15,7 @@ import EditProfilePage from './pages/EditProfilePage';
 import AddProductPage from './pages/AddProductPage';
 import PostUploadPage from './pages/PostUploadPage';
 import FollowerListPage from './pages/FollowerListPage';
+import FollowingListPage from './pages/FollowingListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
@@ -43,6 +44,7 @@ function App() {
 				<Route path="/post/upload" element={<PostUploadPage />} />
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
+				<Route path="/following" element={<FollowingListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
