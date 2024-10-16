@@ -52,7 +52,10 @@ const LoginEmailPage = () => {
 			);
 			console.log('로그인 성공:', response.data);
 
-			const token = response.data.user.token;
+			const { token, accountname } = response.data.user;
+			localStorage.setItem('authToken', token);
+			localStorage.setItem('accountname', accountname);
+
 			dispatch(login(token));
 		} catch (error) {
 			console.error('로그인 실패:', error);
