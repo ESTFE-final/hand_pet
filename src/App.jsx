@@ -15,11 +15,11 @@ import EditProfilePage from './pages/EditProfilePage';
 import AddProductPage from './pages/AddProductPage';
 import PostUploadPage from './pages/PostUploadPage';
 import FollowerListPage from './pages/FollowerListPage';
-import FollowingListPage from './pages/FollowerListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
+import NewProfilePage from './pages/NewProfilePage';
 
 function App() {
 	return (
@@ -39,10 +39,10 @@ function App() {
 				<Route path="/signup" element={<SignUpPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/profile/edit" element={<EditProfilePage />} />
+				<Route path="/profile/new" element={<NewProfilePage />} />
 				<Route path="/post/upload" element={<PostUploadPage />} />
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
-				<Route path="/following" element={<FollowingListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
