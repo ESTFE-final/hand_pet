@@ -8,16 +8,6 @@ import shareIcon from '../../assets/icons/share-btn.svg';
 import leftArrowIcon from '../../assets/icons/icon-arrow-left-w.svg';
 import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
 
-const dummyProfile = {
-	username: '애완 간식 수제샵',
-	accountname: '@pet_handmade',
-	intro: '모든 제품은 직접 디자인하고 제작합니다 :)',
-	image: profileImage,
-	isfollow: false,
-	followerCount: 2950,
-	followingCount: 128,
-};
-
 const ProfileWrapper = styled.article`
 	background-color: var(--primary);
 	border-radius: 0 0 80px 80px;
@@ -65,6 +55,8 @@ const UserImage = styled(Link)`
 	width: 148px;
 	height: 148px;
 	border-radius: 50%;
+	border: 2px solid var(--gray);
+	overflow: hidden;
 
 	img {
 		width: 100%;
@@ -77,6 +69,7 @@ const ProfileName = styled.div`
 	.profile-username {
 		color: var(--white);
 		font-size: 2.8rem;
+		margin-bottom: 5px;
 	}
 
 	.profile-account {
@@ -186,12 +179,7 @@ const FollowButton = styled.button`
 	}
 `;
 
-const Profile = ({
-	profile = dummyProfile,
-	openModal,
-	onLogout,
-	isMyProfile,
-}) => {
+const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 	if (!profile) return null;
 
 	const {
@@ -237,7 +225,7 @@ const Profile = ({
 						</UserImage>
 						<ProfileName>
 							<h1 className="profile-username">{username}</h1>
-							<p className="profile-account">{accountname}</p>
+							<p className="profile-account">@ {accountname}</p>
 						</ProfileName>
 					</ProfileInfoText>
 					{isMyProfile ? (
@@ -270,7 +258,10 @@ const Profile = ({
 					{isMyProfile ? (
 						<EditProfileLink to="/profile/edit">프로필 편집</EditProfileLink>
 					) : (
-						<FollowButton isFollowing={isfollow}>
+						<FollowButton
+							isFollowing={isfollow}
+							onClick={() => (isfollow ? onUnFollow() : onFollow())}
+						>
 							{isfollow ? '언팔로우' : '팔로우'}
 						</FollowButton>
 					)}
