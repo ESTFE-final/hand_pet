@@ -15,7 +15,7 @@ const MainPage = () => (
 		<MainCategory />
 		<MainProductList />
 		<Link to="/post">포스트 페이지 이동</Link>
-		<TabNaviComponent />
+		{/* <TabNaviComponent /> */}
 	</>
 );
 
