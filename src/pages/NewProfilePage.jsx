@@ -8,21 +8,34 @@ import uploadIcon from '../assets/icons/upload-file.svg';
 const NewProfilePage = () => {
 	const location = useLocation();
 	const { email, password } = location.state || {};
-
 	const [username, setUsername] = useState('');
 	const [accountname, setAccountname] = useState('');
 	const [intro, setIntro] = useState('');
 	const [image, setImage] = useState(basicprofileimg);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleImageChange = (e) => {
+	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onload = () => {
-				setImage(reader.result);
-			};
-			reader.readAsDataURL(file);
+			const formData = new FormData();
+			formData.append('image', file);
+
+			try {
+				const response = await axios.post(
+					'https://estapi.mandarin.weniv.co.kr/image/uploadfile',
+					formData,
+					{
+						headers: {
+							'Content-type': 'multipart/form-data',
+						},
+					}
+				);
+				console.log('이미지 업로드 성공:', response.data);
+				const uploadedImageUrl = `https://estapi.mandarin.weniv.co.kr/${response.data.filename}`;
+				setImage(uploadedImageUrl);
+			} catch (error) {
+				console.error('이미지 업로드 실패:', error);
+			}
 		}
 	};
 
@@ -51,7 +64,6 @@ const NewProfilePage = () => {
 				}
 			);
 			console.log('회원가입 성공:', response.data);
-			// 성공 시 다음 페이지로 이동하거나 알림 표시 가능
 		} catch (error) {
 			console.error('회원가입 실패:', error);
 		} finally {
@@ -66,7 +78,7 @@ const NewProfilePage = () => {
 			<ProfileModifyContent>
 				<ProfileImageContent>
 					<ProfileImage src={image} alt="프로필" />
-					<ProfileImageLabel htmlFor="profileimg"></ProfileImageLabel>
+					<ProfileImageLabel htmlFor="profileimg" />
 					<ProfileImageInput
 						id="profileimg"
 						type="file"
@@ -180,6 +192,8 @@ const ProfileImageContent = styled.div`
 const ProfileImage = styled.img`
 	width: 100%;
 	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
 `;
 
 const ProfileImageLabel = styled.label`

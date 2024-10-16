@@ -63,7 +63,8 @@ const ProfileProduct = () => {
 			{products.length > 0
 				? products.map((product) => (
 						<ProductItem key={product.id}>
-							<ProductName>{product.image}</ProductName>
+							<ProductName>{product.itemName}</ProductName>
+							<img src={product.itemImage} alt={product.itemName} />
 							<ProductPrice>{product.price.toLocaleString()}원</ProductPrice>
 						</ProductItem>
 					))
