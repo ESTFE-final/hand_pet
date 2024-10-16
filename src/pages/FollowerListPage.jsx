@@ -1,76 +1,88 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
+// 선언부 구조분해 할당
 function FollowerListPage() {
+	const [followers, setFollowers] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const images = require.context(
 		'../assets/images',
 		true,
 		/\.(png|jpe?g|svg)$/
 	);
 
-	const followersData = [
-		{
-			name: '댕케',
-			description: '강아지 수제 케이크 | 수제 간식',
-			image: 'img-follower-01.png',
-		},
-		{
-			name: '의류 핸드메이드샵',
-			description: '펫 의류 자체 제작합니다',
-			image: 'img-follower-02.png',
-		},
-		{
-			name: '하루네',
-			image: 'img-follower-03.png',
-		},
-		{
-			name: '냥이집_고양이 용품 판매',
-			description: '고양이 맞춤 용품 판매점',
-			image: 'img-follower-04.png',
-		},
-		{
-			name: '노을이',
-			image: 'img-follower-05.png',
-		},
-		{
-			name: '햄토리몰',
-			description: '햄스터 전용 용품 | 간식 판매 🐹',
-			image: 'img-follower-06.png',
-		},
-		{
-			name: '레빗샵',
-			description: '고토끼 수제 간식, 옷, 용품 등 토순이들...',
-			image: 'img-follower-07.png',
-		},
-	];
+	//  로직 부분
+	useEffect(() => {
+		const token =
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGY1N2FlY2U2NTBjOWFkZDFmMDc5YyIsImV4cCI6MTczNDI0MjgzMCwiaWF0IjoxNzI5MDU4ODMwfQ.ijPYCKj2IyKVwyKjusvXRWkZog56NrpS_zqv5oFEs0E'; // 실제 토큰으로 교체
+		const accountname = 'gimminsang647'; // 실제 계정 이름으로 교체
 
+		// 예외처리 필수
+		const fetchFollowers = async () => {
+			setLoading(true); // API 호출 시작 시 로딩 상태 설정
+			try {
+				const response = await axios.get(
+					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'application/json',
+						},
+					}
+				);
+				setFollowers(response.data);
+			} catch (err) {
+				setError(err.response?.data?.message || err.message);
+			} finally {
+				setLoading(false); // API 호출 완료 시 로딩 상태 해제
+			}
+		};
+
+		fetchFollowers();
+	}, []);
+
+	//아하.. 이게 에러처리  throw    try catch finally 안쓰고 하는 경우군
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <div>Error: {error}</div>;
+	}
+
+	// 렌더링 부분
 	return (
 		<>
 			<NavigationBar title="팔로워" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
 				<FollowerListContent>
-					{followersData.map((follower, index) => (
-						<FollowerListItem key={index}>
-							<FollowerInfo>
-								<FollowerImg
-									src={images(`./${follower.image}`)}
-									alt={follower.name}
-								/>
-								<FollowerText>
-									<FollowerShopName>{follower.name}</FollowerShopName>
-									<FollowerShopDesc>{follower.description}</FollowerShopDesc>
-								</FollowerText>
-							</FollowerInfo>
-							<Button size="sm" type="button">
-								팔로우
-							</Button>
-						</FollowerListItem>
-					))}
+					{followers.length === 0 ? (
+						<div>팔로워가 없습니다.</div>
+					) : (
+						followers.map((follower) => (
+							<FollowerListItem key={follower._id}>
+								<FollowerInfo>
+									<FollowerImg
+										src={images(`./${follower.image}`)}
+										alt={follower.username}
+									/>
+									<FollowerText>
+										<FollowerShopName>{follower.username}</FollowerShopName>
+										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
+									</FollowerText>
+								</FollowerInfo>
+								<Button size="sm" type="button">
+									{follower.isfollow ? '언팔로우' : '팔로우'}
+								</Button>
+							</FollowerListItem>
+						))
+					)}
 				</FollowerListContent>
 			</InnerWMobileFull>
 		</>
