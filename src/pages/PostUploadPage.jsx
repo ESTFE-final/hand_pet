@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
@@ -122,6 +122,7 @@ const UploadFileInput = styled.input`
 const PostUploadPage = () => {
 	const [content, setContent] = useState('');
 	const [images, setImages] = useState([]);
+	const navigate = useNavigate();
 
 	const handleInput = (e) => {
 		setContent(e.target.innerText);
@@ -145,11 +146,64 @@ const PostUploadPage = () => {
 		});
 	};
 
+	// 게시글 작성 데이터 가져오기
+	const uploadImageData = async () => {
+		const token = localStorage.getItem('authToken');
+		if (!token) return;
+
+		if (!content && images.length === 0) {
+			alert('내용 또는 이미지를 입력해주세요.');
+			return;
+		}
+
+		try {
+			// 이미지 업로드
+			const imageUrl = await Promise.all(
+				images.map(async (img) => {
+					const formData = new FormData();
+					formData.append('image', img.file);
+					const res = await axios.post(
+						'https://estapi.mandarin.weniv.co.kr/image/uploadfile',
+						formData
+					);
+					return res.data.filename;
+				})
+			);
+
+			// 게시글 작성
+			const postData = {
+				post: {
+					content: content,
+					image: imageUrl.join(', '),
+				},
+			};
+
+			const res = await axios.post(
+				'https://estapi.mandarin.weniv.co.kr/post',
+				postData,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-type': 'application/json',
+					},
+				}
+			);
+
+			alert('게시글 업로드 성공!');
+			navigate('/post');
+		} catch (error) {
+			console.error('게시글 업로드 실패:', error);
+			alert('게시글 업로드 실패');
+		}
+	};
+
 	return (
 		<PostUploadWrapper>
 			<CustomNavigationBar
 				title={'게시글 올리기'}
-				rightButton={<UploadButton>업로드</UploadButton>}
+				rightButton={
+					<UploadButton onClick={uploadImageData}>업로드</UploadButton>
+				}
 			/>
 
 			<PostUploadContainer hasImages={images.length > 0}>
