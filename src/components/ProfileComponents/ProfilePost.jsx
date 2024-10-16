@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Axios from 'axios';
 import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
@@ -77,27 +78,38 @@ const PostAlbum = styled.ul`
 
 const PostTab = () => {
 	const [postView, setPostView] = useState('list');
+	const [posts, setPosts] = useState([]);
+	const accountname = localStorage.getItem('accountname');
+	const token = localStorage.getItem('authToken');
 
-	const posts = [
-		{
-			id: 1,
-			content: '수제 케이크 제작 가능합니다.',
-			image:
-				'https://images.unsplash.com/photo-1726672936070-a9b65f47b7c2?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-		{
-			id: 2,
-			content: '이미지 없으면 ~? 앨범형에는 안뜬다!',
-			image: '',
-		},
-		{
-			id: 3,
-			content:
-				'강아지 케이크 클래스 이번주 예약 마감! 다음주부터 예약 가능합니다. 🎂🧁🍰👩🏻‍🍳',
-			image:
-				'https://images.unsplash.com/photo-1560398327-9fad15439ada?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-	];
+	useEffect(() => {
+		const fetchPosts = async () => {
+			console.log('Token:', token);
+			console.log('Account Name:', accountname);
+
+			try {
+				const response = await Axios.get(`https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-type': 'application/json',
+					},
+				});
+
+				console.log('Response Data:', response.data); // 응답 데이터 확인
+
+				// 응답 데이터 구조 확인 및 게시물 배열 설정
+				if (Array.isArray(response.data.post)) {
+					setPosts(response.data.post); // post 키 아래의 배열로 설정
+				} else {
+					console.warn('Unexpected data structure:', response.data);
+				}
+			} catch (error) {
+				console.error('Error fetching posts:', error.response?.data || error.message);
+			}
+		};
+
+		fetchPosts();
+	}, [accountname, token]);
 
 	const postsWithImages = posts.filter((post) => post.image);
 
