@@ -9,7 +9,6 @@ import {
 import axios from 'axios';
 import uploadIcon from '../assets/icons/upload-file.svg';
 
-// InputBox 컴포넌트
 const InputBox = ({ id, type, name, placeholder, error, onChange, value }) => (
 	<AddProductInputItem>
 		<AddProductLabel htmlFor={id}>{name}</AddProductLabel>
@@ -24,21 +23,23 @@ const InputBox = ({ id, type, name, placeholder, error, onChange, value }) => (
 	</AddProductInputItem>
 );
 
-// AddProductPage 컴포넌트
 const AddProductPage = () => {
 	const navigate = useNavigate();
 	const [image, setImage] = useState(null);
+	const [imageFile, setImageFile] = useState(null);
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [link, setLink] = useState('');
 	const [nameError, setNameError] = useState('');
 	const [priceError, setPriceError] = useState('');
 	const [apiError, setApiError] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const handleImageChange = (event) => {
 		const file = event.target.files[0];
 		if (file) {
 			setImage(URL.createObjectURL(file));
+			setImageFile(file);
 		}
 	};
 
@@ -73,24 +74,51 @@ const AddProductPage = () => {
 			!priceError &&
 			price !== '' &&
 			link !== '' &&
-			image
+			imageFile
 		);
 	};
 
 	const handleSave = async () => {
-		console.log('handleSave 함수가 호출되었습니다.');
+		if (!isFormValid()) {
+			setApiError('모든 필드를 올바르게 입력해 주세요.');
+			return;
+		}
+
+		setLoading(true);
+		let imageUrl = '';
+
+		try {
+			const formData = new FormData();
+			formData.append('image', imageFile);
+
+			const uploadResponse = await axios.post(
+				'https://estapi.mandarin.weniv.co.kr/image/uploadfile',
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			const filename = uploadResponse.data.filename;
+			imageUrl = `https://estapi.mandarin.weniv.co.kr/${filename}`;
+		} catch (error) {
+			setApiError('이미지 업로드 중 문제가 발생했습니다.');
+			setLoading(false);
+			return;
+		}
 
 		const productData = {
 			product: {
 				itemName: name,
 				price: Number(price.replace(/,/g, '')),
 				link: link,
-				itemImage: image,
+				itemImage: imageUrl,
 			},
 		};
 
 		try {
-			const response = await axios.post(
+			await axios.post(
 				'https://estapi.mandarin.weniv.co.kr/product',
 				productData,
 				{
@@ -100,16 +128,11 @@ const AddProductPage = () => {
 					},
 				}
 			);
-			console.log('API Response:', response.data);
 			navigate('/profile');
 		} catch (error) {
-			if (error.response) {
-				setApiError(error.response.data.message);
-				console.error('API Error:', error.response.data);
-			} else {
-				setApiError('서버에 문제가 발생했습니다.');
-				console.error('Error:', error);
-			}
+			setApiError('상품 등록 중 문제가 발생했습니다.');
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -118,8 +141,13 @@ const AddProductPage = () => {
 			<NavigationBar
 				title="상품 등록"
 				rightButton={
-					<Button size="sm" type="button" onClick={handleSave}>
-						저장
+					<Button
+						size="sm"
+						type="button"
+						onClick={handleSave}
+						disabled={loading}
+					>
+						{loading ? '저장 중...' : '저장'}
 					</Button>
 				}
 			/>

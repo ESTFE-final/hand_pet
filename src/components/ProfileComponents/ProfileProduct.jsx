@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const ProductContainer = styled.section`
 	padding: 2rem;
+	background-color: #f9f9f9;
+	border-radius: 8px;
 `;
 
 const ProductItem = styled.div`
@@ -11,6 +13,20 @@ const ProductItem = styled.div`
 	padding: 1rem;
 	border: 1px solid #ddd;
 	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+`;
+
+const ProductImage = styled.img`
+	width: 80px;
+	height: 80px;
+	border-radius: 8px;
+	object-fit: cover;
+`;
+
+const ProductDetails = styled.div`
+	flex-grow: 1;
 `;
 
 const ProductName = styled.h3`
@@ -22,6 +38,11 @@ const ProductPrice = styled.p`
 	font-size: 1.4rem;
 	color: #666;
 	margin: 0;
+`;
+
+const ErrorMessage = styled.p`
+	color: red;
+	font-size: 1.2rem;
 `;
 
 const ProfileProduct = () => {
@@ -43,6 +64,8 @@ const ProfileProduct = () => {
 					}
 				);
 
+				console.log('Fetched products:', response.data.product);
+
 				setProducts(response.data.product);
 			} catch (error) {
 				setError('상품을 불러오는 데 실패했습니다.');
@@ -56,16 +79,18 @@ const ProfileProduct = () => {
 			setError('계정 정보가 없습니다.');
 		}
 	}, [token, accountname]);
-
 	return (
 		<ProductContainer aria-label="상품 목록">
-			{error && <p>{error}</p>}
+			{error && <ErrorMessage>{error}</ErrorMessage>}
 			{products.length > 0
 				? products.map((product) => (
 						<ProductItem key={product.id}>
-							<ProductName>{product.itemName}</ProductName>
-							<img src={product.itemImage} alt={product.itemName} />
-							<ProductPrice>{product.price.toLocaleString()}원</ProductPrice>
+							<ProductImage src={product.itemImage} alt={product.itemName} />
+
+							<ProductDetails>
+								<ProductName>{product.itemName}</ProductName>
+								<ProductPrice>{product.price.toLocaleString()}원</ProductPrice>
+							</ProductDetails>
 						</ProductItem>
 					))
 				: !error && <p>등록된 상품이 없습니다.</p>}
