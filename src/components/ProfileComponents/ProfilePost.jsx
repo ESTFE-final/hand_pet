@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'; // axios 추가
 import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
 
 const PostContainer = styled.section``;
-
 const PostNav = styled.nav`
 	display: flex;
 	justify-content: flex-end;
@@ -14,60 +14,49 @@ const PostNav = styled.nav`
 	border-bottom: 1px solid var(--gray);
 	padding: 0 36px;
 `;
-
 const PostButton = styled.button`
 	padding-top: 16px;
 	padding-bottom: 16px;
-
 	&.list-btn {
 		padding-right: 32px;
 	}
-
 	img {
 		width: 40px;
 		height: 40px;
 	}
-
 	&:hover {
 		opacity: 0.8;
 	}
 `;
-
 const EmptyState = styled.p`
 	padding-top: 48px;
 	text-align: center;
 	font-size: 3.2rem;
 `;
-
 const PostList = styled.ul`
 	.post-list-item {
 		padding: 0 21px;
-
 		img {
 			width: 100%;
 			height: 544px;
 			object-fit: cover;
 		}
-
 		p {
 			margin: 10px 0;
 			font-size: 2.8rem;
 		}
 	}
 `;
-
 const PostAlbum = styled.ul`
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
 	padding: 0 32px;
 	text-align: center;
-
 	&.album-post-view {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 	}
-
 	.post-album-item img {
 		width: 234px;
 		height: 234px;
@@ -75,35 +64,44 @@ const PostAlbum = styled.ul`
 	}
 `;
 
-const PostTab = () => {
-	const [postView, setPostView] = useState('list');
+const API_URL = 'https://estapi.mandarin.weniv.co.kr';
 
-	const posts = [
-		{
-			id: 1,
-			content: '수제 케이크 제작 가능합니다.',
-			image:
-				'https://images.unsplash.com/photo-1726672936070-a9b65f47b7c2?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-		{
-			id: 2,
-			content: '이미지 없으면 ~? 앨범형에는 안뜬다!',
-			image: '',
-		},
-		{
-			id: 3,
-			content:
-				'강아지 케이크 클래스 이번주 예약 마감! 다음주부터 예약 가능합니다. 🎂🧁🍰👩🏻‍🍳',
-			image:
-				'https://images.unsplash.com/photo-1560398327-9fad15439ada?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-		},
-	];
+const PostTab = ({ accountname }) => {
+	const [postView, setPostView] = useState('list');
+	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	// 게시물 가져오기
+	useEffect(() => {
+		const fetchUserPosts = async () => {
+			const token = localStorage.getItem('authToken');
+			if (!token) return;
+
+			try {
+				const res = await axios.get(`${API_URL}/post/${accountname}/userpost`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-type': 'application/json',
+					},
+				});
+				setPosts(res.data.post); // 가져온 게시물 데이터를 상태로 저장
+				setLoading(false);
+			} catch (error) {
+				console.error('게시물 가져오기 실패:', error);
+				setLoading(false);
+			}
+		};
+
+		fetchUserPosts();
+	}, [accountname]);
 
 	const postsWithImages = posts.filter((post) => post.image);
 
 	return (
 		<PostContainer aria-label="게시물 목록">
-			{posts.length > 0 ? (
+			{loading ? (
+				<p>로딩 중...</p>
+			) : posts.length > 0 ? (
 				<>
 					<PostNav>
 						<PostButton
