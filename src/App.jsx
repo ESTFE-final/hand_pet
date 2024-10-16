@@ -29,8 +29,8 @@ function App() {
 			<Link to="/signup"> 회원가입 </Link>
 			<Link to="/product/add"> 상품등록 </Link>
 			<Link to="/profile"> 내 프로필 </Link>
-			<Link to="/Follower"> 팔로우 </Link>
-			<Link to="/Following"> 팔로윙 </Link>
+			<Link to="/Follower"> 팔로워 </Link>
+			<Link to="/Following"> 팔로잉 </Link>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
