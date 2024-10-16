@@ -8,6 +8,8 @@ import shareIcon from '../../assets/icons/share-btn.svg';
 import leftArrowIcon from '../../assets/icons/icon-arrow-left-w.svg';
 import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
 
+import { Link } from 'react-router-dom'; // Link 임포트
+
 const dummyProfile = {
 	username: '애완 간식 수제샵',
 	accountname: '@pet_handmade',
@@ -186,11 +188,13 @@ const Profile = ({ profile = dummyProfile, openModal, onLogout }) => {
 							aria-label="채팅하기"
 							className="message-btn"
 						></button>
-						<button
-							type="button"
-							aria-label="공유하기"
-							className="share-btn"
-						></button>
+						<Link to="/product/add">
+							<button
+								type="button"
+								aria-label="공유하기"
+								className="share-btn"
+							></button>
+						</Link>
 					</ProfileButtons>
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
