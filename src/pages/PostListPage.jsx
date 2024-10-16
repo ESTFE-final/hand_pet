@@ -60,7 +60,7 @@ const PostListPage = () => {
             <NavigationBar title={'핸드펫 피드'} />
             {posts.length > 0 ? (
                 <>
-                    <MainFeed posts={posts} /> 
+                    <MainFeed posts={posts} /> {/* MainFeed에 posts 전달 */}
                     <button onClick={loadMorePosts}>더 보기</button> {/* 더 보기 버튼 */}
                 </>
             ) : (
