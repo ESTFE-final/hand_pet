@@ -53,11 +53,11 @@ const StyledButton = styled.button`
 	}
 `;
 
-function Button({ disabled, size, children }) {
+function Button({ disabled, size, children, onClick }) {
 	const sizeStyle = SIZES[size];
 
 	return (
-		<StyledButton disabled={disabled} sizeStyle={sizeStyle}>
+		<StyledButton disabled={disabled} sizeStyle={sizeStyle} onClick={onClick}>
 			{children}
 		</StyledButton>
 	);
