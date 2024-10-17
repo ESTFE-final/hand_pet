@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
@@ -39,6 +39,13 @@ const PostContent = styled.div`
 	margin-bottom: 12px;
 `;
 
+const PostImageWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
 const PostImage = styled.img`
 	width: 100%;
 	border-radius: 8px;
@@ -64,6 +71,33 @@ const IconButton = styled.button`
 `;
 
 const FeedItem = ({ content, postImgSrc }) => {
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const [hasImage, setHasImage] = useState(false);
+
+	useEffect(() => {
+		if (postImgSrc) {
+			const img = new Image();
+			img.onload = () => {
+				setHasImage(true);
+				setImageLoaded(true);
+			};
+			img.onerror = () => {
+				setHasImage(false);
+				setImageLoaded(true);
+			};
+			img.src = imageUrl(postImgSrc);
+		} else {
+			setHasImage(false);
+			setImageLoaded(true);
+		}
+	}, [postImgSrc]);
+
+	const imageUrl = (url) => {
+		if (!url || url === 'null') return null;
+		if (url.startsWith('http')) return url;
+		return `https://estapi.mandarin.weniv.co.kr/${url.replace(/^\//, '')}`;
+	};
+
 	return (
 		<Link to="/post/1">
 			<FeedWrapper>
@@ -72,7 +106,18 @@ const FeedItem = ({ content, postImgSrc }) => {
 					<ProfileName>애완 간식 수제샵</ProfileName>
 				</ProfileSection>
 				<PostContent>{content}</PostContent>
-				<PostImage src={postImgSrc} alt="Post" />
+				{imageLoaded && hasImage && (
+					<PostImageWrapper>
+						<PostImage
+							src={imageUrl(postImgSrc)}
+							alt="Post"
+							onError={(e) => {
+								e.target.onerror = null;
+								e.target.src = postImgSrc;
+							}}
+						/>
+					</PostImageWrapper>
+				)}
 				<ReactionIcons>
 					<IconButton>
 						<img src={HeartIcon} alt="Heart" />
