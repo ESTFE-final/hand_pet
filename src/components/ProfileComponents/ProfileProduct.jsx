@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import ProductItem from '../MainComponents/ProductItem';
+import ProductList from '../MainComponents/ProductList';
 
 const Container = styled.div`
 	width: 90%;
 	margin: 52px auto;
-`;
-
-const ProductContainer = styled.section`
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 20px;
-	cursor: pointer;
 `;
 
 const ErrorMessage = styled.p`
@@ -57,21 +50,18 @@ const ProfileProduct = () => {
 
 	return (
 		<Container>
-			<ProductContainer aria-label="상품 목록">
-				{error && <ErrorMessage>{error}</ErrorMessage>}
-				{products.length > 0
-					? products.map((product) => (
-							<ProductItem
-								key={product.id}
-								product={{
-									img: product.itemImage,
-									name: product.itemName,
-									price: `${product.price.toLocaleString()}원`,
-								}}
-							/>
-						))
-					: !error && <p>등록된 상품이 없습니다.</p>}
-			</ProductContainer>
+			{error && <ErrorMessage>{error}</ErrorMessage>}
+			{products.length > 0 ? (
+				<ProductList
+					products={products.map((product) => ({
+						img: product.itemImage,
+						name: product.itemName,
+						price: `${product.price.toLocaleString()}원`,
+					}))}
+				/>
+			) : (
+				!error && <p>등록된 상품이 없습니다.</p>
+			)}
 		</Container>
 	);
 };

@@ -20,6 +20,8 @@ const ProductWrapper = styled.div`
 const ProductImage = styled.img`
 	object-fit: cover;
 	margin-bottom: 10px;
+	aspect-ratio: 1;
+	border-radius: 20px;
 `;
 
 const ProductName = styled.p`

@@ -20,6 +20,7 @@ import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
+import ProductPage from './pages/ProductPage';
 
 function App() {
 	return (
@@ -44,6 +45,7 @@ function App() {
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
+				<Route path="/product" element={<ProductPage />} />
 			</Routes>
 		</BrowserRouter>
 	);
