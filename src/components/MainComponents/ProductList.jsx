@@ -43,11 +43,11 @@ const ShoppingCart = styled.img`
 	cursor: pointer;
 `;
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, onProductClick }) => {
 	return (
 		<ProductContainer>
 			{products.map((product, index) => (
-				<ProductWrapper key={index}>
+				<ProductWrapper key={index} onClick={() => onProductClick(product.id)}>
 					<ProductImage src={product.img} alt={product.name} />
 					<ShoppingCart src={Cart} />
 					<ProductName>{product.name}</ProductName>

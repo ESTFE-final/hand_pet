@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import ProductList from '../MainComponents/ProductList';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: 90%;
@@ -18,6 +19,7 @@ const ProfileProduct = () => {
 	const [error, setError] = useState('');
 	const token = localStorage.getItem('authToken');
 	const accountname = localStorage.getItem('accountname');
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -48,16 +50,23 @@ const ProfileProduct = () => {
 		}
 	}, [token, accountname]);
 
+	const handleProductClick = (productId) => {
+		console.log('product 아이디 확인:', productId);
+		navigate(`/product/${productId}`);
+	};
+
 	return (
 		<Container>
 			{error && <ErrorMessage>{error}</ErrorMessage>}
 			{products.length > 0 ? (
 				<ProductList
 					products={products.map((product) => ({
+						id: product.id,
 						img: product.itemImage,
 						name: product.itemName,
 						price: `${product.price.toLocaleString()}원`,
 					}))}
+					onProductClick={handleProductClick}
 				/>
 			) : (
 				!error && <p>등록된 상품이 없습니다.</p>

@@ -45,7 +45,7 @@ function App() {
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
-				<Route path="/product" element={<ProductPage />} />
+				<Route path="/product/:product_id" element={<ProductPage />} />
 			</Routes>
 		</BrowserRouter>
 	);
