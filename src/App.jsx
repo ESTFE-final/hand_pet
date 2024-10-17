@@ -21,6 +21,7 @@ import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
+import ChatListPage from './pages/ChatListPage';
 
 function App() {
 	return (
@@ -32,6 +33,7 @@ function App() {
 			<Link to="/profile"> 내 프로필 </Link>
 			<Link to="/Follower"> 팔로워 </Link>
 			<Link to="/Following"> 팔로잉 </Link>
+			<Link to="/Chatlist"> 채팅리스트 </Link>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
@@ -45,6 +47,7 @@ function App() {
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
 				<Route path="/following" element={<FollowingListPage />} />
+				<Route path="/chatlist" element={<ChatListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
