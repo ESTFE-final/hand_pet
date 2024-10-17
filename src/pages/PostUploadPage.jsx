@@ -166,7 +166,7 @@ const PostUploadPage = () => {
 						'https://estapi.mandarin.weniv.co.kr/image/uploadfile',
 						formData
 					);
-					return res.data.filename;
+					return `https://estapi.mandarin.weniv.co.kr/${res.data.filename}`;
 				})
 			);
 
@@ -174,7 +174,7 @@ const PostUploadPage = () => {
 			const postData = {
 				post: {
 					content: content,
-					image: imageUrl.join(', '),
+					image: imageUrl.join(','),
 				},
 			};
 
@@ -190,7 +190,7 @@ const PostUploadPage = () => {
 			);
 
 			alert('게시글 업로드 성공!');
-			navigate('/post');
+			navigate('/profile');
 		} catch (error) {
 			console.error('게시글 업로드 실패:', error);
 			alert('게시글 업로드 실패');
