@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+import imgFollower06 from '../assets/images/img-follower-06.png';
+import imgFollower05 from '../assets/images/img-follower-05.png';
+import imgFollower02 from '../assets/images/img-follower-02.png';
 
 // 하드코딩된 JSON 데이터
 const chatData = [
 	{
 		id: 1,
 		username: '코리안핫가이쌩스머씬',
-		image: 'images/user1.jpg',
+		image: imgFollower06,
 		message: '안녕하세요! 감사합니다!!',
 		timestamp: '2023-10-01 10:00',
 		isNew: true,
@@ -15,7 +18,7 @@ const chatData = [
 	{
 		id: 2,
 		username: '엇나돈데',
-		image: 'path/to/user2.jpg',
+		image: imgFollower05,
 		message: '안녕하세요! 엇 저돈데',
 		timestamp: '2023-10-01 10:05',
 		isNew: false,
@@ -23,7 +26,7 @@ const chatData = [
 	{
 		id: 3,
 		username: '김덕뱁니다.',
-		image: 'path/to/user1.jpg',
+		image: imgFollower02,
 		message: '형제여...반갑소',
 		timestamp: '2023-10-01 10:10',
 		isNew: false,
@@ -39,10 +42,13 @@ const ChatListPage = () => {
 				<ChatListContent>
 					{chatData.map((chat) => (
 						<ChatListItem key={chat.id}>
-							<ChatImage
-								src={chat.image}
-								alt={`${chat.username}의 프로필 이미지`}
-							/>
+							<ChatImageContainer>
+								<ChatImage
+									src={chat.image}
+									alt={`${chat.username}의 프로필 이미지`}
+								/>
+								{chat.isNew && <NewIndicator />}
+							</ChatImageContainer>
 							<ChatInfo>
 								<ChatUsername>{chat.username}</ChatUsername>
 								<ChatMessage>{chat.message}</ChatMessage>
@@ -76,11 +82,28 @@ const ChatListItem = styled.li`
 	}
 `;
 
+const ChatImageContainer = styled.div`
+	position: relative;
+	width: 70px;
+	height: 70px;
+	margin-right: 3rem; /* Add margin to the right */
+`;
+
 const ChatImage = styled.img`
-	width: 50px;
-	height: 50px;
+	width: 100%;
+	height: 100%;
 	border-radius: 50%;
-	margin-right: 1.6rem;
+	object-fit: cover;
+`;
+
+const NewIndicator = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 15px;
+	height: 15px;
+	background-color: red;
+	border-radius: 50%;
 `;
 
 const ChatInfo = styled.div`
