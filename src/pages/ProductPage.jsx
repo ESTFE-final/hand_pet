@@ -12,15 +12,27 @@ import ProductButton from '../components/ProductComponents/ProductButton';
 import QuantitySelector from '../components/ProductComponents/QuantitySelector';
 import TotalPrice from '../components/ProductComponents/TotalPrice';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
-
+import RightmenuIcon from '../assets/icons/icon-more-vertical.svg';
 const Container = styled.div`
 	width: 100%;
 	max-width: 768px;
 	margin: 0 auto;
 	padding: 16px;
 `;
+const CustomProfileNavBar = styled(NavigationBar)`
+	background-color: transparent;
+	border: none;
+	padding: 32px;
 
-const ProductPage = () => {
+	.nav-right-button {
+		background: url(${RightmenuIcon}) no-repeat;
+		background-size: contain;
+		width: 48px;
+		height: 48px;
+	}
+`;
+
+const ProductPage = ({ openModal }) => {
 	const { product_id } = useParams();
 	const [product, setProduct] = useState({});
 	const [error, setError] = useState('');
@@ -82,9 +94,21 @@ const ProductPage = () => {
 
 	const totalPrice = product.price * quantity;
 
+	const rightBtnClick = () => {
+		openModal([{ text: '설정 및 개인정보', onClick: () => {} }]);
+	};
+
 	return (
 		<>
-			<NavigationBar />
+			<CustomProfileNavBar
+				rightButton={
+					<button
+						className="nav-right-button"
+						aria-label="더보기 메뉴"
+						onClick={rightBtnClick}
+					/>
+				}
+			/>
 			<Container>
 				<ProductImage src={product.itemImage} alt={product.itemName} />
 				<ProductUser author={product.author} />
