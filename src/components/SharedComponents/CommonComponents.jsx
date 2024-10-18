@@ -149,6 +149,7 @@ export const NavigationBar = ({
 	rightButton,
 	className,
 	leftButton,
+	searchInput,
 }) => {
 	const defaultLeftButton = (
 		<button>
@@ -166,6 +167,7 @@ export const NavigationBar = ({
 				{leftButton || defaultLeftButton}
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
+			{searchInput}
 			{rightButton}
 		</NavBar>
 	);
