@@ -99,7 +99,7 @@ const ChatImage = styled.img`
 const NewIndicator = styled.div`
 	position: absolute;
 	top: 0;
-	right: 0;
+	left: 0;
 	width: 15px;
 	height: 15px;
 	background-color: red;
