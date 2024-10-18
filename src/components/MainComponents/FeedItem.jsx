@@ -5,48 +5,69 @@ import MessageIcon from '../../assets/icons/icon-feed-message.svg';
 import ProfileImg from '../../assets/icons/profile-img.svg';
 
 const FeedWrapper = styled.div`
-  // 스타일 코드 추가
+  width: 100%;
+  max-width: 716px;
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 24px;
 `;
 
 const ProfileSection = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 `;
 
 const ProfileImage = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 8px;
+  margin-right: 12px;
 `;
 
-const ProfileName = styled.span`
-  font-weight: bold;
+const ProfileName = styled.div`
+  font-size: 2rem;
+  color: #555555;
 `;
 
 const PostContent = styled.div`
-  margin: 10px 0;
+  font-size: 1.6rem; /* 글씨 크기 조정 */
+  margin-bottom: 12px;
 `;
 
 const PostImageWrapper = styled.div`
-  // 이미지 래퍼 스타일 추가
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
 `;
 
 const ReactionIcons = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  align-items: center;
 `;
 
 const IconButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const FeedItem = ({ content, postImgSrc, onClick }) => {
@@ -72,13 +93,12 @@ const FeedItem = ({ content, postImgSrc, onClick }) => {
   }, [postImgSrc]);
 
   return (
-    <FeedWrapper onClick={onClick}> {/* 클릭 시 onClick 호출 */}
+    <FeedWrapper onClick={onClick}>
       <ProfileSection>
         <ProfileImage src={ProfileImg} alt="Profile" />
         <ProfileName>애완 간식 수제샵</ProfileName>
       </ProfileSection>
-      {/* 제목 부분 제거 */}
-      {/* <PostContent>{content}</PostContent> */}
+      <PostContent>{content}</PostContent> {/* 콘텐츠 추가 */}
       {imageLoaded && hasImage && (
         <PostImageWrapper>
           <PostImage src={postImgSrc} alt="Post" />
