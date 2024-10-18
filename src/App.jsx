@@ -24,7 +24,9 @@ import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
+import ProductPage from './pages/ProductPage';
 import ChatListPage from './pages/ChatListPage';
+
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(true);
@@ -66,6 +68,7 @@ function AppContent() {
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
+				<Route path="/product/:product_id" element={<ProductPage />} />
 			</Routes>
 		</>
 	);

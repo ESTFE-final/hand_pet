@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import ProductList from '../MainComponents/ProductList';
+import { useNavigate } from 'react-router-dom';
 
-const ProductContainer = styled.section`
-	padding: 2rem;
-	background-color: #f9f9f9;
-	border-radius: 8px;
-`;
-
-const ProductItem = styled.div`
-	margin-bottom: 1.5rem;
-	padding: 1rem;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-`;
-
-const ProductImage = styled.img`
-	width: 80px;
-	height: 80px;
-	border-radius: 8px;
-	object-fit: cover;
-`;
-
-const ProductDetails = styled.div`
-	flex-grow: 1;
-`;
-
-const ProductName = styled.h3`
-	font-size: 1.8rem;
-	margin: 0 0 0.5rem;
-`;
-
-const ProductPrice = styled.p`
-	font-size: 1.4rem;
-	color: #666;
-	margin: 0;
+const Container = styled.div`
+	width: 90%;
+	margin: 52px auto;
 `;
 
 const ErrorMessage = styled.p`
@@ -50,6 +19,7 @@ const ProfileProduct = () => {
 	const [error, setError] = useState('');
 	const token = localStorage.getItem('authToken');
 	const accountname = localStorage.getItem('accountname');
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -79,22 +49,29 @@ const ProfileProduct = () => {
 			setError('계정 정보가 없습니다.');
 		}
 	}, [token, accountname]);
-	return (
-		<ProductContainer aria-label="상품 목록">
-			{error && <ErrorMessage>{error}</ErrorMessage>}
-			{products.length > 0
-				? products.map((product) => (
-						<ProductItem key={product.id}>
-							<ProductImage src={product.itemImage} alt={product.itemName} />
 
-							<ProductDetails>
-								<ProductName>{product.itemName}</ProductName>
-								<ProductPrice>{product.price.toLocaleString()}원</ProductPrice>
-							</ProductDetails>
-						</ProductItem>
-					))
-				: !error && <p>등록된 상품이 없습니다.</p>}
-		</ProductContainer>
+	const handleProductClick = (productId) => {
+		console.log('product 아이디 확인:', productId);
+		navigate(`/product/${productId}`);
+	};
+
+	return (
+		<Container>
+			{error && <ErrorMessage>{error}</ErrorMessage>}
+			{products.length > 0 ? (
+				<ProductList
+					products={products.map((product) => ({
+						id: product.id,
+						img: product.itemImage,
+						name: product.itemName,
+						price: `${product.price.toLocaleString()}원`,
+					}))}
+					onProductClick={handleProductClick}
+				/>
+			) : (
+				!error && <p>등록된 상품이 없습니다.</p>
+			)}
+		</Container>
 	);
 };
 

@@ -20,6 +20,8 @@ const ProductWrapper = styled.div`
 const ProductImage = styled.img`
 	object-fit: cover;
 	margin-bottom: 10px;
+	aspect-ratio: 1;
+	border-radius: 20px;
 `;
 
 const ProductName = styled.p`
@@ -41,11 +43,11 @@ const ShoppingCart = styled.img`
 	cursor: pointer;
 `;
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, onProductClick }) => {
 	return (
 		<ProductContainer>
 			{products.map((product, index) => (
-				<ProductWrapper key={index}>
+				<ProductWrapper key={index} onClick={() => onProductClick(product.id)}>
 					<ProductImage src={product.img} alt={product.name} />
 					<ShoppingCart src={Cart} />
 					<ProductName>{product.name}</ProductName>
