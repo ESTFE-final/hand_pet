@@ -19,7 +19,7 @@ function FollowingListPage() {
 	//  로직 부분
 	useEffect(() => {
 		const token = localStorage.getItem('authToken'); // 실제 토큰으로 교체
-		const accountname = 'Test33'; // 실제 계정 이름으로 교체
+		const accountname = localStorage.getItem('accountname'); // 실제 계정 이름으로 교체
 
 		// 예외처리 필수
 		const fetchFollowing = async () => {
