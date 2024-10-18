@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import notFoundIcon from '../assets/icons/icon-404.svg';
 import Button from '../components/SharedComponents/Button';
@@ -23,11 +24,19 @@ const NotFoundText = styled.span`
 `;
 
 const NotFoundPage = () => {
+	const navigate = useNavigate();
+
+	const handleBack = () => {
+		navigate(-1);
+	};
+
 	return (
 		<NotFoundWrapper>
 			<NotFoundIcon src={notFoundIcon} alt="" />
 			<NotFoundText>페이지를 찾을 수 없습니다. :&#40;</NotFoundText>
-			<Button size="sm">이전 페이지</Button>
+			<Button size="sm" onClick={handleBack}>
+				이전 페이지
+			</Button>
 		</NotFoundWrapper>
 	);
 };

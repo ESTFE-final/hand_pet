@@ -52,7 +52,7 @@ function AppContent() {
 				<Link to="/Follower"> 팔로워 </Link>
 				<Link to="/Following"> 팔로잉 </Link>
 				<Link to="/Chatlist"> 채팅리스트 </Link>
-				<Link to="/404">404</Link>
+				<Link to="/test-404">Test 404</Link>
 			</nav>
 
 			<Routes>
@@ -72,7 +72,7 @@ function AppContent() {
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 				<Route path="/product/:product_id" element={<ProductPage />} />
-				<Route path="/404" element={<NotFoundPage />} />
+				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 		</>
 	);
