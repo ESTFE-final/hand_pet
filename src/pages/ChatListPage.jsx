@@ -9,7 +9,7 @@ import imgFollower02 from '../assets/images/img-follower-02.png';
 const chatData = [
 	{
 		id: 1,
-		username: '코리안핫가이쌩스머씬',
+		username: '오필승코리안',
 		image: imgFollower06,
 		message: '안녕하세요! 감사합니다!!',
 		timestamp: '2023-10-07 11:22',
@@ -17,7 +17,7 @@ const chatData = [
 	},
 	{
 		id: 2,
-		username: '엇나돈데',
+		username: '오오래오래',
 		image: imgFollower05,
 		message: '안녕하세요! 엇 저돈데',
 		timestamp: '2023-10-02 10:05',
@@ -25,7 +25,7 @@ const chatData = [
 	},
 	{
 		id: 3,
-		username: '김덕뱁니다.',
+		username: '대한민쿡쫙짜짜짜짜',
 		image: imgFollower02,
 		message: '형제여...반갑소',
 		timestamp: '2023-10-04 03:10',
