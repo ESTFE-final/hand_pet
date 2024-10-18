@@ -27,6 +27,7 @@ import NewProfilePage from './pages/NewProfilePage';
 import ProductPage from './pages/ProductPage';
 import ChatListPage from './pages/ChatListPage';
 
+import NotFoundPage from './pages/NotFoundPage';
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(true);
@@ -43,14 +44,17 @@ function AppContent() {
 
 	return (
 		<>
-			<Link to="/"> 메인(홈) </Link>
-			<Link to="/login"> 로그인 </Link>
-			<Link to="/signup"> 회원가입 </Link>
-			<Link to="/product/add"> 상품등록 </Link>
-			<Link to="/profile"> 내 프로필 </Link>
-			<Link to="/Follower"> 팔로워 </Link>
-			<Link to="/Following"> 팔로잉 </Link>
-			<Link to="/Chatlist"> 채팅리스트 </Link>
+			<nav>
+				<Link to="/"> 메인(홈) </Link>
+				<Link to="/login"> 로그인 </Link>
+				<Link to="/signup"> 회원가입 </Link>
+				<Link to="/product/add"> 상품등록 </Link>
+				<Link to="/profile"> 내 프로필 </Link>
+				<Link to="/Follower"> 팔로워 </Link>
+				<Link to="/Following"> 팔로잉 </Link>
+				<Link to="/Chatlist"> 채팅리스트 </Link>
+				<Link to="/404">404</Link>
+			</nav>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
@@ -69,6 +73,7 @@ function AppContent() {
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 				<Route path="/product/:product_id" element={<ProductPage />} />
+				<Route path="/404" element={<NotFoundPage />} />
 			</Routes>
 		</>
 	);
