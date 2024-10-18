@@ -38,7 +38,7 @@ const Label = styled.label`
 	margin-bottom: 8px;
 `;
 
-const Input = () => {
+const InputName = () => {
 	return (
 		<InputContainer>
 			<Label>상품명</Label>
@@ -51,4 +51,4 @@ const Input = () => {
 	);
 };
 
-export default Input;
+export default InputName;
