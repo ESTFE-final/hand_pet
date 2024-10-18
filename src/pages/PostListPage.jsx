@@ -53,31 +53,34 @@ const PostListPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      token = localStorage.getItem('authToken'); // 로컬 스토리지에서 토큰 가져오기
-    }
-
+    // 인증 상태와 토큰 확인
     if (!isAuthenticated && !token) {
-      navigate('/login'); // 로그인 페이지로 이동
-    } else if (token) {
-      const getPosts = async () => {
-        const fetchedPosts = await fetchFollowingFeed(token, limit, skip); // 팔로잉 피드 가져오기
-        setPosts(fetchedPosts); // 게시물 상태 업데이트
-
-        // 각 게시물의 accountname을 사용하여 프로필 정보를 가져오기
-        const postsWithProfiles = await Promise.all(
-          fetchedPosts.map(async (post) => {
-            const profile = await fetchProfile(token, post.author.accountname); // 프로필 정보 가져오기
-            return {
-              ...post,
-              authorProfile: profile, // 프로필 정보 추가
-            };
-          })
-        );
-        setPosts(postsWithProfiles); // 업데이트된 게시물 상태 설정
-      };
-      getPosts();
+      const storedToken = localStorage.getItem('authToken'); // 로컬 스토리지에서 토큰 가져오기
+      if (!storedToken) {
+        navigate('/login'); // 로그인 페이지로 이동
+        return; // 더 이상 코드를 실행하지 않음
+      }
+      token = storedToken;
     }
+
+    const getPosts = async () => {
+      const fetchedPosts = await fetchFollowingFeed(token, limit, skip); // 팔로잉 피드 가져오기
+      setPosts(fetchedPosts); // 게시물 상태 업데이트
+
+      // 각 게시물의 accountname을 사용하여 프로필 정보를 가져오기
+      const postsWithProfiles = await Promise.all(
+        fetchedPosts.map(async (post) => {
+          const profile = await fetchProfile(token, post.author.accountname); // 프로필 정보 가져오기
+          return {
+            ...post,
+            authorProfile: profile, // 프로필 정보 추가
+          };
+        })
+      );
+      setPosts(postsWithProfiles); // 업데이트된 게시물 상태 설정
+    };
+
+    getPosts();
   }, [isAuthenticated, token, navigate, limit, skip]); // skip, limit 값이 변경될 때마다 재요청
 
   const loadMorePosts = () => {
