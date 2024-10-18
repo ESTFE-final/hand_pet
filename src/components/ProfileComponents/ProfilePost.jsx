@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 추가
 import styled from 'styled-components';
 import Axios from 'axios';
 import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
@@ -81,6 +82,7 @@ const PostTab = () => {
 	const [posts, setPosts] = useState([]);
 	const accountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
+	const navigate = useNavigate(); // 추가
 
 	useEffect(() => {
 		const fetchPosts = async () => {
@@ -113,6 +115,11 @@ const PostTab = () => {
 
 	const postsWithImages = posts.filter((post) => post.image);
 
+	// 게시글 클릭 시 상세 페이지로 이동
+	const handlePostClick = (postId) => {
+		navigate(`/post/${postId}`); // 게시글 상세 페이지로 이동
+	};
+
 	return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
@@ -144,7 +151,7 @@ const PostTab = () => {
 					{postView === 'list' ? (
 						<PostList>
 							{posts.map((post) => (
-								<li key={post.id} className="post-list-item">
+								<li key={post.id} className="post-list-item" onClick={() => handlePostClick(post.id)}>
 									{post.image && <img src={post.image} alt="" />}
 									<p>{post.content}</p>
 								</li>
@@ -153,7 +160,7 @@ const PostTab = () => {
 					) : (
 						<PostAlbum className="album-post-view">
 							{postsWithImages.map((post) => (
-								<li key={post.id} className="post-album-item">
+								<li key={post.id} className="post-album-item" onClick={() => handlePostClick(post.id)}>
 									<img src={post.image} alt="" />
 								</li>
 							))}
