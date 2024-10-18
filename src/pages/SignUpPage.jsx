@@ -71,7 +71,7 @@ const SignupPage = () => {
 				console.log(response);
 
 				if (response.data.message === '사용 가능한 이메일 입니다.') {
-					navigate('/profile/edit', { state: { email, password } });
+					navigate('/profile/new', { state: { email, password } });
 				}
 			} catch (error) {
 				setServerMessage('이메일 확인 중 오류가 발생했습니다.');
