@@ -9,6 +9,7 @@ const MainFeed = ({ posts, onPostClick }) => { // onPostClick props 추가
           key={post.id} // ID를 키로 사용
           content={post.content} 
           postImgSrc={post.image} 
+          author={post.authorProfile} // authorProfile을 전달
           onClick={() => onPostClick(post.id)} // 클릭 핸들러 추가
         />
       ))}

@@ -70,7 +70,7 @@ const IconButton = styled.button`
   }
 `;
 
-const FeedItem = ({ content, postImgSrc, onClick }) => {
+const FeedItem = ({ content, postImgSrc, author, onClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hasImage, setHasImage] = useState(false);
 
@@ -95,8 +95,8 @@ const FeedItem = ({ content, postImgSrc, onClick }) => {
   return (
     <FeedWrapper onClick={onClick}>
       <ProfileSection>
-        <ProfileImage src={ProfileImg} alt="Profile" />
-        <ProfileName>애완 간식 수제샵</ProfileName>
+        <ProfileImage src={author.image || ProfileImg} alt="Profile" /> {/* author의 이미지 사용 */}
+        <ProfileName>{author.accountname}</ProfileName> {/* author의 accountname 표시 */}
       </ProfileSection>
       <PostContent>{content}</PostContent> {/* 콘텐츠 추가 */}
       {imageLoaded && hasImage && (

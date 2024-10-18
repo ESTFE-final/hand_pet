@@ -41,7 +41,14 @@ const PostDetailPage = () => {
 
   return (
     <div>
-      <FeedItem content={post.content} postImgSrc={post.image} postId={post.id} />
+      {post && (
+        <FeedItem 
+          content={post.content} 
+          postImgSrc={post.image} 
+          author={post.author} // author prop 전달
+          postId={post.id} 
+        />
+      )}
     </div>
   );
 };
