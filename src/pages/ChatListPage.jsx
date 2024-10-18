@@ -12,7 +12,7 @@ const chatData = [
 		username: '코리안핫가이쌩스머씬',
 		image: imgFollower06,
 		message: '안녕하세요! 감사합니다!!',
-		timestamp: '2023-10-01 10:00',
+		timestamp: '2023-10-07 11:22',
 		isNew: true,
 	},
 	{
@@ -20,7 +20,7 @@ const chatData = [
 		username: '엇나돈데',
 		image: imgFollower05,
 		message: '안녕하세요! 엇 저돈데',
-		timestamp: '2023-10-01 10:05',
+		timestamp: '2023-10-02 10:05',
 		isNew: false,
 	},
 	{
@@ -28,7 +28,7 @@ const chatData = [
 		username: '김덕뱁니다.',
 		image: imgFollower02,
 		message: '형제여...반갑소',
-		timestamp: '2023-10-01 10:10',
+		timestamp: '2023-10-04 03:10',
 		isNew: false,
 	},
 ];
