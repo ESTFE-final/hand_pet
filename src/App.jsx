@@ -26,7 +26,6 @@ import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
 import ProductPage from './pages/ProductPage';
 import ChatListPage from './pages/ChatListPage';
-
 import NotFoundPage from './pages/NotFoundPage';
 
 function AppContent() {
@@ -53,7 +52,6 @@ function AppContent() {
 				<Link to="/Follower"> 팔로워 </Link>
 				<Link to="/Following"> 팔로잉 </Link>
 				<Link to="/Chatlist"> 채팅리스트 </Link>
-				<Link to="/404">404</Link>
 			</nav>
 
 			<Routes>
