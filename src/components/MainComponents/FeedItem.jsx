@@ -64,13 +64,14 @@ const IconButton = styled.button`
 	margin-right: 12px;
 	display: flex;
 	align-items: center;
+
 	img {
 		width: 24px;
 		height: 24px;
 	}
 `;
 
-const FeedItem = ({ content, postImgSrc }) => {
+const FeedItem = ({ content, postImgSrc, postId }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
 
@@ -99,7 +100,7 @@ const FeedItem = ({ content, postImgSrc }) => {
 	};
 
 	return (
-		<Link to="/post/1">
+		<Link to={`/post/${postId}`}>
 			<FeedWrapper>
 				<ProfileSection>
 					<ProfileImage src={ProfileImg} alt="Profile" />
