@@ -62,11 +62,22 @@ const TabNaviIcon = styled.img`
 const tabs = [
 	{ path: '/', label: '홈', icon: iconMain },
 	{ path: '/About', label: '채팅', icon: iconAbout },
-	{ path: '/Contact', label: '게시물 작성', icon: iconContact },
+	{ path: '/post/upload', label: '게시물 작성', icon: iconContact },
 	{ path: '/Profile', label: '프로필', icon: iconProfile },
 ];
 
 function TabNaviComponent() {
+	return (
+		<TabNavi>
+			{tabs.map((tab, index) => (
+				<Link key={index} to={tab.path}>
+					<TabNaviButton>
+						<TabNaviIcon src={tab.icon} alt={`${tab.label} icon`} /> {tab.label}
+					</TabNaviButton>
+				</Link>
+			))}
+		</TabNavi>
+	);
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (

@@ -1,4 +1,5 @@
 import './App.css';
+import React, { useState } from 'react';
 import {
 	BrowserRouter,
 	Routes,
@@ -6,7 +7,9 @@ import {
 	Link,
 	Navigate,
 	useLocation,
+	useNavigate,
 } from 'react-router-dom';
+import SplashScreenPage from './pages/SplashScreenPage';
 import MainPage from './pages/MainPage';
 import LoginEmailPage from './pages/LoginEmailPage';
 import SignUpPage from './pages/SignUpPage';
@@ -23,7 +26,19 @@ import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
 import ChatListPage from './pages/ChatListPage';
 
-function App() {
+function AppContent() {
+	const [showSplash, setShowSplash] = useState(true);
+	const navigate = useNavigate();
+
+	const handleSplashFinish = () => {
+		setShowSplash(false);
+		navigate('/');
+	};
+
+	if (showSplash) {
+		return <SplashScreenPage onFinish={handleSplashFinish} />;
+	}
+
 	return (
 		<BrowserRouter>
 			<Link to="/"> 메인(홈) </Link>
@@ -52,6 +67,14 @@ function App() {
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 			</Routes>
+		</>
+	);
+}
+
+function App() {
+	return (
+		<BrowserRouter>
+			<AppContent />
 		</BrowserRouter>
 	);
 }
