@@ -41,7 +41,7 @@ const ChatListPage = () => {
 				<h1 className="sr-only">채팅 리스트 페이지입니다</h1>
 				<ChatListContent>
 					{chatData.map((chat) => (
-						<ChatListItem key={chat.id}>
+						<ChatListItem key={chat.id} tabIndex="0">
 							<ChatImageContainer>
 								<ChatImage
 									src={chat.image}
@@ -77,8 +77,15 @@ const ChatListItem = styled.li`
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	cursor: pointer; /* Add pointer cursor */
 	& + & {
 		margin-top: 1.4rem;
+	}
+	&:focus {
+		background-color: #f0f0f0; /* Light gray background on focus */
+	}
+	&:hover {
+		background-color: #f0f0f0; /* Light gray background on focus */
 	}
 `;
 
@@ -87,6 +94,7 @@ const ChatImageContainer = styled.div`
 	width: 70px;
 	height: 70px;
 	margin-right: 3rem; /* Add margin to the right */
+	cursor: pointer; /* Add pointer cursor */
 `;
 
 const ChatImage = styled.img`
