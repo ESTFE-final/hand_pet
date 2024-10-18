@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
 import ProfileImg from '../../assets/icons/profile-img.svg';
+import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
 
 const FeedWrapper = styled.div`
   width: 100%;
@@ -13,6 +14,7 @@ const FeedWrapper = styled.div`
   border: 1px solid #dbdbdb;
   border-radius: 8px;
   margin-bottom: 24px;
+  position: relative; /* position 속성 추가 */
 `;
 
 const ProfileSection = styled.div`
@@ -70,6 +72,19 @@ const IconButton = styled.button`
   }
 `;
 
+const NavRightButton = styled.button`
+  background: url(${RightmenuIcon}) no-repeat;
+  background-size: contain;
+  width: 48px;
+  height: 48px;
+  position: absolute; /* 절대 위치 설정 */
+  top: 16px; /* 상단 위치 조정 */
+  right: 16px; /* 오른쪽 위치 조정 */
+  border: none; /* 버튼 기본 스타일 제거 */
+  cursor: pointer; /* 커서 모양 변경 */
+  filter: brightness(0) invert(0);
+`;
+
 const FeedItem = ({ content, postImgSrc, author, onClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hasImage, setHasImage] = useState(false);
@@ -94,6 +109,9 @@ const FeedItem = ({ content, postImgSrc, author, onClick }) => {
 
   return (
     <FeedWrapper onClick={onClick}>
+      <NavRightButton onClick={(e) => { e.stopPropagation(); /* 클릭 이벤트 전파 방지 */ }}>
+        {/* 우측 버튼 클릭 시 이벤트 추가 가능 */}
+      </NavRightButton>
       <ProfileSection>
         <ProfileImage src={author.image || ProfileImg} alt="Profile" />
         <ProfileName>{author.accountname || 'Unknown User'}</ProfileName> {/* 기본값 추가 */}
