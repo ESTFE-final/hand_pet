@@ -25,6 +25,25 @@ const fetchFollowingFeed = async (token, limit, skip) => {
   }
 };
 
+// 프로필 정보를 가져오는 함수
+const fetchProfile = async (token, accountname) => {
+  try {
+    const response = await axios.get(
+      `https://estapi.mandarin.weniv.co.kr/profile/${accountname}`, // accountname을 포함한 URL
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data.profile; // 가져온 프로필 반환
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return null; // 오류 발생 시 null 반환
+  }
+};
+
 const PostListPage = () => {
   const [posts, setPosts] = useState([]); // 게시물 상태
   const [limit] = useState(10); // 한 번에 가져올 게시물 수
@@ -44,6 +63,18 @@ const PostListPage = () => {
       const getPosts = async () => {
         const fetchedPosts = await fetchFollowingFeed(token, limit, skip); // 팔로잉 피드 가져오기
         setPosts(fetchedPosts); // 게시물 상태 업데이트
+
+        // 각 게시물의 accountname을 사용하여 프로필 정보를 가져오기
+        const postsWithProfiles = await Promise.all(
+          fetchedPosts.map(async (post) => {
+            const profile = await fetchProfile(token, post.author.accountname); // 프로필 정보 가져오기
+            return {
+              ...post,
+              authorProfile: profile, // 프로필 정보 추가
+            };
+          })
+        );
+        setPosts(postsWithProfiles); // 업데이트된 게시물 상태 설정
       };
       getPosts();
     }
