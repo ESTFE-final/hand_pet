@@ -85,7 +85,7 @@ const FeedItem = ({ content, postImgSrc, author, onClick }) => {
         setHasImage(false);
         setImageLoaded(true);
       };
-      img.src = postImgSrc; // postImgSrc에 대한 유효성 검사
+      img.src = postImgSrc;
     } else {
       setHasImage(false);
       setImageLoaded(true);
@@ -95,10 +95,10 @@ const FeedItem = ({ content, postImgSrc, author, onClick }) => {
   return (
     <FeedWrapper onClick={onClick}>
       <ProfileSection>
-        <ProfileImage src={author.image || ProfileImg} alt="Profile" /> {/* author의 이미지 사용 */}
-        <ProfileName>{author.accountname}</ProfileName> {/* author의 accountname 표시 */}
+        <ProfileImage src={author.image || ProfileImg} alt="Profile" />
+        <ProfileName>{author.accountname || 'Unknown User'}</ProfileName> {/* 기본값 추가 */}
       </ProfileSection>
-      <PostContent>{content}</PostContent> {/* 콘텐츠 추가 */}
+      <PostContent>{content}</PostContent>
       {imageLoaded && hasImage && (
         <PostImageWrapper>
           <PostImage src={postImgSrc} alt="Post" />
