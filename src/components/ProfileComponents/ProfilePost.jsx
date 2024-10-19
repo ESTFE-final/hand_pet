@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 추가
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Axios from 'axios';
+import Button from '../SharedComponents/Button';
 import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
@@ -78,49 +79,72 @@ const PostAlbum = styled.ul`
 `;
 
 const PostTab = () => {
-	const [postView, setPostView] = useState('list');
-	const [posts, setPosts] = useState([]);
-	const accountname = localStorage.getItem('accountname');
-	const token = localStorage.getItem('authToken');
-	const navigate = useNavigate(); // 추가
+  const [postView, setPostView] = useState('list');
+  const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const accountname = localStorage.getItem('accountname');
+  const token = localStorage.getItem('authToken');
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		const fetchPosts = async () => {
-			console.log('Token:', token);
-			console.log('Account Name:', accountname);
+  const fetchPosts = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    try {
+      const response = await Axios.get(
+        `https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-type': 'application/json',
+          },
+        }
+      );
 
-			try {
-				const response = await Axios.get(`https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'Content-type': 'application/json',
-					},
-				});
+      if (Array.isArray(response.data.post)) {
+        const newPosts = response.data.post;
+        
+        setPosts((prevPosts) => {
+          const uniquePosts = newPosts.filter(
+            (newPost) => !prevPosts.some((existingPost) => existingPost.id === newPost.id)
+          );
+          return [...prevPosts, ...uniquePosts];
+        });
+        
+        if (newPosts.length < limit) {
+          setHasMore(false);
+        }
+      } else {
+        console.warn('Unexpected data structure:', response.data);
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error.response?.data || error.message);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [accountname, token, page, limit]);
 
-				console.log('Response Data:', response.data); // 응답 데이터 확인
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
-				// 응답 데이터 구조 확인 및 게시물 배열 설정
-				if (Array.isArray(response.data.post)) {
-					setPosts(response.data.post); // post 키 아래의 배열로 설정
-				} else {
-					console.warn('Unexpected data structure:', response.data);
-				}
-			} catch (error) {
-				console.error('Error fetching posts:', error.response?.data || error.message);
-			}
-		};
+  const postsWithImages = posts.filter((post) => post.image);
 
-		fetchPosts();
-	}, [accountname, token]);
+  const handlePostClick = (postId) => {
+    navigate(`/post/${postId}`);
+  };
 
-	const postsWithImages = posts.filter((post) => post.image);
+  const loadMore = () => {
+    if (hasMore && !isLoading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
 
-	// 게시글 클릭 시 상세 페이지로 이동
-	const handlePostClick = (postId) => {
-		navigate(`/post/${postId}`); // 게시글 상세 페이지로 이동
-	};
-
-	return (
+  return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
 				<>
@@ -151,7 +175,11 @@ const PostTab = () => {
 					{postView === 'list' ? (
 						<PostList>
 							{posts.map((post) => (
-								<li key={post.id} className="post-list-item" onClick={() => handlePostClick(post.id)}>
+								<li
+									key={post.id}
+									className="post-list-item"
+									onClick={() => handlePostClick(post.id)}
+								>
 									{post.image && <img src={post.image} alt="" />}
 									<p>{post.content}</p>
 								</li>
@@ -160,11 +188,21 @@ const PostTab = () => {
 					) : (
 						<PostAlbum className="album-post-view">
 							{postsWithImages.map((post) => (
-								<li key={post.id} className="post-album-item" onClick={() => handlePostClick(post.id)}>
+								<li
+									key={post.id}
+									className="post-album-item"
+									onClick={() => handlePostClick(post.id)}
+								>
 									<img src={post.image} alt="" />
 								</li>
 							))}
 						</PostAlbum>
+					)}
+
+					{hasMore && (
+						<Button size="more" onClick={loadMore} disabled={isLoading}>
+							{isLoading ? '로딩 중...' : '더보기'}
+						</Button>
 					)}
 				</>
 			) : (
