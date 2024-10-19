@@ -5,8 +5,6 @@ import {
 	Routes,
 	Route,
 	Link,
-	Navigate,
-	useLocation,
 	useNavigate,
 } from 'react-router-dom';
 import SplashScreenPage from './pages/SplashScreenPage';
@@ -23,6 +21,7 @@ import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
+import Postsu from './pages/Postsu';
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(true);
@@ -61,6 +60,7 @@ function AppContent() {
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
+				<Route path="/postsu/:post_id" element={<Postsu />} />
 			</Routes>
 		</>
 	);

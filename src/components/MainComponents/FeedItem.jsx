@@ -190,6 +190,14 @@ const FeedItem = ({ content, postImgSrc, author, postId, onClick }) => {
     }
   };
 
+  const handleEditPost = () => {
+    if (isAuthor) {
+      navigate(`/postsu/${postId}`); // postsu 페이지로 이동
+    } else {
+      alert('자신의 게시글만 수정할 수 있습니다.');
+    }
+  };
+
   const handleRightBtnClick = (e) => {
     e.stopPropagation(); // 클릭 이벤트 전파 방지
     setShowModal(true);
@@ -208,7 +216,7 @@ const FeedItem = ({ content, postImgSrc, author, postId, onClick }) => {
       {showModal && (
         <ModalBackground onClick={handleCloseModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
-            <ModalButton onClick={() => console.log('게시글 수정')}>게시글 수정</ModalButton>
+            <ModalButton onClick={handleEditPost}>게시글 수정</ModalButton>
             <ModalButton onClick={handleDeletePost}>게시글 삭제</ModalButton>
             <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
           </ModalContent>
