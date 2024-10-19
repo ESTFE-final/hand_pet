@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // useParams 추가
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Axios from 'axios';
 import Button from '../SharedComponents/Button';
@@ -82,12 +82,15 @@ const PostTab = () => {
 	const [postView, setPostView] = useState('list');
 	const [posts, setPosts] = useState([]);
 	const [page, setPage] = useState(1);
-	const [limit] = useState(6);
+	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const { accountname } = useParams(); // URL에서 accountname을 가져옴
+	const { accountname: paramAccountname } = useParams(); // URL에서 accountname을 가져옴
+	const localAccountname = localStorage.getItem('accountname'); // 로컬 스토리지에서 accountname 가져오기
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
+
+	const accountname = paramAccountname || localAccountname;
 
 	const fetchPosts = useCallback(async () => {
 		if (isLoading || !hasMore) return;
@@ -105,6 +108,7 @@ const PostTab = () => {
 
 			if (Array.isArray(response.data.post)) {
 				const newPosts = response.data.post;
+
 				setPosts((prevPosts) => {
 					const uniquePosts = newPosts.filter(
 						(newPost) =>
@@ -132,11 +136,8 @@ const PostTab = () => {
 	}, [accountname, token, page, limit]);
 
 	useEffect(() => {
-		setPosts([]); // 새로운 accountname으로 바뀔 때마다 게시글을 초기화
-		setPage(1);
-		setHasMore(true);
 		fetchPosts();
-	}, [accountname, fetchPosts]);
+	}, [fetchPosts]);
 
 	const postsWithImages = posts.filter((post) => post.image);
 

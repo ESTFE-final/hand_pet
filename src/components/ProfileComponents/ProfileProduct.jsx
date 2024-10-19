@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import ProductList from '../MainComponents/ProductList';
-import { useNavigate, useParams } from 'react-router-dom'; // useParams 추가
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../SharedComponents/Button';
 
 const Container = styled.div`
@@ -22,9 +22,13 @@ const ProfileProduct = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
-	const { accountname } = useParams(); // URL에서 accountname을 가져옴
+	const { accountname: paramAccountname } = useParams(); // URL에서 accountname을 가져옴
 	const token = localStorage.getItem('authToken');
+	const localAccountname = localStorage.getItem('accountname'); // 로컬 스토리지에서 accountname 가져오기
 	const navigate = useNavigate();
+
+	// accountname 선택 (URL에서 가져오거나 로컬 스토리지에서 가져옴)
+	const accountname = paramAccountname || localAccountname;
 
 	const fetchProducts = useCallback(async () => {
 		if (!accountname) {

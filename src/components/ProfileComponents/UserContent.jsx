@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProductTab from './ProfileProduct';
+import ProfileProduct from './ProfileProduct';
 import PostTab from './ProfilePost';
 
 const ProfileUserContent = styled.article`
@@ -60,7 +60,7 @@ const UserContent = ({ accountname }) => {
 
 			<ContentArea>
 				{activeTab === 'product' ? (
-					<ProductTab accountname={accountname} />
+					<ProfileProduct accountname={accountname} />
 				) : (
 					<PostTab accountname={accountname} />
 				)}
