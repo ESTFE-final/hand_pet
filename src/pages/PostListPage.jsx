@@ -19,10 +19,12 @@ const fetchFollowingFeed = async (token, limit, skip) => {
 				},
 			}
 		);
-		return response.data.posts;
+
+		return response.data.posts; // 가져온 게시물 반환
 	} catch (error) {
 		console.error('Error fetching following feed:', error);
-		return [];
+		return []; // 오류 발생 시 빈 배열 반환
+
 	}
 };
 
@@ -46,6 +48,7 @@ const fetchProfile = async (token, accountname) => {
 };
 
 const PostListPage = () => {
+
 	const [posts, setPosts] = useState([]);
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [page, setPage] = useState(1);
@@ -102,19 +105,72 @@ const PostListPage = () => {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
+  	// 좋아요 데이터 가져오기
+	const handleLike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await axios.post(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/heart`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, true, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 오류:', error);
+		}
+	};
+
+	// 좋아요 취소
+	const handleUnLike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await axios.delete(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/unheart`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, false, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 취소 오류:', error);
+		}
+	};
+
+	const updateLike = (postId, isLiked, newHeartCount) => {
+		setPosts((prevPosts) =>
+			prevPosts.map((post) =>
+				post.id == postId
+					? { ...post, hearted: isLiked, heartCount: newHeartCount }
+					: post
+			)
+		);
+	};
 
 	return (
 		<>
 			<NavigationBar title={'핸드펫 피드'} />
 			{posts.length > 0 ? (
 				<>
-					<MainFeed posts={posts} onPostClick={handlePostClick} />
-					{/* 더보기 버튼은 hasMore가 true일 때만 렌더링 */}
+
+					<MainFeed 
+          posts={posts} 
+          onPostClick={handlePostClick} />
+					onLike={handleLike}
+				  onUnLike={handleUnLike}
 					{hasMore && (
 						<Button size="more" onClick={loadMore} disabled={isLoading}>
 							{isLoading ? '로딩 중...' : '더보기'}
 						</Button>
 					)}
+
 				</>
 			) : (
 				<MainEmptyFeed />
