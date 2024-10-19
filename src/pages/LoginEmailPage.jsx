@@ -56,8 +56,10 @@ const LoginEmailPage = () => {
 			localStorage.setItem('authToken', token);
 			localStorage.setItem('accountname', accountname);
 
-
 			dispatch(login(token));
+			// 특정 이벤트 핸들러나 라이프사이클 메서드 내에서 호출될 수 있습니다.
+			// 예를 들어, 로그인 버튼을 클릭했을 때 이 코드가 실행되어 사용자를 홈 페이지로 리디렉션할 수 있습니다.
+			window.location.href = '/';
 		} catch (error) {
 			console.error('로그인 실패:', error);
 		} finally {

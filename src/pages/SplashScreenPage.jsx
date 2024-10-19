@@ -39,6 +39,7 @@ const SplashScreenPage = ({ onFinish = () => {} }) => {
 			clearTimeout(finishTimer);
 		};
 	}, [onFinish, navigate]);
+	//onFinish에  navigate를 추가하여 스플래시 페이지가 표시 된 후 시간 지난 후 페이지 이동
 
 	return (
 		<SplashScreenWrapper>
