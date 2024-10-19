@@ -13,7 +13,7 @@ import QuantitySelector from '../components/ProductComponents/QuantitySelector';
 import TotalPrice from '../components/ProductComponents/TotalPrice';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import { PostModal } from '../components/SharedComponents/CommonComponents';
-import RightmenuIcon from '../assets/icons/icon-more-vertical.svg';
+import RightmenuIcon from '../assets/icons/icon-vertical-color.svg';
 
 const Container = styled.div`
 	width: 100%;
@@ -41,8 +41,8 @@ const ProductPage = () => {
 	const [error, setError] = useState('');
 	const [quantity, setQuantity] = useState(1);
 	const token = localStorage.getItem('authToken');
-	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
-	const [modalOptions, setModalOptions] = useState([]); // 모달 옵션 설정
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalOptions, setModalOptions] = useState([]);
 
 	useEffect(() => {
 		const fetchProductDetail = async () => {
@@ -99,13 +99,11 @@ const ProductPage = () => {
 
 	const totalPrice = product.price * quantity;
 
-	// 모달 열기 함수
 	const openModal = (options) => {
 		setModalOptions(options);
 		setIsModalOpen(true);
 	};
 
-	// 모달 닫기 함수
 	const closeModal = () => {
 		setIsModalOpen(false);
 	};

@@ -1,12 +1,10 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	BrowserRouter,
 	Routes,
 	Route,
 	Link,
-	Navigate,
-	useLocation,
 	useNavigate,
 } from 'react-router-dom';
 import SplashScreenPage from './pages/SplashScreenPage';
@@ -26,8 +24,16 @@ import NewProfilePage from './pages/NewProfilePage';
 import ProductPage from './pages/ProductPage';
 
 function AppContent() {
-	const [showSplash, setShowSplash] = useState(true);
+	const [showSplash, setShowSplash] = useState(
+		() => !localStorage.getItem('splashShown')
+	);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!showSplash) {
+			localStorage.setItem('splashShown', 'true');
+		}
+	}, [showSplash]);
 
 	const handleSplashFinish = () => {
 		setShowSplash(false);
