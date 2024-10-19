@@ -245,7 +245,7 @@ const PostDetailPage = () => {
 					}
 				}}
 			>
-				⋮ {/* 점 3개 */}
+				{/* ⋮ 점 3개 */}
 			</MenuButton>
 			<CommentScroll>
 				{post && (
