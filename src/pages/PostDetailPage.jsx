@@ -3,6 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FeedItem from '../components/MainComponents/FeedItem'; // FeedItem import
 import styled from 'styled-components';
+import FeedDetail from '../components/MainComponents/FeedDetail';
+import CommentForm from '../components/MainComponents/CommentForm';
+
+const PostDetailWrapper = styled.section`
+	height: 100vh;
+	position: relative;
+`;
 
 const MenuButton = styled.button`
 	background: none;
@@ -115,7 +122,7 @@ const PostDetailPage = () => {
 	if (error) return <div>{error}</div>; // 오류 메시지 표시
 
 	return (
-		<div>
+		<PostDetailWrapper>
 			<MenuButton
 				onClick={(e) => {
 					e.stopPropagation(); // 클릭 이벤트 전파 방지
@@ -141,7 +148,9 @@ const PostDetailPage = () => {
 					onUnlike={handleUnLike}
 				/>
 			)}
-		</div>
+			<FeedDetail />
+			<CommentForm />
+		</PostDetailWrapper>
 	);
 };
 
