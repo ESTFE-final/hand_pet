@@ -22,11 +22,11 @@ import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
+import Postsu from './pages/Postsu';
 import ProductPage from './pages/ProductPage';
 import ProductEditPage from './pages/ProductEditPage';
 import ChatListPage from './pages/ChatListPage';
 import NotFoundPage from './pages/NotFoundPage';
-
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(
@@ -81,6 +81,7 @@ function AppContent() {
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
+				<Route path="/postsu/:post_id" element={<Postsu />} />
 				<Route path="/product/:product_id" element={<ProductPage />} />
 				<Route path="/product/edit/:product_id" element={<ProductEditPage />} />
         <Route path="*" element={<NotFoundPage />} />
