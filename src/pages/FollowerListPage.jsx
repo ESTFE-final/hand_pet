@@ -61,7 +61,7 @@ function FollowerListPage() {
 			<ErrorMessage>
 				{error}
 				<Link to="/login">
-					<Button size="lg" type="button">
+					<Button size="sm" type="button">
 						로그인 페이지
 					</Button>
 				</Link>
