@@ -5,7 +5,6 @@ import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
-// 선언부 구조분해 할당
 function FollowerListPage() {
 	const [followers, setFollowers] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -16,14 +15,19 @@ function FollowerListPage() {
 		/\.(png|jpe?g|svg)$/
 	);
 
-	//  로직 부분
 	useEffect(() => {
-		const token = localStorage.getItem('authToken'); // 실제 토큰으로 교체
-		const accountname = localStorage.getItem('accountname'); // 실제 계정 이름으로 교체
+		const token = localStorage.getItem('authToken');
+		const accountname = localStorage.getItem('accountname');
 
-		// 예외처리 필수
+		// 부정  토큰 아니면
+		if (!token) {
+			setError('로그인 해주세요');
+			setLoading(false);
+			return;
+		}
+
 		const fetchFollowers = async () => {
-			setLoading(true); // API 호출 시작 시 로딩 상태 설정
+			setLoading(true);
 			try {
 				const response = await axios.get(
 					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
@@ -34,29 +38,37 @@ function FollowerListPage() {
 						},
 					}
 				);
-				console.log(response.data);
 				setFollowers(response.data);
+				console.log(response.data);
 			} catch (err) {
 				setError(err.response?.data?.message || err.message);
-				consolog.error(err);
+				console.error(err);
 			} finally {
-				setLoading(false); // API 호출 완료 시 로딩 상태 해제
+				setLoading(false);
 			}
 		};
 
 		fetchFollowers();
+		console.log(fetchFollowers);
 	}, []);
 
-	//아하.. 이게 에러처리  throw    try catch finally 안쓰고 하는 경우군
 	if (loading) {
 		return <div>Loading...</div>;
 	}
 
 	if (error) {
-		return <div>Error: {error}</div>;
+		return (
+			<ErrorMessage>
+				{error}
+				<Link to="/login">
+					<Button size="lg" type="button">
+						로그인 페이지
+					</Button>
+				</Link>
+			</ErrorMessage>
+		);
 	}
 
-	// 렌더링 부분
 	return (
 		<>
 			<NavigationBar title="팔로워" />
@@ -132,6 +144,16 @@ const FollowerShopName = styled.p`
 const FollowerShopDesc = styled.p`
 	color: var(--gray-300);
 	font-size: 1.8rem;
+`;
+
+const ErrorMessage = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	font-size: 4rem;
+	font-weight: bold;
 `;
 
 export default FollowerListPage;
