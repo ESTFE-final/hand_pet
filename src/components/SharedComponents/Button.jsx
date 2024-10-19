@@ -44,12 +44,21 @@ const SIZES = {
 			--button-radius: 4.4rem;
 		}
 	`,
+	more: css`
+		--button-font-size: 2.4rem;
+		--button-max-width: 100%;
+		--button-padding: 3rem 0;
+		--button-radius: 0;
+		--button-bg-color: var(--graylight-100);
+		--button-color: var(--black);
+		margin-top: 3rem;
+	`,
 };
 
 const StyledButton = styled.button`
 	${(p) => p.sizeStyle}
 
-	display: inline-flex;
+	display: ${(p) => (p.size === 'more' ? 'block' : 'inline-flex')};
 	align-items: center;
 	justify-content: center;
 	border-color: var(--button-border-color, transparent);
@@ -62,6 +71,7 @@ const StyledButton = styled.button`
 	width: 100%;
 	max-width: var(--button-max-width);
 	padding: var(--button-padding);
+	cursor: pointer;
 
 	&:active {
 		background: var(--button-bg-color, #fff);
@@ -71,12 +81,17 @@ const StyledButton = styled.button`
 
 	&:disabled {
 		cursor: default;
-		color: #fff;
-		background: var(--button-bg-color, #d1d1d1);
+		opacity: 0.7;
+		${(p) =>
+			p.size === 'more' &&
+			css`
+				color: var(--button-color, var(--black));
+				background: var(--button-bg-color, var(--graylight-100));
+			`}
 	}
 
 	@media (max-width: 600px) {
-		font-size: 1.4rem;
+		font-size: ${(p) => (p.size === 'more' ? '2.4rem' : '1.4rem')};
 	}
 `;
 
@@ -84,7 +99,12 @@ function Button({ disabled, size, children, onClick }) {
 	const sizeStyle = SIZES[size];
 
 	return (
-		<StyledButton disabled={disabled} sizeStyle={sizeStyle} onClick={onClick}>
+		<StyledButton
+			disabled={disabled}
+			sizeStyle={sizeStyle}
+			size={size}
+			onClick={onClick}
+		>
 			{children}
 		</StyledButton>
 	);
