@@ -44,12 +44,19 @@ const EmptyState = styled.p`
 
 const PostList = styled.ul`
 	.post-list-item {
-		padding: 0 21px;
+		width: 97%;
+		padding: 16px;
+		border: 1px solid #dbdbdb;
+  		border-radius: 8px;
+		margin: 0 auto;
+		margin-bottom: 24px;
+		
 
 		img {
 			width: 100%;
 			height: 544px;
 			object-fit: cover;
+			margin-bottom: 10px;
 		}
 
 		p {
