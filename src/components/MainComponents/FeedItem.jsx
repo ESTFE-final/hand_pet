@@ -14,8 +14,8 @@ const FeedWrapper = styled.div`
   margin: 0 auto;
   padding: 16px;
   background-color: #fff;
-  /* border: 1px solid #dbdbdb; */
-  /* border-radius: 8px; */
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
   margin-bottom: 24px;
   position: relative;
 `;
