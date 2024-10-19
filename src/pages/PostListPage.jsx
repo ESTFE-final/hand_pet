@@ -161,10 +161,11 @@ const PostListPage = () => {
 				<>
 
 					<MainFeed 
-          posts={posts} 
-          onPostClick={handlePostClick} />
-					onLike={handleLike}
-				  onUnLike={handleUnLike}
+          	posts={posts}
+		  	onPostClick={handlePostClick}
+		  	onLike={handleLike}
+		  	onUnLike={handleUnLike}
+			  />{' '}
 					{hasMore && (
 						<Button size="more" onClick={loadMore} disabled={isLoading}>
 							{isLoading ? '로딩 중...' : '더보기'}
