@@ -151,6 +151,7 @@ export const NavigationBar = ({
 	rightButton = null,
 	className = '',
 	leftButton = null,
+	searchInput,
 }) => {
 	const navigate = useNavigate();
 
@@ -170,6 +171,7 @@ export const NavigationBar = ({
 				{leftButton || defaultLeftButton}
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
+			{searchInput}
 			{rightButton}
 		</NavBar>
 	);
@@ -194,6 +196,7 @@ export const AlertModal = ({
 	alertText,
 	modalClose,
 	buttonText,
+	buttonAction, // 버튼 액션을 props로 전달
 }) => {
 	const dialogRef = useRef();
 
@@ -213,7 +216,15 @@ export const AlertModal = ({
 					<AlertButtonLeft type="button" onClick={modalClose}>
 						취소
 					</AlertButtonLeft>
-					<AlertButtonRight type="button">{buttonText}</AlertButtonRight>
+					<AlertButtonRight
+						type="button"
+						onClick={() => {
+							buttonAction(); // 버튼 액션 호출
+							modalClose(); // 모달 닫기
+						}}
+					>
+						{buttonText}
+					</AlertButtonRight>
 				</div>
 			</ModalWrap>
 		</AlertModalContainer>
