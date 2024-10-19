@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Product1 from '../../assets/images/img-main-category(1).png';
-import Product2 from '../../assets/images/img-main-category(2).png';
 import ProductList from './ProductList';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: 90%;
@@ -34,15 +34,11 @@ const Button = styled.button`
 `;
 
 const MainProductList = () => {
+	const [products, setProducts] = useState([]);
+	const token = localStorage.getItem('authToken');
+	const accountname = localStorage.getItem('accountname');
 	const [selected, setSelected] = useState('인기순');
-	const products = [
-		{ img: Product1, name: '고구마 야채 연어 사료 200g', price: '35,000원' },
-		{ img: Product2, name: '필드게인 양고기 1kg/3kg/5kg', price: '35,000원' },
-		{ img: Product1, name: '고구마 야채 연어 사료 200g', price: '35,000원' },
-		{ img: Product2, name: '필드게인 양고기 1kg/3kg/5kg', price: '35,000원' },
-		{ img: Product1, name: '고구마 야채 연어 사료 200g', price: '35,000원' },
-		{ img: Product2, name: '필드게인 양고기 1kg/3kg/5kg', price: '35,000원' },
-	];
+	const navigate = useNavigate();
 
 	const options = [
 		'인기순',
@@ -51,6 +47,37 @@ const MainProductList = () => {
 		'낮은 가격순',
 		'높은 가격순',
 	];
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			try {
+				const response = await axios.get(
+					`https://estapi.mandarin.weniv.co.kr/product/${accountname}`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'application/json',
+						},
+					}
+				);
+
+				console.log('Fetched products:', response.data.product);
+
+				setProducts(response.data.product);
+			} catch (error) {
+				console.error('Error fetching products:', error);
+			}
+		};
+
+		if (accountname) {
+			fetchProducts();
+		}
+	}, [token, accountname]);
+
+	const handleProductClick = (productId) => {
+		console.log('product 아이디 확인:', productId);
+		navigate(`/product/${productId}`);
+	};
 
 	return (
 		<Container>
@@ -66,7 +93,15 @@ const MainProductList = () => {
 					</Button>
 				))}
 			</ButtonContainer>
-			<ProductList products={products} />
+			<ProductList
+				products={products.map((product) => ({
+					id: product.id,
+					img: product.itemImage,
+					name: product.itemName,
+					price: `${product.price.toLocaleString()}원`,
+				}))}
+				onProductClick={handleProductClick}
+			/>
 		</Container>
 	);
 };

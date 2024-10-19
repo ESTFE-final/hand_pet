@@ -17,6 +17,7 @@ const SIZES = {
 		--button-max-width: 180px;
 		--button-padding: 1.8rem 6.2rem 1.4rem;
 		--button-radius: 6.4rem;
+		--button-font-size: 1.1rem;
 		@media (max-width: 600px) {
 			--button-max-width: 90px;
 			--button-padding: 0.9rem 3.1rem 0.7rem;

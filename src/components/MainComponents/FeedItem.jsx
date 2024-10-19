@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위해 추가
 import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
 import HeartFillIcon from '../../assets/icons/icon-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
@@ -36,8 +38,13 @@ const ProfileName = styled.div`
 `;
 
 const PostContent = styled.div`
+<<<<<<< HEAD
 	font-size: 1.6rem; /* 글씨 크기 조정 */
 	margin-bottom: 12px;
+=======
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+>>>>>>> develop
 `;
 
 const PostImageWrapper = styled.div`
@@ -73,6 +80,7 @@ const IconButton = styled.button`
 `;
 
 const NavRightButton = styled.button`
+<<<<<<< HEAD
 	background: url(${RightmenuIcon}) no-repeat;
 	background-size: contain;
 	width: 48px;
@@ -162,6 +170,176 @@ const FeedItem = ({
 			</ReactionIcons>
 		</FeedWrapper>
 	);
+=======
+  background: url(${RightmenuIcon}) no-repeat;
+  background-size: contain;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  cursor: pointer;
+  filter: brightness(0) invert(0);
+`;
+
+/* 모달 스타일 */
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+`;
+
+const ModalButton = styled.button`
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const CloseButton = styled.button`
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #bbb;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+`;
+
+/* 모달 스타일 끝 */
+
+const FeedItem = ({ content, postImgSrc, author, postId, onClick }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [hasImage, setHasImage] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false);
+  const navigate = useNavigate(); // 페이지 이동을 위한 훅
+
+  const currentUserAccountName = localStorage.getItem('accountname'); // 로그인된 유저 확인
+  const token = localStorage.getItem('authToken'); // 토큰 가져오기
+
+  useEffect(() => {
+    if (postImgSrc) {
+      const img = new Image();
+      img.onload = () => {
+        setHasImage(true);
+        setImageLoaded(true);
+      };
+      img.onerror = () => {
+        setHasImage(false);
+        setImageLoaded(true);
+      };
+      img.src = postImgSrc;
+    } else {
+      setHasImage(false);
+      setImageLoaded(true);
+    }
+
+    // 게시글 작성자 확인
+    if (author.accountname === currentUserAccountName) {
+      setIsAuthor(true);
+    }
+  }, [postImgSrc, author, currentUserAccountName]);
+
+  const handleDeletePost = async () => {
+    if (isAuthor) {
+      const confirmDelete = window.confirm('게시글을 삭제하시겠습니까?');
+      if (confirmDelete) {
+        try {
+          await axios.delete(`https://estapi.mandarin.weniv.co.kr/post/${postId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          alert('게시글이 삭제되었습니다.');
+          setShowModal(false); // 모달 닫기
+          navigate(`/profile/`); 
+        } catch (error) {
+          console.error('게시글 삭제 중 오류가 발생했습니다.', error);
+        }
+      }
+    } else {
+      alert('자신의 게시글만 삭제할 수 있습니다.');
+    }
+  };
+
+  const handleEditPost = () => {
+    if (isAuthor) {
+      navigate(`/postsu/${postId}`); // postsu 페이지로 이동
+    } else {
+      alert('자신의 게시글만 수정할 수 있습니다.');
+    }
+  };
+
+  const handleRightBtnClick = (e) => {
+    e.stopPropagation(); // 클릭 이벤트 전파 방지
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <FeedWrapper onClick={onClick}>
+      <NavRightButton onClick={handleRightBtnClick}>
+        {/* 우측 버튼 클릭 시 모달 띄우기 */}
+      </NavRightButton>
+
+      {showModal && (
+        <ModalBackground onClick={handleCloseModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalButton onClick={handleEditPost}>게시글 수정</ModalButton>
+            <ModalButton onClick={handleDeletePost}>게시글 삭제</ModalButton>
+            <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+          </ModalContent>
+        </ModalBackground>
+      )}
+
+      <ProfileSection>
+        <ProfileImage src={author.image || ProfileImg} alt="Profile" />
+        <ProfileName>{author.accountname || 'Unknown User'}</ProfileName>
+      </ProfileSection>
+      <PostContent>{content}</PostContent>
+      {imageLoaded && hasImage && (
+        <PostImageWrapper>
+          <PostImage src={postImgSrc} alt="Post" />
+        </PostImageWrapper>
+      )}
+      <ReactionIcons>
+        <IconButton>
+          <img src={HeartIcon} alt="Heart" />
+        </IconButton>
+        <IconButton>
+          <img src={MessageIcon} alt="Message" />
+        </IconButton>
+      </ReactionIcons>
+    </FeedWrapper>
+  );
+>>>>>>> develop
 };
 
 export default FeedItem;
