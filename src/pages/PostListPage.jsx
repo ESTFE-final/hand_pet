@@ -9,40 +9,40 @@ import Button from '../components/SharedComponents/Button';
 
 // 팔로잉 유저의 피드를 가져오는 함수
 const fetchFollowingFeed = async (token, limit, skip) => {
-  try {
-    const response = await axios.get(
-      `https://estapi.mandarin.weniv.co.kr/post/feed/?limit=${limit}&skip=${skip}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data.posts;
-  } catch (error) {
-    console.error('Error fetching following feed:', error);
-    return [];
-  }
+	try {
+		const response = await axios.get(
+			`https://estapi.mandarin.weniv.co.kr/post/feed/?limit=${limit}&skip=${skip}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		return response.data.posts;
+	} catch (error) {
+		console.error('Error fetching following feed:', error);
+		return [];
+	}
 };
 
 // 프로필 정보를 가져오는 함수
 const fetchProfile = async (token, accountname) => {
-  try {
-    const response = await axios.get(
-      `https://estapi.mandarin.weniv.co.kr/profile/${accountname}`, // accountname을 포함한 URL
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data.profile; // 가져온 프로필 반환
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-    return null; // 오류 발생 시 null 반환
-  }
+	try {
+		const response = await axios.get(
+			`https://estapi.mandarin.weniv.co.kr/profile/${accountname}`, // accountname을 포함한 URL
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		return response.data.profile; // 가져온 프로필 반환
+	} catch (error) {
+		console.error('Error fetching profile:', error);
+		return null; // 오류 발생 시 null 반환
+	}
 };
 
 const PostListPage = () => {
@@ -122,6 +122,5 @@ const PostListPage = () => {
 		</>
 	);
 };
-
 
 export default PostListPage;
