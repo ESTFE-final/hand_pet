@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	BrowserRouter,
 	Routes,
@@ -16,16 +16,29 @@ import EditProfilePage from './pages/EditProfilePage';
 import AddProductPage from './pages/AddProductPage';
 import PostUploadPage from './pages/PostUploadPage';
 import FollowerListPage from './pages/FollowerListPage';
+import FollowingListPage from './pages/FollowingListPage';
 import PostListPage from './pages/PostListPage';
 import SearchPage from './pages/SearchPage';
 import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
 import Postsu from './pages/Postsu';
+import ProductPage from './pages/ProductPage';
+import ProductEditPage from './pages/ProductEditPage';
+import ChatListPage from './pages/ChatListPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function AppContent() {
-	const [showSplash, setShowSplash] = useState(true);
+	const [showSplash, setShowSplash] = useState(
+		() => !localStorage.getItem('splashShown')
+	);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!showSplash) {
+			localStorage.setItem('splashShown', 'true');
+		}
+	}, [showSplash]);
 
 	const handleSplashFinish = () => {
 		setShowSplash(false);
@@ -38,13 +51,19 @@ function AppContent() {
 
 	return (
 		<>
-			<nav>
-				<Link to="/"> 메인(홈) </Link>
-				<Link to="/login"> 로그인 </Link>
-				<Link to="/signup"> 회원가입 </Link>
-				<Link to="/product/add"> 상품등록 </Link>
-				<Link to="/profile"> 내 프로필 </Link>
-			</nav>
+
+
+
+			<Link to="/"> 메인(홈) </Link>
+			<Link to="/login"> 로그인 </Link>
+			<Link to="/signup"> 회원가입 </Link>
+			<Link to="/product/add"> 상품등록 </Link>
+			<Link to="/profile"> 내 프로필 </Link>
+			<Link to="/follower"> 팔로워 </Link>
+			<Link to="/following"> 팔로잉 </Link>
+			<Link to="/chatlist"> 채팅리스트 </Link>
+      <Link to="/test-404">Test 404</Link>
+
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
@@ -57,10 +76,16 @@ function AppContent() {
 				<Route path="/post/upload" element={<PostUploadPage />} />
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
+				<Route path="/following" element={<FollowingListPage />} />
+				<Route path="/chatlist" element={<ChatListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 				<Route path="/postsu/:post_id" element={<Postsu />} />
+				<Route path="/product/:product_id" element={<ProductPage />} />
+				<Route path="/product/edit/:product_id" element={<ProductEditPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+
 			</Routes>
 		</>
 	);

@@ -14,11 +14,11 @@ const TabNavi = styled.div`
 	position: fixed;
 	justify-content: space-around;
 	align-items: center;
-	width: 780px;
+	width: 777px;
 	bottom: 0;
 	max-height: 96px;
 	height: 96px;
-	max-width: 775px;
+	max-width: 100%;
 	background-color: #ffffff;
 	border-top: 1px solid #e5e5e5;
 `;
@@ -63,10 +63,21 @@ const tabs = [
 	{ path: '/', label: '홈', icon: iconMain },
 	{ path: '/About', label: '채팅', icon: iconAbout },
 	{ path: '/post/upload', label: '게시물 작성', icon: iconContact },
-	{ path: '/Profile', label: '프로필', icon: iconProfile },
+	{ path: '/profile', label: '프로필', icon: iconProfile },
 ];
 
 function TabNaviComponent() {
+	return (
+		<TabNavi>
+			{tabs.map((tab, index) => (
+				<Link key={index} to={tab.path}>
+					<TabNaviButton>
+						<TabNaviIcon src={tab.icon} alt={`${tab.label} icon`} /> {tab.label}
+					</TabNaviButton>
+				</Link>
+			))}
+		</TabNavi>
+	);
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (
