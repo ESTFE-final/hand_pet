@@ -110,7 +110,12 @@ const ProductPage = () => {
 
 	const rightBtnClick = () => {
 		openModal([
-			{ text: '상품 편집', onClick: () => {} },
+			{
+				text: '상품 편집',
+				onClick: () => {
+					navigate(`/product/edit/${product_id}`);
+				},
+			},
 			{
 				text: '상품 삭제',
 				onClick: () =>

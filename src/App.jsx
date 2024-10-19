@@ -22,6 +22,7 @@ import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import NewProfilePage from './pages/NewProfilePage';
 import ProductPage from './pages/ProductPage';
+import ProductEditPage from './pages/ProductEditPage';
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(
@@ -69,6 +70,7 @@ function AppContent() {
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 				<Route path="/product/:product_id" element={<ProductPage />} />
+				<Route path="/product/edit/:product_id" element={<ProductEditPage />} />
 			</Routes>
 		</>
 	);
