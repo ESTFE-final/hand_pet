@@ -145,6 +145,7 @@ const PostModalOption = styled.button`
 	font-size: 2.8rem;
 `;
 
+//  NavigationBar이것만 바꾸었는데 아래에 뒤로가기 버튼기능 구현 위한 navigate 추가함
 export const NavigationBar = ({
 	title,
 	rightButton = null,
