@@ -61,7 +61,7 @@ function FollowingListPage() {
 			<ErrorMessage>
 				{error}
 				<Link to="/login">
-					<Button size="sm" type="button">
+					<Button size="m" type="button">
 						로그인 페이지
 					</Button>
 				</Link>

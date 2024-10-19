@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logoHandPet from '../assets/icons/logo-handpet.svg';
+import { useNavigate } from 'react-router-dom';
 
 const SplashScreenWrapper = styled.div`
 	background-color: #fff;
@@ -19,8 +20,9 @@ const Logo = styled.img`
 	opacity: ${(props) => props.opacity};
 `;
 
-const SplashScreenPage = ({ onFinish }) => {
+const SplashScreenPage = ({ onFinish = () => {} }) => {
 	const [logoOpacity, setLogoOpacity] = useState(1);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const logoTimer = setTimeout(() => {
@@ -29,13 +31,14 @@ const SplashScreenPage = ({ onFinish }) => {
 
 		const finishTimer = setTimeout(() => {
 			onFinish();
-		}, 2000);
+			navigate('/login');
+		}, 2700);
 
 		return () => {
 			clearTimeout(logoTimer);
 			clearTimeout(finishTimer);
 		};
-	}, [onFinish]);
+	}, [onFinish, navigate]);
 
 	return (
 		<SplashScreenWrapper>
