@@ -21,7 +21,7 @@ function FollowerListPage() {
 
 		// 부정  토큰 아니면
 		if (!token) {
-			setError('로그인 해주세요');
+			setError('해당 계정이 존재하지 않습니다.');
 			setLoading(false);
 			return;
 		}
