@@ -114,6 +114,33 @@ const PostDetailPage = () => {
 		}
 	};
 
+	// 댓글 작성
+	const handleCommentSubmit = async (commentContent) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const res = await axios.post(
+				`https://estapi.mandarin.weniv.co.kr/post/${id}/comments`,
+				{
+					comment: {
+						content: commentContent,
+					},
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			console.log('댓글 작성 성공:', res.data);
+		} catch (error) {
+			console.error('댓글 제출 오류:', error);
+			if (error.response && error.response.status === 404) {
+				alert('존재하지 않는 게시글입니다.');
+			}
+		}
+	};
+
 	useEffect(() => {
 		fetchPostDetails(id); // 컴포넌트 마운트 시 게시물 정보 가져오기
 	}, [id]);
@@ -149,7 +176,7 @@ const PostDetailPage = () => {
 				/>
 			)}
 			<FeedDetail />
-			<CommentForm />
+			<CommentForm onSubmit={handleCommentSubmit} />
 		</PostDetailWrapper>
 	);
 };

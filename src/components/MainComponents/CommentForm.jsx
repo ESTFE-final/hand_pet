@@ -44,7 +44,7 @@ const UploadIcon = styled.img`
 	height: 30px;
 `;
 
-const CommentForm = () => {
+const CommentForm = ({ onSubmit }) => {
 	const [comment, setComment] = useState('');
 
 	const handleCommentChange = (e) => {
@@ -54,12 +54,15 @@ const CommentForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (comment.trim()) {
+			onSubmit(comment);
 			setComment('');
+		} else {
+			alert('댓글을 입력해주세요.');
 		}
 	};
 
 	return (
-		<CommentFormWrapper>
+		<CommentFormWrapper onSubmit={handleSubmit}>
 			<CommentProfileImg src={userProfileImg} alt="사용자 프로필" />
 			<CommentInput
 				type="text"
@@ -67,7 +70,7 @@ const CommentForm = () => {
 				value={comment}
 				onChange={handleCommentChange}
 			/>
-			<CommentSubmit type="submit" hasContent={comment.trim().length > 0}>
+			<CommentSubmit type="submit" hasContent={!comment.trim().length > 0}>
 				{comment.trim().length > 0 ? (
 					<UploadIcon src={uploadIcon} alt="댓글 업로드" />
 				) : (
