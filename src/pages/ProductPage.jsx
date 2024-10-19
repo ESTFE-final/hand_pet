@@ -12,16 +12,19 @@ import ProductButton from '../components/ProductComponents/ProductButton';
 import QuantitySelector from '../components/ProductComponents/QuantitySelector';
 import TotalPrice from '../components/ProductComponents/TotalPrice';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+import { PostModal } from '../components/SharedComponents/CommonComponents';
 import RightmenuIcon from '../assets/icons/icon-more-vertical.svg';
+
 const Container = styled.div`
 	width: 100%;
 	max-width: 768px;
 	margin: 0 auto;
 	padding: 16px;
+	position: relative;
 `;
+
 const CustomProfileNavBar = styled(NavigationBar)`
 	background-color: transparent;
-	border: none;
 	padding: 32px;
 
 	.nav-right-button {
@@ -32,12 +35,14 @@ const CustomProfileNavBar = styled(NavigationBar)`
 	}
 `;
 
-const ProductPage = ({ openModal }) => {
+const ProductPage = () => {
 	const { product_id } = useParams();
 	const [product, setProduct] = useState({});
 	const [error, setError] = useState('');
 	const [quantity, setQuantity] = useState(1);
 	const token = localStorage.getItem('authToken');
+	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+	const [modalOptions, setModalOptions] = useState([]); // 모달 옵션 설정
 
 	useEffect(() => {
 		const fetchProductDetail = async () => {
@@ -94,8 +99,22 @@ const ProductPage = ({ openModal }) => {
 
 	const totalPrice = product.price * quantity;
 
+	// 모달 열기 함수
+	const openModal = (options) => {
+		setModalOptions(options);
+		setIsModalOpen(true);
+	};
+
+	// 모달 닫기 함수
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	const rightBtnClick = () => {
-		openModal([{ text: '설정 및 개인정보', onClick: () => {} }]);
+		openModal([
+			{ text: '상품 편집', onClick: () => {} },
+			{ text: '상품 삭제', onClick: () => {} },
+		]);
 	};
 
 	return (
@@ -122,7 +141,11 @@ const ProductPage = ({ openModal }) => {
 				/>
 
 				<TotalPrice amount={totalPrice} />
-
+				<PostModal
+					isOpen={isModalOpen}
+					onClose={closeModal}
+					options={modalOptions}
+				/>
 				<ProductButton />
 			</Container>
 		</>
