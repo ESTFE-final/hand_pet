@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import ProductList from '../MainComponents/ProductList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // useParams 추가
 import Button from '../SharedComponents/Button';
 
 const Container = styled.div`
@@ -22,8 +22,8 @@ const ProfileProduct = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+	const { accountname } = useParams(); // URL에서 accountname을 가져옴
 	const token = localStorage.getItem('authToken');
-	const accountname = localStorage.getItem('accountname');
 	const navigate = useNavigate();
 
 	const fetchProducts = useCallback(async () => {
@@ -65,8 +65,11 @@ const ProfileProduct = () => {
 	}, [token, accountname, page, limit]);
 
 	useEffect(() => {
+		setProducts([]); // 새로운 accountname으로 바뀔 때마다 상품 목록 초기화
+		setPage(1);
+		setHasMore(true);
 		fetchProducts();
-	}, [fetchProducts]);
+	}, [accountname, fetchProducts]);
 
 	const handleProductClick = (productId) => {
 		console.log('product 아이디 확인:', productId);

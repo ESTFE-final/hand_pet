@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'; // useParams 추가
 import styled from 'styled-components';
 import Axios from 'axios';
 import Button from '../SharedComponents/Button';
@@ -79,72 +79,78 @@ const PostAlbum = styled.ul`
 `;
 
 const PostTab = () => {
-  const [postView, setPostView] = useState('list');
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const accountname = localStorage.getItem('accountname');
-  const token = localStorage.getItem('authToken');
-  const navigate = useNavigate();
+	const [postView, setPostView] = useState('list');
+	const [posts, setPosts] = useState([]);
+	const [page, setPage] = useState(1);
+	const [limit] = useState(6);
+	const [hasMore, setHasMore] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const { accountname } = useParams(); // URL에서 accountname을 가져옴
+	const token = localStorage.getItem('authToken');
+	const navigate = useNavigate();
 
-  const fetchPosts = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    try {
-      const response = await Axios.get(
-        `https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-type': 'application/json',
-          },
-        }
-      );
+	const fetchPosts = useCallback(async () => {
+		if (isLoading || !hasMore) return;
+		setIsLoading(true);
+		try {
+			const response = await Axios.get(
+				`https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-type': 'application/json',
+					},
+				}
+			);
 
-      if (Array.isArray(response.data.post)) {
-        const newPosts = response.data.post;
-        
-        setPosts((prevPosts) => {
-          const uniquePosts = newPosts.filter(
-            (newPost) => !prevPosts.some((existingPost) => existingPost.id === newPost.id)
-          );
-          return [...prevPosts, ...uniquePosts];
-        });
-        
-        if (newPosts.length < limit) {
-          setHasMore(false);
-        }
-      } else {
-        console.warn('Unexpected data structure:', response.data);
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error('Error fetching posts:', error.response?.data || error.message);
-      setHasMore(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [accountname, token, page, limit]);
+			if (Array.isArray(response.data.post)) {
+				const newPosts = response.data.post;
+				setPosts((prevPosts) => {
+					const uniquePosts = newPosts.filter(
+						(newPost) =>
+							!prevPosts.some((existingPost) => existingPost.id === newPost.id)
+					);
+					return [...prevPosts, ...uniquePosts];
+				});
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+				if (newPosts.length < limit) {
+					setHasMore(false);
+				}
+			} else {
+				console.warn('Unexpected data structure:', response.data);
+				setHasMore(false);
+			}
+		} catch (error) {
+			console.error(
+				'Error fetching posts:',
+				error.response?.data || error.message
+			);
+			setHasMore(false);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [accountname, token, page, limit]);
 
-  const postsWithImages = posts.filter((post) => post.image);
+	useEffect(() => {
+		setPosts([]); // 새로운 accountname으로 바뀔 때마다 게시글을 초기화
+		setPage(1);
+		setHasMore(true);
+		fetchPosts();
+	}, [accountname, fetchPosts]);
 
-  const handlePostClick = (postId) => {
-    navigate(`/post/${postId}`);
-  };
+	const postsWithImages = posts.filter((post) => post.image);
 
-  const loadMore = () => {
-    if (hasMore && !isLoading) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
+	const handlePostClick = (postId) => {
+		navigate(`/post/${postId}`);
+	};
 
-  return (
+	const loadMore = () => {
+		if (hasMore && !isLoading) {
+			setPage((prevPage) => prevPage + 1);
+		}
+	};
+
+	return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
 				<>
