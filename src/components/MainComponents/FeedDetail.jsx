@@ -4,21 +4,20 @@ import userProfileImg from '../../assets/icons/profile-img.svg';
 import moreIcon from '../../assets/icons/more-vertical.svg';
 
 const CommentSection = styled.div`
-	flex: 1;
-	overflow-y: auto;
+	padding: 28px 32px;
 `;
 
 const CommentItem = styled.div`
 	display: flex;
 	align-items: flex-start;
-	padding: 12px 32px;
+	margin-bottom: 28px;
+	gap: 18px;
 `;
 
 const CommentProfileImg = styled.img`
 	width: 54px;
 	height: 54px;
 	border-radius: 50%;
-	margin-right: 12px;
 `;
 
 const CommentContent = styled.div`
@@ -57,21 +56,28 @@ const CommentText = styled.p`
 	margin: 0;
 `;
 
-const FeedDetail = () => {
+const FeedDetail = ({ comments }) => {
 	return (
 		<CommentSection>
-			<CommentItem>
-				<CommentProfileImg src={userProfileImg} alt="" />
-				<CommentContent>
-					<CommentUser>
-						<UserId className="user-id">애견 놀이 가게샵 🐶</UserId>
-						<CommetSeparator>·</CommetSeparator>
-						<CommentTime>5분 전</CommentTime>
-						<CommentButton type="button" aria-label="더보기"></CommentButton>
-					</CommentUser>
-					<CommentText>게시글 달글 ~~!! 최고최고</CommentText>
-				</CommentContent>
-			</CommentItem>
+			{comments.map((comment) => (
+				<CommentItem key={comment.id}>
+					<CommentProfileImg
+						src={comment.author.image || userProfileImg}
+						alt="사용자 프로필"
+					/>
+					<CommentContent>
+						<CommentUser>
+							<UserId className="user-id">{comment.author.username}</UserId>
+							<CommetSeparator>·</CommetSeparator>
+							<CommentTime>
+								{new Date(comment.createdAt).toLocaleString()}
+							</CommentTime>
+							<CommentButton type="button" aria-label="더보기"></CommentButton>
+						</CommentUser>
+						<CommentText>{comment.content}</CommentText>
+					</CommentContent>
+				</CommentItem>
+			))}
 		</CommentSection>
 	);
 };

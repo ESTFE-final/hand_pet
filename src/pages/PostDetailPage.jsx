@@ -9,6 +9,27 @@ import CommentForm from '../components/MainComponents/CommentForm';
 const PostDetailWrapper = styled.section`
 	height: 100vh;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+`;
+
+const CommentScroll = styled.div`
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+`;
+
+const CommentSection = styled.div`
+	flex: 1;
+	overflow-y: auto;
+	border-top: 1px solid var(--gray);
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 `;
 
 const MenuButton = styled.button`
@@ -25,6 +46,7 @@ const MenuButton = styled.button`
 const PostDetailPage = () => {
 	const { id } = useParams(); // URL 파라미터에서 id 추출
 	const [post, setPost] = useState(null); // 게시물 상태
+	const [comments, setComments] = useState([]);
 	const [loading, setLoading] = useState(true); // 로딩 상태
 	const [error, setError] = useState(null); // 오류 상태
 	const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
@@ -133,6 +155,7 @@ const PostDetailPage = () => {
 				}
 			);
 			console.log('댓글 작성 성공:', res.data);
+			setComments((prevComments) => [res.data.comment, ...prevComments]);
 		} catch (error) {
 			console.error('댓글 제출 오류:', error);
 			if (error.response && error.response.status === 404) {
@@ -141,8 +164,29 @@ const PostDetailPage = () => {
 		}
 	};
 
+	// 댓글 리스트
+	const fetchComments = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const res = await axios.get(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/comments`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			setComments(res.data.comments || []);
+		} catch (error) {
+			console.error('댓글 가져오기 실패:', error);
+			setComments([]);
+		}
+	};
+
 	useEffect(() => {
 		fetchPostDetails(id); // 컴포넌트 마운트 시 게시물 정보 가져오기
+		fetchComments(id);
 	}, [id]);
 
 	if (loading) return <div>로딩 중...</div>; // 로딩 중 메시지
@@ -163,19 +207,23 @@ const PostDetailPage = () => {
 			>
 				⋮ {/* 점 3개 */}
 			</MenuButton>
-			{post && (
-				<FeedItem
-					content={post.content}
-					postImgSrc={post.image}
-					author={post.author} // author prop 전달
-					postId={post.id}
-					hearted={post.hearted}
-					heartCount={post.heartCount}
-					onLike={handleLike}
-					onUnlike={handleUnLike}
-				/>
-			)}
-			<FeedDetail />
+			<CommentScroll>
+				{post && (
+					<FeedItem
+						content={post.content}
+						postImgSrc={post.image}
+						author={post.author} // author prop 전달
+						postId={post.id}
+						hearted={post.hearted}
+						heartCount={post.heartCount}
+						onLike={handleLike}
+						onUnlike={handleUnLike}
+					/>
+				)}
+				<CommentSection>
+					<FeedDetail comments={comments} />
+				</CommentSection>
+			</CommentScroll>
 			<CommentForm onSubmit={handleCommentSubmit} />
 		</PostDetailWrapper>
 	);
