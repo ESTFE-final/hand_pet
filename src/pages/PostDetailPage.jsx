@@ -177,7 +177,11 @@ const PostDetailPage = () => {
 					},
 				}
 			);
-			setComments(res.data.comments || []);
+			const sortedComments = res.data.comments.sort(
+				(a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+			);
+
+			setComments(sortedComments || []);
 		} catch (error) {
 			console.error('댓글 가져오기 실패:', error);
 			setComments([]);
