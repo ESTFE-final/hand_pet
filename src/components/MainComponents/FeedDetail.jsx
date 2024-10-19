@@ -5,6 +5,7 @@ import moreIcon from '../../assets/icons/more-vertical.svg';
 
 const CommentSection = styled.div`
 	padding: 28px 32px;
+	margin-bottom: 56px;
 `;
 
 const CommentItem = styled.div`
@@ -53,7 +54,7 @@ const CommentButton = styled.button`
 
 const CommentText = styled.p`
 	font-size: 2rem;
-	margin: 0;
+	margin-right: 46px;
 `;
 
 const FeedDetail = ({ comments }) => {

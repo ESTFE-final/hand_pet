@@ -155,7 +155,7 @@ const PostDetailPage = () => {
 				}
 			);
 			console.log('댓글 작성 성공:', res.data);
-			setComments((prevComments) => [res.data.comment, ...prevComments]);
+			setComments((prevComments) => [...prevComments, res.data.comment]);
 		} catch (error) {
 			console.error('댓글 제출 오류:', error);
 			if (error.response && error.response.status === 404) {
