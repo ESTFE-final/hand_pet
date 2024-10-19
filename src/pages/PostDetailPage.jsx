@@ -188,6 +188,42 @@ const PostDetailPage = () => {
 		}
 	};
 
+	// 댓글 삭제
+	const handleCommentDelete = async (commentId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const res = await axios.delete(
+				`https://estapi.mandarin.weniv.co.kr/post/${id}/comments/${commentId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
+			if (res.data.message === '댓글이 삭제되었습니다.') {
+				setComments(comments.filter((comment) => comment.id !== commentId));
+				alert('댓글이 삭제되었습니다.');
+			}
+		} catch (error) {
+			console.error('댓글 삭제 실패:', error);
+			if (error.response) {
+				switch (error.response.data.message) {
+					case '댓글 작성자만 댓글을 삭제할 수 있습니다.':
+						alert('댓글 작성자만 삭제할 수 있습니다.');
+						break;
+					case '존재하지 않는 게시글입니다.':
+						alert('존재하지 않는 게시글입니다.');
+						break;
+					case '댓글이 존재하지 않습니다.':
+						alert('댓글이 존재하지 않습니다.');
+						break;
+				}
+			}
+		}
+	};
+
 	useEffect(() => {
 		fetchPostDetails(id); // 컴포넌트 마운트 시 게시물 정보 가져오기
 		fetchComments(id);
@@ -225,7 +261,10 @@ const PostDetailPage = () => {
 					/>
 				)}
 				<CommentSection>
-					<FeedDetail comments={comments} />
+					<FeedDetail
+						comments={comments}
+						onDeleteComment={handleCommentDelete}
+					/>
 				</CommentSection>
 			</CommentScroll>
 			<CommentForm onSubmit={handleCommentSubmit} />

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import userProfileImg from '../../assets/icons/profile-img.svg';
 import moreIcon from '../../assets/icons/more-vertical.svg';
+import { PostModal } from '../SharedComponents/CommonComponents';
+import { current } from '@reduxjs/toolkit';
 
 const CommentSection = styled.div`
 	padding: 28px 32px;
@@ -57,7 +59,29 @@ const CommentText = styled.p`
 	margin-right: 46px;
 `;
 
-const FeedDetail = ({ comments }) => {
+const FeedDetail = ({ comments, onDeleteComment }) => {
+	const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+	const [currentCommentId, setCurrentCommentId] = useState(null);
+
+	const openPostModal = (commentId) => {
+		setIsPostModalOpen(true);
+		setCurrentCommentId(commentId);
+	};
+
+	const closePostModal = () => {
+		setIsPostModalOpen(false);
+		setCurrentCommentId(null);
+	};
+
+	const handleDeleteComment = (commentId) => {
+		if (currentCommentId) {
+			onDeleteComment(currentCommentId);
+			closePostModal();
+		}
+	};
+
+	const postModalOptions = [{ text: '삭제', onClick: handleDeleteComment }];
+
 	return (
 		<CommentSection>
 			{comments.map((comment) => (
@@ -73,12 +97,21 @@ const FeedDetail = ({ comments }) => {
 							<CommentTime>
 								{new Date(comment.createdAt).toLocaleString()}
 							</CommentTime>
-							<CommentButton type="button" aria-label="더보기"></CommentButton>
+							<CommentButton
+								type="button"
+								aria-label="더보기"
+								onClick={() => openPostModal(comment.id)}
+							></CommentButton>
 						</CommentUser>
 						<CommentText>{comment.content}</CommentText>
 					</CommentContent>
 				</CommentItem>
 			))}
+			<PostModal
+				isOpen={isPostModalOpen}
+				onClose={closePostModal}
+				options={postModalOptions}
+			/>
 		</CommentSection>
 	);
 };
