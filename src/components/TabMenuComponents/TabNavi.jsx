@@ -63,7 +63,7 @@ const tabs = [
 	{ path: '/', label: '홈', icon: iconMain },
 	{ path: '/About', label: '채팅', icon: iconAbout },
 	{ path: '/post/upload', label: '게시물 작성', icon: iconContact },
-	{ path: '/Profile', label: '프로필', icon: iconProfile },
+	{ path: '/profile', label: '프로필', icon: iconProfile },
 ];
 
 function TabNaviComponent() {

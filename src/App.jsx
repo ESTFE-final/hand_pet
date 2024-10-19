@@ -54,9 +54,9 @@ function AppContent() {
 			<Link to="/signup"> 회원가입 </Link>
 			<Link to="/product/add"> 상품등록 </Link>
 			<Link to="/profile"> 내 프로필 </Link>
-			<Link to="/Follower"> 팔로워 </Link>
-			<Link to="/Following"> 팔로잉 </Link>
-			<Link to="/Chatlist"> 채팅리스트 </Link>
+			<Link to="/follower"> 팔로워 </Link>
+			<Link to="/following"> 팔로잉 </Link>
+			<Link to="/chatlist"> 채팅리스트 </Link>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />

@@ -2,26 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-	NavigationBar,
-	Input,
-} from '../components/SharedComponents/CommonComponents';
+import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import Button from '../components/SharedComponents/Button';
-import uploadIcon from '../assets/icons/upload-file.svg';
-
-const InputBox = ({ id, type, name, placeholder, error, onChange, value }) => (
-	<AddProductInputItem>
-		<AddProductLabel htmlFor={id}>{name}</AddProductLabel>
-		<AddProductInput
-			id={id}
-			type={type}
-			placeholder={placeholder}
-			onChange={onChange}
-			value={value}
-		/>
-		{error && <ErrorMessage>{error}</ErrorMessage>}
-	</AddProductInputItem>
-);
+import ProductForm from '../components/ProductComponents/ProductForm';
 
 const Container = styled.div`
 	width: 100%;
@@ -32,84 +15,21 @@ const InnerContainer = styled.div`
 	padding-top: 2.8rem;
 `;
 
-const AddProductContent = styled.div`
-	padding: 3rem 3.4rem 0;
-`;
-
-const AddProductInputItem = styled.div`
-	margin-bottom: 3rem;
-	&:last-child {
-		margin-bottom: 0;
-	}
-`;
-
-const AddProductLabel = styled.label`
-	padding-left: 2.2rem;
-	font-size: 2.4rem;
-	color: #666;
-`;
-
-const AddProductInput = styled(Input)`
-	margin-top: 1.5rem;
-	display: block;
-`;
-
-const AddProductImageContent = styled.div`
-	position: relative;
-	margin-bottom: 6rem;
-`;
-
-const AddProductImageLabel = styled.label`
-	position: absolute;
-	bottom: 24px;
-	right: 24px;
-	display: block;
-	background: url(${uploadIcon}) no-repeat center / 100%;
-	width: 72px;
-	height: 72px;
-	border-radius: 50%;
-	cursor: pointer;
-`;
-
-const AddProductImageInput = styled.input`
-	display: none;
-`;
-
-const AddProductPreviewImage = styled.img`
-	width: 100%;
-	height: auto;
-	max-height: 408px;
-	object-fit: cover;
-	border-radius: 2rem;
-	overflow: hidden;
-	margin-top: 1.5rem;
-`;
-
-const AddProductPlaceholderImage = styled.div`
-	width: 100%;
-	height: 408px;
-	background-color: #f2f2f2;
-	border: 1px solid var(--gray);
-	border-radius: 2rem;
-	margin-top: 1.5rem;
-`;
-
-const ErrorMessage = styled.p`
-	color: var(--primary);
-	font-size: 2.4rem;
-	padding: 1.4rem 2rem 0 4rem;
-`;
-
 const ProductEditPage = () => {
 	const { product_id } = useParams();
+	const navigate = useNavigate();
+	const token = localStorage.getItem('authToken');
 	const [productData, setProductData] = useState({
 		itemName: '',
 		price: '',
 		link: '',
 		itemImage: '',
 	});
-	const navigate = useNavigate();
-	const token = localStorage.getItem('authToken');
+	const [imageFile, setImageFile] = useState(null);
+	const [nameError, setNameError] = useState('');
+	const [priceError, setPriceError] = useState('');
+	const [apiError, setApiError] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchProductData = async () => {
@@ -123,7 +43,8 @@ const ProductEditPage = () => {
 						},
 					}
 				);
-				setProductData(response.data.product);
+				const { itemName, price, link, itemImage } = response.data.product;
+				setProductData({ itemName, price, link, itemImage });
 			} catch (error) {
 				console.error('상품 정보 불러오기 실패:', error);
 			}
@@ -131,20 +52,90 @@ const ProductEditPage = () => {
 		fetchProductData();
 	}, [product_id, token]);
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		if (file) {
+			setImageFile(file);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setProductData((prevData) => ({
+					...prevData,
+					itemImage: reader.result,
+				}));
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
+	const handleNameChange = (e) => {
 		setProductData((prevData) => ({
 			...prevData,
-			[name]: value,
+			itemName: e.target.value,
+		}));
+		setNameError('');
+	};
+
+	const handlePriceChange = (e) => {
+		setProductData((prevData) => ({
+			...prevData,
+			price: e.target.value,
+		}));
+		setPriceError('');
+	};
+
+	const handleLinkChange = (e) => {
+		setProductData((prevData) => ({
+			...prevData,
+			link: e.target.value,
 		}));
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
+		setApiError('');
+
+		if (productData.itemName.length < 2 || productData.itemName.length > 15) {
+			setNameError('상품명은 2~15자 이내여야 합니다.');
+			setLoading(false);
+			return;
+		}
+		if (!/^\d+$/.test(productData.price)) {
+			setPriceError('가격은 숫자만 입력 가능합니다.');
+			setLoading(false);
+			return;
+		}
+
 		try {
+			let imageUrl = productData.itemImage; // 기본적으로 기존 이미지 URL로 초기화
+
+			if (imageFile) {
+				const formData = new FormData();
+				formData.append('image', imageFile);
+
+				const imageUploadResponse = await axios.post(
+					'https://estapi.mandarin.weniv.co.kr/image/uploadfile',
+					formData,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'multipart/form-data',
+						},
+					}
+				);
+				imageUrl = `https://estapi.mandarin.weniv.co.kr/${imageUploadResponse.data.filename}`;
+			}
+
 			await axios.put(
 				`https://estapi.mandarin.weniv.co.kr/product/${product_id}`,
-				{ product: productData },
+				{
+					product: {
+						itemName: productData.itemName,
+						price: Number(productData.price),
+						link: productData.link,
+						itemImage: imageUrl,
+					},
+				},
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -156,54 +147,46 @@ const ProductEditPage = () => {
 			navigate(`/product/${product_id}`);
 		} catch (error) {
 			console.error('상품 수정 실패:', error);
-			alert('상품 수정에 실패했습니다.');
+			setApiError('상품 수정에 실패했습니다.');
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	return (
-		<>
-			<Container>
-				<NavigationBar
-					title="상품 편집"
-					rightButton={
-						<Button size="sm" type="button" onClick={handleSubmit}>
-							저장
-						</Button>
-					}
+		<Container>
+			<NavigationBar
+				title="상품 편집"
+				rightButton={
+					<Button
+						size="sm"
+						type="button"
+						onClick={handleSubmit}
+						disabled={loading}
+					>
+						완료
+					</Button>
+				}
+			/>
+			<InnerContainer>
+				<ProductForm
+					image={productData.itemImage}
+					handleImageChange={handleImageChange}
+					name={productData.itemName}
+					handleNameChange={handleNameChange}
+					nameError={nameError}
+					price={productData.price}
+					handlePriceChange={handlePriceChange}
+					priceError={priceError}
+					link={productData.link}
+					handleLinkChange={handleLinkChange}
+					apiError={apiError}
+					handleSave={handleSubmit}
+					loading={loading}
+					buttonText="수정"
 				/>
-				<InnerContainer>
-					<AddProductContent>
-						<InputBox
-							type="text"
-							name="상품명"
-							value={productData.itemName}
-							onChange={handleChange}
-						/>
-
-						<input
-							type="number"
-							name="가격"
-							value={productData.price}
-							onChange={handleChange}
-						/>
-
-						<input
-							type="text"
-							name="판매 링크"
-							value={productData.link}
-							onChange={handleChange}
-						/>
-
-						<input
-							type="text"
-							name="itemImage"
-							value={productData.itemImage}
-							onChange={handleChange}
-						/>
-					</AddProductContent>
-				</InnerContainer>
-			</Container>
-		</>
+			</InnerContainer>
+		</Container>
 	);
 };
 
