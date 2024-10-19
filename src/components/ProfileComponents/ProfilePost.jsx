@@ -44,12 +44,18 @@ const EmptyState = styled.p`
 
 const PostList = styled.ul`
 	.post-list-item {
-		padding: 0 21px;
+		width: 97%;
+		padding: 16px;
+		border: 1px solid #dbdbdb;
+		border-radius: 8px;
+		margin: 0 auto;
+		margin-bottom: 24px;
 
 		img {
 			width: 100%;
 			height: 544px;
 			object-fit: cover;
+			margin-bottom: 10px;
 		}
 
 		p {
@@ -85,8 +91,8 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const { accountname: paramAccountname } = useParams(); // URL에서 accountname을 가져옴
-	const localAccountname = localStorage.getItem('accountname'); // 로컬 스토리지에서 accountname 가져오기
+	const { accountname: paramAccountname } = useParams();
+	const localAccountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
 

@@ -21,13 +21,12 @@ const ProfileProduct = () => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
-	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
-	const { accountname: paramAccountname } = useParams(); // URL에서 accountname을 가져옴
+	const [isLoading, setIsLoading] = useState(false);
+	const { accountname: paramAccountname } = useParams();
 	const token = localStorage.getItem('authToken');
-	const localAccountname = localStorage.getItem('accountname'); // 로컬 스토리지에서 accountname 가져오기
+	const localAccountname = localStorage.getItem('accountname');
 	const navigate = useNavigate();
 
-	// accountname 선택 (URL에서 가져오거나 로컬 스토리지에서 가져옴)
 	const accountname = paramAccountname || localAccountname;
 
 	const fetchProducts = useCallback(async () => {
@@ -36,7 +35,7 @@ const ProfileProduct = () => {
 			return;
 		}
 
-		setIsLoading(true); // 로딩 시작
+		setIsLoading(true);
 
 		try {
 			const response = await axios.get(
@@ -64,12 +63,12 @@ const ProfileProduct = () => {
 			setError('상품을 불러오는 데 실패했습니다.');
 			console.error('Error fetching products:', error);
 		} finally {
-			setIsLoading(false); // 로딩 끝
+			setIsLoading(false);
 		}
 	}, [token, accountname, page, limit]);
 
 	useEffect(() => {
-		setProducts([]); // 새로운 accountname으로 바뀔 때마다 상품 목록 초기화
+		setProducts([]);
 		setPage(1);
 		setHasMore(true);
 		fetchProducts();
