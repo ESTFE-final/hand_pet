@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { Input } from '../components/SharedComponents/CommonComponents';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/authSlice';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const LoginEmailPage = () => {
 	const [email, setEmail] = useState('');
@@ -55,8 +57,8 @@ const LoginEmailPage = () => {
 			const { token, accountname } = response.data.user;
 			localStorage.setItem('authToken', token);
 			localStorage.setItem('accountname', accountname);
-
-
+			await signInWithEmailAndPassword(auth, email, password);
+			console.log('현재 로그인된 사용자:', auth.currentUser);
 			dispatch(login(token));
 		} catch (error) {
 			console.error('로그인 실패:', error);

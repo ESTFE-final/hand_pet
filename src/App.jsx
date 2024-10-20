@@ -27,6 +27,7 @@ import ProductPage from './pages/ProductPage';
 import ProductEditPage from './pages/ProductEditPage';
 import ChatListPage from './pages/ChatListPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ChatRoom from './pages/ChatRoomPage';
 
 function AppContent() {
 	const [showSplash, setShowSplash] = useState(
@@ -61,6 +62,7 @@ function AppContent() {
 			<Link to="/chatlist"> 채팅리스트 </Link>
 			<Link to="/test-404">Test 404</Link>
 			<Link to="/post">피드</Link>
+			<Link to="/chat/:id">채팅</Link>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
@@ -83,6 +85,7 @@ function AppContent() {
 				<Route path="/product/:product_id" element={<ProductPage />} />
 				<Route path="/product/edit/:product_id" element={<ProductEditPage />} />
 				<Route path="*" element={<NotFoundPage />} />
+				<Route path="/chat/:userId" element={<ChatRoom />} />
 			</Routes>
 		</>
 	);

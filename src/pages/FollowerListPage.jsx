@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // useNavigate로 변경
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
-// 선언부 구조분해 할당
 function FollowerListPage() {
 	const [followers, setFollowers] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -16,14 +15,14 @@ function FollowerListPage() {
 		/\.(png|jpe?g|svg)$/
 	);
 
-	//  로직 부분
-	useEffect(() => {
-		const token = localStorage.getItem('authToken'); // 실제 토큰으로 교체
-		const accountname = localStorage.getItem('accountname'); // 실제 계정 이름으로 교체
+	const navigate = useNavigate(); // useNavigate 훅 사용
 
-		// 예외처리 필수
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		const accountname = localStorage.getItem('accountname');
+
 		const fetchFollowers = async () => {
-			setLoading(true); // API 호출 시작 시 로딩 상태 설정
+			setLoading(true);
 			try {
 				const response = await axios.get(
 					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
@@ -38,16 +37,15 @@ function FollowerListPage() {
 				setFollowers(response.data);
 			} catch (err) {
 				setError(err.response?.data?.message || err.message);
-				consolog.error(err);
+				console.error(err);
 			} finally {
-				setLoading(false); // API 호출 완료 시 로딩 상태 해제
+				setLoading(false);
 			}
 		};
 
 		fetchFollowers();
 	}, []);
 
-	//아하.. 이게 에러처리  throw    try catch finally 안쓰고 하는 경우군
 	if (loading) {
 		return <div>Loading...</div>;
 	}
@@ -56,7 +54,11 @@ function FollowerListPage() {
 		return <div>Error: {error}</div>;
 	}
 
-	// 렌더링 부분
+	const handleChatClick = (follower) => {
+		// 채팅방으로 이동하는 로직
+		navigate(`/chat/${follower.accountname}`); // 팔로워의 accountname을 사용하여 경로 설정
+	};
+
 	return (
 		<>
 			<NavigationBar title="팔로워" />
@@ -67,10 +69,13 @@ function FollowerListPage() {
 						<div>팔로워가 없습니다.</div>
 					) : (
 						followers.map((follower) => (
-							<FollowerListItem key={follower._id}>
+							<FollowerListItem
+								key={follower._id}
+								onClick={() => handleChatClick(follower)}
+							>
 								<FollowerInfo>
 									<FollowerImg
-										// src={images(`./${follower.image}`)
+										// src={images(`./${follower.image}`)}
 										alt={follower.username}
 									/>
 									<FollowerText>
@@ -112,6 +117,7 @@ const FollowerListItem = styled.li`
 	& + & {
 		margin-top: 3.4rem;
 	}
+	cursor: pointer; // 클릭 가능하도록 커서 변경
 `;
 
 const FollowerImg = styled.img`
