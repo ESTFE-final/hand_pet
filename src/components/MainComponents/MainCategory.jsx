@@ -65,13 +65,18 @@ const categories = [
 	{ icon: Sale, label: '세일' },
 ];
 
-const MainCategory = () => {
+const MainCategory = ({ setSelectedCategory }) => {
 	return (
 		<>
 			<CategoryContainer>
-				{categories.map((category, index) => (
-					<CategoryWrapper key={index}>
-						<IconContainer>
+				{categories.map((category) => (
+					<CategoryWrapper key={category.label}>
+						<IconContainer
+							onClick={() => {
+								console.log('Category Clicked:', category.label);
+								setSelectedCategory(category.label);
+							}}
+						>
 							<Icon src={category.icon} alt={category.label} />
 						</IconContainer>
 						<Label>{category.label}</Label>

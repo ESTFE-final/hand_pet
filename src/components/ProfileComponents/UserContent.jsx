@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProductTab from './ProfileProduct';
+import ProfileProduct from './ProfileProduct';
 import PostTab from './ProfilePost';
 
 const ProfileUserContent = styled.article`
@@ -36,7 +36,7 @@ const TabButton = styled.button`
 
 const ContentArea = styled.div``;
 
-const UserContent = () => {
+const UserContent = ({ accountname }) => {
 	const [activeTab, setActiveTab] = useState('product');
 
 	return (
@@ -59,7 +59,11 @@ const UserContent = () => {
 			</TabNav>
 
 			<ContentArea>
-				{activeTab === 'product' ? <ProductTab /> : <PostTab />}
+				{activeTab === 'product' ? (
+					<ProfileProduct accountname={accountname} />
+				) : (
+					<PostTab accountname={accountname} />
+				)}
 			</ContentArea>
 		</ProfileUserContent>
 	);

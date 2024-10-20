@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ProductList from './ProductList';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MainCategory from './MainCategory';
 
 const Container = styled.div`
 	width: 90%;
@@ -35,9 +36,11 @@ const Button = styled.button`
 
 const MainProductList = () => {
 	const [products, setProducts] = useState([]);
+	const [filteredProducts, setFilteredProducts] = useState([]);
 	const token = localStorage.getItem('authToken');
 	const accountname = localStorage.getItem('accountname');
-	const [selected, setSelected] = useState('인기순');
+	const [selectedSort, setSelectedSort] = useState('인기순');
+	const [selectedCategory, setSelectedCategory] = useState('');
 	const navigate = useNavigate();
 
 	const options = [
@@ -47,6 +50,17 @@ const MainProductList = () => {
 		'낮은 가격순',
 		'높은 가격순',
 	];
+
+	const sortProducts = (products, order) => {
+		switch (order) {
+			case '높은 가격순':
+				return [...products].sort((a, b) => b.price - a.price);
+			case '낮은 가격순':
+				return [...products].sort((a, b) => a.price - b.price);
+			default:
+				return products;
+		}
+	};
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -61,9 +75,12 @@ const MainProductList = () => {
 					}
 				);
 
-				console.log('Fetched products:', response.data.product);
-
-				setProducts(response.data.product);
+				const sortedProducts = sortProducts(
+					response.data.product,
+					selectedSort
+				);
+				setProducts(sortedProducts);
+				setFilteredProducts(sortedProducts);
 			} catch (error) {
 				console.error('Error fetching products:', error);
 			}
@@ -72,29 +89,64 @@ const MainProductList = () => {
 		if (accountname) {
 			fetchProducts();
 		}
-	}, [token, accountname]);
+	}, [token, accountname, selectedSort]);
+
+	useEffect(() => {
+		if (selectedCategory) {
+			console.log('Selected Category:', selectedCategory);
+			const filtered = products.filter((product) => {
+				if (selectedCategory === '육포·말이') {
+					return product.itemName.includes('육포');
+				}
+				if (selectedCategory === '수제사료') {
+					return product.itemName.includes('사료');
+				}
+				if (selectedCategory === '천연수제껌') {
+					return product.itemName.includes('껌');
+				}
+				if (selectedCategory === '쿠키') {
+					return product.itemName.includes('쿠키');
+				}
+				if (selectedCategory === '케이크') {
+					return product.itemName.includes('케이크');
+				}
+				if (selectedCategory === '파우더') {
+					return product.itemName.includes('파우더');
+				}
+				if (selectedCategory === '세일') {
+					return true;
+				}
+				return true;
+			});
+			console.log('Filtered Products:', filtered);
+			setFilteredProducts(filtered);
+		} else {
+			setFilteredProducts(products);
+		}
+	}, [selectedCategory, products]);
 
 	const handleProductClick = (productId) => {
-		console.log('product 아이디 확인:', productId);
 		navigate(`/product/${productId}`);
 	};
 
 	return (
 		<Container>
+			<MainCategory setSelectedCategory={setSelectedCategory} />
 			<Title>판매 중인 상품</Title>
+
 			<ButtonContainer>
 				{options.map((option) => (
 					<Button
 						key={option}
-						isSelected={selected === option}
-						onClick={() => setSelected(option)}
+						isSelected={selectedSort === option}
+						onClick={() => setSelectedSort(option)}
 					>
 						{option}
 					</Button>
 				))}
 			</ButtonContainer>
 			<ProductList
-				products={products.map((product) => ({
+				products={filteredProducts.map((product) => ({
 					id: product.id,
 					img: product.itemImage,
 					name: product.itemName,

@@ -217,7 +217,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage to="/profile">
+						<UserImage>
 							<img
 								src={image || profileImage}
 								alt={`${username}의 프로필 이미지`}

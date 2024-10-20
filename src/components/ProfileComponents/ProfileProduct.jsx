@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import ProductList from '../MainComponents/ProductList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../SharedComponents/Button';
 
 const Container = styled.div`
@@ -21,10 +21,13 @@ const ProfileProduct = () => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
-	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+	const [isLoading, setIsLoading] = useState(false);
+	const { accountname: paramAccountname } = useParams();
 	const token = localStorage.getItem('authToken');
-	const accountname = localStorage.getItem('accountname');
+	const localAccountname = localStorage.getItem('accountname');
 	const navigate = useNavigate();
+
+	const accountname = paramAccountname || localAccountname;
 
 	const fetchProducts = useCallback(async () => {
 		if (!accountname) {
@@ -32,7 +35,7 @@ const ProfileProduct = () => {
 			return;
 		}
 
-		setIsLoading(true); // 로딩 시작
+		setIsLoading(true);
 
 		try {
 			const response = await axios.get(
@@ -60,13 +63,16 @@ const ProfileProduct = () => {
 			setError('상품을 불러오는 데 실패했습니다.');
 			console.error('Error fetching products:', error);
 		} finally {
-			setIsLoading(false); // 로딩 끝
+			setIsLoading(false);
 		}
 	}, [token, accountname, page, limit]);
 
 	useEffect(() => {
+		setProducts([]);
+		setPage(1);
+		setHasMore(true);
 		fetchProducts();
-	}, [fetchProducts]);
+	}, [accountname, fetchProducts]);
 
 	const handleProductClick = (productId) => {
 		console.log('product 아이디 확인:', productId);
