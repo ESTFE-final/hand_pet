@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Profile from '../components/ProfileComponents/Profile';
@@ -21,12 +21,15 @@ const ProfilePage = () => {
 	const [postModalOptions, setPostModalOptions] = useState([]);
 	const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 	const [profileData, setProfileData] = useState(null);
-
 	const { accountname } = useParams();
 	const isMyProfile = !accountname;
+	const [products, setProducts] = useState([]);
+	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
 		fetchProfileData();
+		fetchUserProducts();
+		fetchUserPosts();
 	}, [accountname]);
 
 	// 프로필 데이터 가져오기
@@ -54,6 +57,40 @@ const ProfilePage = () => {
 			if (error.res && error.res.status === 404) {
 				alert('해당 계정이 존재하지 않습니다.');
 			}
+		}
+	};
+
+	const fetchUserProducts = async () => {
+		const token = localStorage.getItem('authToken');
+		if (!token) return;
+
+		try {
+			const res = await axios.get(`${API_URL}/profile/${accountname}/product`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-type': 'application/json',
+				},
+			});
+			setProducts(res.data.product);
+		} catch (error) {
+			console.error('상품 데이터 가져오기 실패:', error);
+		}
+	};
+
+	const fetchUserPosts = async () => {
+		const token = localStorage.getItem('authToken');
+		if (!token) return;
+
+		try {
+			const res = await axios.get(`${API_URL}/profile/${accountname}/post`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-type': 'application/json',
+				},
+			});
+			setPosts(res.data.post);
+		} catch (error) {
+			console.error('게시글 데이터 가져오기 실패:', error);
 		}
 	};
 
@@ -137,7 +174,11 @@ const ProfilePage = () => {
 				onFollow={followData}
 				onUnFollow={unFollowData}
 			/>
-			<UserContent accountname={accountname} />
+			<UserContent
+				accountname={accountname}
+				products={products}
+				posts={posts}
+			/>
 			<PostModal
 				isOpen={isPostModalOpen}
 				onClose={closePostModal}
