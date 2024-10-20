@@ -67,7 +67,9 @@ const ChatListPage = () => {
 	}
 
 	const handleChatClick = (follower) => {
-		navigate(`/chat/${follower.accountname}`);
+		navigate(`/chat/${follower.accountname}`, {
+			state: { otherProfile: follower.image }, // 팔로워의 프로필 이미지 전달
+		});
 	};
 
 	return (

@@ -1,5 +1,7 @@
+// ChatRoomPage.jsx
+
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { db } from '../firebase'; // Firebase 설정 import
 import {
 	collection,
@@ -7,11 +9,15 @@ import {
 	addDoc,
 	orderBy,
 	query,
+	Timestamp,
 } from 'firebase/firestore';
 import styled from 'styled-components';
 
-const ChatRoomPage = ({ myProfile, otherProfile }) => {
+const ChatRoomPage = () => {
 	const { userId } = useParams(); // URL에서 userId 가져오기
+	const { state } = useLocation(); // useLocation 훅 사용
+	const otherProfile = state?.otherProfile || '/default_profile_image.png'; // 전달받은 프로필 이미지 사용
+
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState('');
 	const [image, setImage] = useState(null);
@@ -38,7 +44,7 @@ const ChatRoomPage = ({ myProfile, otherProfile }) => {
 		const newMessage = {
 			text: message,
 			senderId: '내 아이디', // 현재 사용자 ID로 수정 필요
-			createdAt: new Date(),
+			createdAt: Timestamp.now(),
 			imageUrl: image ? URL.createObjectURL(image) : null,
 		};
 
@@ -59,21 +65,17 @@ const ChatRoomPage = ({ myProfile, otherProfile }) => {
 						key={msg.id}
 						isOwnMessage={msg.senderId === '내 아이디'} // 현재 사용자 ID와 비교
 					>
-						{msg.senderId !== '내 아이디' ? (
-							<ProfileImg
-								src={otherProfile || '/default_profile.png'}
-								alt="상대방 프로필"
-							/>
-						) : (
-							<ProfileImg
-								src={myProfile || '/default_profile.png'}
-								alt="내 프로필"
-							/>
+						{msg.senderId !== '내 아이디' && (
+							<ProfileImg src={otherProfile} alt="상대방 프로필" />
 						)}
 						<MessageContent isOwnMessage={msg.senderId === '내 아이디'}>
 							{msg.text && <p>{msg.text}</p>}
 							{msg.imageUrl && <img src={msg.imageUrl} alt="전송된 이미지" />}
-							<Time>{new Date(msg.createdAt).toLocaleTimeString()}</Time>
+							<Time>
+								{msg.createdAt && msg.createdAt.toDate
+									? msg.createdAt.toDate().toLocaleTimeString()
+									: '날짜 정보 없음'}
+							</Time>
 						</MessageContent>
 					</Message>
 				))}
@@ -123,7 +125,7 @@ const ProfileImg = styled.img`
 
 const MessageContent = styled.div`
 	background-color: ${({ isOwnMessage }) =>
-		isOwnMessage ? '#e1ffc7' : '#fff'};
+		isOwnMessage ? '#ffd2c7' : '#fff'};
 	padding: 1rem;
 	border-radius: 10px;
 	max-width: 60%;
@@ -140,9 +142,8 @@ const MessageContent = styled.div`
 const Time = styled.span`
 	font-size: 0.8rem;
 	color: #888;
-	position: absolute;
-	bottom: -1.5rem;
-	right: 0;
+	margin-top: 0.5rem;
+	display: block;
 `;
 
 const MessageInput = styled.div`

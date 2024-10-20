@@ -69,10 +69,7 @@ function FollowingListPage() {
 						following.map((follow) => (
 							<FollowingListItem key={follow._id}>
 								<FollowingInfo>
-									<FollowingImg
-										// src={images(`./${follow.image}`)
-										alt={follow.username}
-									/>
+									<FollowingImg src={follow.image} alt={follow.username} />
 									<FollowingText>
 										<FollowingShopName>{follow.username}</FollowingShopName>
 										<FollowingShopDesc>{follow.intro}</FollowingShopDesc>
