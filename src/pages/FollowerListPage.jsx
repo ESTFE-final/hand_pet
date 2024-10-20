@@ -7,131 +7,176 @@ import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
 // 선언부 구조분해 할당
 function FollowerListPage() {
-	const [followers, setFollowers] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const images = require.context(
-		'../assets/images',
-		true,
-		/\.(png|jpe?g|svg)$/
-	);
+    const [followers, setFollowers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-	//  로직 부분
-	useEffect(() => {
-		const token = localStorage.getItem('authToken'); // 실제 토큰으로 교체
-		const accountname = localStorage.getItem('accountname'); // 실제 계정 이름으로 교체
+    // 로직 부분
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        const accountname = localStorage.getItem('accountname');
 
-		// 예외처리 필수
-		const fetchFollowers = async () => {
-			setLoading(true); // API 호출 시작 시 로딩 상태 설정
-			try {
-				const response = await axios.get(
-					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							'Content-type': 'application/json',
-						},
-					}
-				);
-				console.log(response.data);
-				setFollowers(response.data);
-			} catch (err) {
-				setError(err.response?.data?.message || err.message);
-				consolog.error(err);
-			} finally {
-				setLoading(false); // API 호출 완료 시 로딩 상태 해제
-			}
-		};
+        // 예외처리 필수
+        const fetchFollowers = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                console.log(response.data);
+                setFollowers(response.data);
+            } catch (err) {
+                setError(err.response?.data?.message || err.message);
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-		fetchFollowers();
-	}, []);
+        fetchFollowers();
+    }, []);
 
-	//아하.. 이게 에러처리  throw    try catch finally 안쓰고 하는 경우군
-	if (loading) {
-		return <div>Loading...</div>;
-	}
+    const toggleFollow = async (follower) => {
+        const token = localStorage.getItem('authToken');
+        const accountname = follower.accountname; // 팔로우/언팔로우할 유저의 accountname
 
-	if (error) {
-		return <div>Error: {error}</div>;
-	}
+        try {
+            // 팔로우/언팔로우 상태에 따라 적절한 API 호출
+            if (follower.isfollow) {
+                // 언팔로우
+                await axios.delete(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/unfollow`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                setFollowers((prevFollowers) =>
+                    prevFollowers.map((item) =>
+                        item._id === follower._id ? { ...item, isfollow: false } : item
+                    )
+                );
+            } else {
+                // 팔로우
+                await axios.post(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follow`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                setFollowers((prevFollowers) =>
+                    prevFollowers.map((item) =>
+                        item._id === follower._id ? { ...item, isfollow: true } : item
+                    )
+                );
+            }
+        } catch (err) {
+            console.error(err);
+            alert(err.response?.data?.message || '팔로우/언팔로우 처리 중 오류가 발생했습니다.');
+        }
+    };
 
-	// 렌더링 부분
-	return (
-		<>
-			<NavigationBar title="팔로워" />
-			<InnerWMobileFull>
-				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
-				<FollowerListContent>
-					{followers.length === 0 ? (
-						<div>팔로워가 없습니다.</div>
-					) : (
-						followers.map((follower) => (
-							<FollowerListItem key={follower._id}>
-								<FollowerInfo>
-									<FollowerImg
-										// src={images(`./${follower.image}`)
-										alt={follower.username}
-									/>
-									<FollowerText>
-										<FollowerShopName>{follower.username}</FollowerShopName>
-										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
-									</FollowerText>
-								</FollowerInfo>
-								<Button size="sm" type="button">
-									{follower.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
-							</FollowerListItem>
-						))
-					)}
-				</FollowerListContent>
-			</InnerWMobileFull>
-		</>
-	);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    // 렌더링 부분
+    return (
+        <>
+            <NavigationBar title="팔로워" />
+            <InnerWMobileFull>
+                <h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
+                <FollowerListContent>
+                    {followers.length === 0 ? (
+                        <div>팔로워가 없습니다.</div>
+                    ) : (
+                        followers.map((follower) => (
+                            <FollowerListItem key={follower._id}>
+                                <FollowerInfo>
+                                    <FollowerImg
+                                        src={follower.image || 'default_image_url'} // 기본 이미지 URL을 지정
+                                        alt={follower.username}
+                                    />
+                                    <FollowerText>
+                                        <FollowerShopName>{follower.username}</FollowerShopName>
+                                        <FollowerShopDesc>{follower.intro}</FollowerShopDesc>
+                                    </FollowerText>
+                                </FollowerInfo>
+                                <Button size="sm" type="button" onClick={() => toggleFollow(follower)}>
+                                    {follower.isfollow ? '언팔로우' : '팔로우'}
+                                </Button>
+                            </FollowerListItem>
+                        ))
+                    )}
+                </FollowerListContent>
+            </InnerWMobileFull>
+        </>
+    );
 }
 
 const InnerWMobileFull = styled.div`
-	width: 100%;
-	margin: 0 auto;
-	position: relative;
-	padding-bottom: 10rem;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 10rem;
 `;
+
 const FollowerInfo = styled.div`
-	display: flex;
-	align-items: flex-start;
-	gap: 1.6rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
 `;
+
 const FollowerListContent = styled.ul`
-	padding: 0 1.6rem;
+    padding: 0 1.6rem;
 `;
 
 const FollowerListItem = styled.li`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	& + & {
-		margin-top: 3.4rem;
-	}
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    & + & {
+        margin-top: 3.4rem;
+    }
 `;
 
 const FollowerImg = styled.img`
-	background: var(--gray);
-	width: 72px;
-	height: 72px;
-	overflow: hidden;
-	border-radius: 50%;
-	flex-shrink: 0;
+    background: var(--gray);
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    border-radius: 50%;
+    flex-shrink: 0;
 `;
+
 const FollowerText = styled.div`
-	padding-top: 0.7rem;
+    padding-top: 0.7rem;
 `;
+
 const FollowerShopName = styled.p`
-	font-size: 2rem;
-	margin-bottom: 0.6rem;
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
 `;
+
 const FollowerShopDesc = styled.p`
-	color: var(--gray-300);
-	font-size: 1.8rem;
+    color: var(--gray-300);
+    font-size: 1.8rem;
 `;
 
 export default FollowerListPage;
