@@ -25,12 +25,15 @@ const ProfilePage = () => {
 	const [profileData, setProfileData] = useState(null);
 	const dispatch = useDispatch(); // dispatch 초기화
 	const navigate = useNavigate(); // useNavigate 훅 사용
-
 	const { accountname } = useParams();
 	const isMyProfile = !accountname;
+	const [products, setProducts] = useState([]);
+	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
 		fetchProfileData();
+		fetchUserProducts();
+		fetchUserPosts();
 	}, [accountname]);
 
 	const fetchProfileData = async () => {
@@ -57,6 +60,41 @@ const ProfilePage = () => {
 			if (error.response && error.response.status === 404) {
 				alert('해당 계정이 존재하지 않습니다.');
 			}
+		}
+	};
+
+
+	const fetchUserProducts = async () => {
+		const token = localStorage.getItem('authToken');
+		if (!token) return;
+
+		try {
+			const res = await axios.get(`${API_URL}/profile/${accountname}/product`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-type': 'application/json',
+				},
+			});
+			setProducts(res.data.product);
+		} catch (error) {
+			console.error('상품 데이터 가져오기 실패:', error);
+		}
+	};
+
+	const fetchUserPosts = async () => {
+		const token = localStorage.getItem('authToken');
+		if (!token) return;
+
+		try {
+			const res = await axios.get(`${API_URL}/profile/${accountname}/post`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-type': 'application/json',
+				},
+			});
+			setPosts(res.data.post);
+		} catch (error) {
+			console.error('게시글 데이터 가져오기 실패:', error);
 		}
 	};
 
@@ -146,7 +184,11 @@ const ProfilePage = () => {
 				onFollow={followData}
 				onUnFollow={unFollowData}
 			/>
-			<UserContent accountname={accountname} />
+			<UserContent
+				accountname={accountname}
+				products={products}
+				posts={posts}
+			/>
 			<PostModal
 				isOpen={isPostModalOpen}
 				onClose={closePostModal}

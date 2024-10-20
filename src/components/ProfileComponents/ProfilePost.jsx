@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Axios from 'axios';
 import Button from '../SharedComponents/Button';
@@ -47,10 +47,9 @@ const PostList = styled.ul`
 		width: 97%;
 		padding: 16px;
 		border: 1px solid #dbdbdb;
-  		border-radius: 8px;
+		border-radius: 8px;
 		margin: 0 auto;
 		margin-bottom: 24px;
-		
 
 		img {
 			width: 100%;
@@ -86,72 +85,79 @@ const PostAlbum = styled.ul`
 `;
 
 const PostTab = () => {
-  const [postView, setPostView] = useState('list');
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const accountname = localStorage.getItem('accountname');
-  const token = localStorage.getItem('authToken');
-  const navigate = useNavigate();
+	const [postView, setPostView] = useState('list');
+	const [posts, setPosts] = useState([]);
+	const [page, setPage] = useState(1);
+	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
+	const [hasMore, setHasMore] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const { accountname: paramAccountname } = useParams();
+	const localAccountname = localStorage.getItem('accountname');
+	const token = localStorage.getItem('authToken');
+	const navigate = useNavigate();
 
-  const fetchPosts = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    try {
-      const response = await Axios.get(
-        `https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-type': 'application/json',
-          },
-        }
-      );
+	const accountname = paramAccountname || localAccountname;
 
-      if (Array.isArray(response.data.post)) {
-        const newPosts = response.data.post;
-        
-        setPosts((prevPosts) => {
-          const uniquePosts = newPosts.filter(
-            (newPost) => !prevPosts.some((existingPost) => existingPost.id === newPost.id)
-          );
-          return [...prevPosts, ...uniquePosts];
-        });
-        
-        if (newPosts.length < limit) {
-          setHasMore(false);
-        }
-      } else {
-        console.warn('Unexpected data structure:', response.data);
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error('Error fetching posts:', error.response?.data || error.message);
-      setHasMore(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [accountname, token, page, limit]);
+	const fetchPosts = useCallback(async () => {
+		if (isLoading || !hasMore) return;
+		setIsLoading(true);
+		try {
+			const response = await Axios.get(
+				`https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-type': 'application/json',
+					},
+				}
+			);
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+			if (Array.isArray(response.data.post)) {
+				const newPosts = response.data.post;
 
-  const postsWithImages = posts.filter((post) => post.image);
+				setPosts((prevPosts) => {
+					const uniquePosts = newPosts.filter(
+						(newPost) =>
+							!prevPosts.some((existingPost) => existingPost.id === newPost.id)
+					);
+					return [...prevPosts, ...uniquePosts];
+				});
 
-  const handlePostClick = (postId) => {
-    navigate(`/post/${postId}`);
-  };
+				if (newPosts.length < limit) {
+					setHasMore(false);
+				}
+			} else {
+				console.warn('Unexpected data structure:', response.data);
+				setHasMore(false);
+			}
+		} catch (error) {
+			console.error(
+				'Error fetching posts:',
+				error.response?.data || error.message
+			);
+			setHasMore(false);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [accountname, token, page, limit]);
 
-  const loadMore = () => {
-    if (hasMore && !isLoading) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
+	useEffect(() => {
+		fetchPosts();
+	}, [fetchPosts]);
 
-  return (
+	const postsWithImages = posts.filter((post) => post.image);
+
+	const handlePostClick = (postId) => {
+		navigate(`/post/${postId}`);
+	};
+
+	const loadMore = () => {
+		if (hasMore && !isLoading) {
+			setPage((prevPage) => prevPage + 1);
+		}
+	};
+
+	return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
 				<>

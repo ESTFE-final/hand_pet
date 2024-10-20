@@ -24,7 +24,6 @@ const fetchFollowingFeed = async (token, limit, skip) => {
 	} catch (error) {
 		console.error('Error fetching following feed:', error);
 		return []; // 오류 발생 시 빈 배열 반환
-
 	}
 };
 
@@ -48,7 +47,6 @@ const fetchProfile = async (token, accountname) => {
 };
 
 const PostListPage = () => {
-
 	const [posts, setPosts] = useState([]);
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [page, setPage] = useState(1);
@@ -105,7 +103,7 @@ const PostListPage = () => {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
-  	// 좋아요 데이터 가져오기
+	// 좋아요 데이터 가져오기
 	const handleLike = async (postId) => {
 		const token = localStorage.getItem('authToken');
 		try {
@@ -159,19 +157,17 @@ const PostListPage = () => {
 			<NavigationBar title={'핸드펫 피드'} />
 			{posts.length > 0 ? (
 				<>
-
-					<MainFeed 
-          	posts={posts}
-		  	onPostClick={handlePostClick}
-		  	onLike={handleLike}
-		  	onUnLike={handleUnLike}
-			  />{' '}
+					<MainFeed
+						posts={posts}
+						onPostClick={handlePostClick}
+						onLike={handleLike}
+						onUnLike={handleUnLike}
+					/>
 					{hasMore && (
 						<Button size="more" onClick={loadMore} disabled={isLoading}>
 							{isLoading ? '로딩 중...' : '더보기'}
 						</Button>
 					)}
-
 				</>
 			) : (
 				<MainEmptyFeed />

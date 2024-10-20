@@ -4,6 +4,7 @@ import userProfileImg from '../../assets/icons/profile-img.svg';
 import moreIcon from '../../assets/icons/more-vertical.svg';
 import { PostModal } from '../SharedComponents/CommonComponents';
 import { current } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
 
 const CommentSection = styled.div`
 	padding: 28px 32px;
@@ -21,6 +22,7 @@ const CommentProfileImg = styled.img`
 	width: 54px;
 	height: 54px;
 	border-radius: 50%;
+	cursor: pointer;
 `;
 
 const CommentContent = styled.div`
@@ -62,6 +64,7 @@ const CommentText = styled.p`
 const FeedDetail = ({ comments, onDeleteComment }) => {
 	const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 	const [currentCommentId, setCurrentCommentId] = useState(null);
+	const navigate = useNavigate();
 
 	const openPostModal = (commentId) => {
 		setIsPostModalOpen(true);
@@ -79,7 +82,9 @@ const FeedDetail = ({ comments, onDeleteComment }) => {
 			closePostModal();
 		}
 	};
-
+	const moveToUserProfile = (username) => {
+		navigate(`/profile/${username}`);
+	};
 	const postModalOptions = [{ text: '삭제', onClick: handleDeleteComment }];
 
 	return (
@@ -89,6 +94,7 @@ const FeedDetail = ({ comments, onDeleteComment }) => {
 					<CommentProfileImg
 						src={comment.author.image || userProfileImg}
 						alt="사용자 프로필"
+						onClick={() => moveToUserProfile(comment.author.username)}
 					/>
 					<CommentContent>
 						<CommentUser>
