@@ -9,6 +9,7 @@ import {
 	AlertModal,
 } from '../components/SharedComponents/CommonComponents';
 import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
+import { useNavigate } from 'react-router-dom';
 
 const PageWrapper = styled.div`
 	position: relative;
@@ -24,6 +25,15 @@ const ProfilePage = () => {
 
 	const { accountname } = useParams();
 	const isMyProfile = !accountname;
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
 
 	useEffect(() => {
 		fetchProfileData();

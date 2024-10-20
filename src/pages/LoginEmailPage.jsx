@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
 	TitleWrap,
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Input } from '../components/SharedComponents/CommonComponents';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginEmailPage = () => {
 	const [email, setEmail] = useState('');
@@ -17,6 +18,14 @@ const LoginEmailPage = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const navigate = useNavigate();
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (token) {
+			navigate('/home', { replace: true });
+		}
+	}, []);
 
 	const toggleButtonState = (emailValue, passwordValue) => {
 		setButtonDisabled(!(emailValue && passwordValue));

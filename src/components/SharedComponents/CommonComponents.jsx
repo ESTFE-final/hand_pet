@@ -155,6 +155,13 @@ export const NavigationBar = ({
 }) => {
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
+
 	const defaultLeftButton = (
 		<button onClick={() => navigate(-1)}>
 			<img

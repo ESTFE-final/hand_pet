@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+import { useNavigate } from 'react-router-dom';
 
 function FollowerListPage() {
 	const [followers, setFollowers] = useState([]);
@@ -15,16 +16,18 @@ function FollowerListPage() {
 		/\.(png|jpe?g|svg)$/
 	);
 
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
+
 	useEffect(() => {
 		const token = localStorage.getItem('authToken');
 		const accountname = localStorage.getItem('accountname');
-
-		// 부정  토큰 아니면
-		if (!token) {
-			setError('해당 계정이 존재하지 않습니다.');
-			setLoading(false);
-			return;
-		}
 
 		const fetchFollowers = async () => {
 			setLoading(true);
