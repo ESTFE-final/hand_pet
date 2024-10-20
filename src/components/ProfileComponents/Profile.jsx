@@ -179,7 +179,14 @@ const FollowButton = styled.button`
 	}
 `;
 
-const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
+const Profile = ({
+	profile,
+	openModal,
+	onLogout,
+	isMyProfile,
+	onFollow,
+	onUnFollow,
+}) => {
 	if (!profile) return null;
 
 	const {
@@ -217,7 +224,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage>
+						<UserImage to={`/profile/${accountname}`}>
 							<img
 								src={image || profileImage}
 								alt={`${username}의 프로필 이미지`}
