@@ -198,6 +198,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 	const handleBackClick = () => {
 		navigate(-1); // 이전 페이지로 이동
 	};
+	// 하얀색 뒤로가기 버튼 활성화
 
 	const rightBtnClick = () => {
 		openModal([
