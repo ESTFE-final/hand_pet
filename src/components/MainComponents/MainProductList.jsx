@@ -6,28 +6,30 @@ import { useNavigate } from 'react-router-dom';
 import MainCategory from './MainCategory';
 
 const Container = styled.div`
-	width: 90%;
-	margin: 52px auto;
+	width: 100%;
+	margin: 26px 0;
+	padding: 0 24px;
+	margin-bottom: 70px; /* 탭 메뉴에 가려져서 일단 넣어놓음 */
 `;
 
 const Title = styled.span`
-	font-size: 3rem;
+	font-size: 1.8rem;
 `;
 
 const ButtonContainer = styled.div`
-	margin: 36px auto;
+	margin: 18px 0 16px 0;
 `;
 
 const Button = styled.button`
-	padding: 10px 15px;
-	margin: 0 5px;
-	height: 44px;
-	line-height: 1.5;
+	padding: 5px 10px;
+	margin-right: 5px;
 	background-color: ${(props) => (props.isSelected ? '#000' : '#f3f3f5')};
 	color: ${(props) => (props.isSelected ? '#fff' : '#6C6D7A')};
 	cursor: pointer;
-	font-size: 2rem;
-	border-radius: 20px;
+	font-size: 1.2rem;
+	border-radius: 30px;
+	transition: all 0.2s ease;
+
 	&:hover {
 		background-color: #000;
 		color: #fff;

@@ -7,6 +7,7 @@ import {
 	Link,
 	useNavigate,
 } from 'react-router-dom';
+import styled from 'styled-components';
 import SplashScreenPage from './pages/SplashScreenPage';
 import MainPage from './pages/MainPage';
 import LoginEmailPage from './pages/LoginEmailPage';

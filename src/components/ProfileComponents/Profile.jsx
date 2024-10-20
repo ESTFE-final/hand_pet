@@ -10,52 +10,52 @@ import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
 
 const ProfileWrapper = styled.article`
 	background-color: var(--primary);
-	border-radius: 0 0 80px 80px;
+	border-radius: 0 0 40px 40px;
 `;
 
 const CustomProfileNavBar = styled(NavigationBar)`
 	background-color: transparent;
 	border: none;
-	padding: 32px;
+	padding: 16px;
 
 	.nav-left-button {
 		background: url(${leftArrowIcon}) no-repeat;
 		background-size: contain;
-		width: 44px;
-		height: 44px;
+		width: 22px;
+		height: 22px;
 	}
 
 	.nav-right-button {
 		background: url(${RightmenuIcon}) no-repeat;
 		background-size: contain;
-		width: 48px;
-		height: 48px;
+		width: 24px;
+		height: 24px;
 	}
 `;
 
 const ProfileMain = styled.section`
-	padding: 0 52px 54px 52px;
+	padding: 0 26px 27px 26px;
 `;
 
 const ProfileInfo = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 46px;
+	margin-bottom: 23px;
 	color: var(--white);
 `;
 
 const ProfileInfoText = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 34px;
+	gap: 17px;
 `;
 
 const UserImage = styled(Link)`
-	width: 148px;
-	height: 148px;
+	width: 74px;
+	height: 74px;
 	border-radius: 50%;
-	border: 2px solid var(--gray);
+	border: 1px solid var(--gray);
 	overflow: hidden;
 
 	img {
@@ -68,12 +68,12 @@ const UserImage = styled(Link)`
 const ProfileName = styled.div`
 	.profile-username {
 		color: var(--white);
-		font-size: 2.8rem;
+		font-size: 1.8rem;
 		margin-bottom: 5px;
 	}
 
 	.profile-account {
-		font-size: 2rem;
+		font-size: 1.2rem;
 		color: var(--redlight);
 	}
 `;
@@ -81,51 +81,51 @@ const ProfileName = styled.div`
 const ProfileButtons = styled.div`
 	.message-btn,
 	.share-btn {
-		width: 68px;
-		height: 68px;
+		width: 34px;
+		height: 34px;
 		background-repeat: no-repeat;
 		background-position: center;
 	}
 
 	.message-btn {
 		background-image: url(${messageIcon});
-		background-size: 68px;
-		margin-right: 32px;
+		background-size: 34px;
+		margin-right: 16px;
 	}
 
 	.share-btn {
 		background-image: url(${shareIcon});
-		background-size: 68px;
+		background-size: 34px;
 	}
 `;
 
 const ProfileIntro = styled.p`
-	font-size: 2.6rem;
+	font-size: 1.4rem;
 	color: var(--white);
 `;
 
 const ProfileStats = styled.section`
 	display: flex;
+	align-items: center;
 	justify-content: space-around;
-	padding: 48px 56px;
-	border-radius: 60px;
+	padding: 25px 38px;
+	border-radius: 30px;
 	background-color: rgba(255, 255, 255, 0.5);
-	margin-top: 56px;
+	margin-top: 27px;
 `;
 
 const ProfileFollow = styled(Link)`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	transition: all 0.3s ease;
+	transition: all 0.2s ease;
 
 	.stat-value {
-		font-size: 3rem;
 		font-weight: bold;
 	}
 
 	.stat-label {
-		font-size: 2rem;
+		font-size: 1.2rem;
 		color: var(--graydark-200);
 	}
 
@@ -136,12 +136,12 @@ const ProfileFollow = styled(Link)`
 
 const ProductLink = styled(Link)`
 	background-color: var(--white);
-	border: 2px solid var(--gray);
+	border: 1px solid var(--gray);
 	color: var(--black);
-	border-radius: 60px;
-	padding: 18px 40px;
-	font-size: 2.2rem;
-	transition: all 0.3s ease;
+	border-radius: 30px;
+	padding: 9px 22px;
+	font-size: 1.4rem;
+	transition: all 0.2s ease;
 
 	&:hover {
 		background-color: var(--gray);
@@ -150,12 +150,12 @@ const ProductLink = styled(Link)`
 
 const EditProfileLink = styled(Link)`
 	background-color: var(--white);
-	border: 2px solid var(--gray);
+	border: 1px solid var(--gray);
 	color: var(--black);
-	border-radius: 60px;
-	padding: 18px 40px;
-	font-size: 2.2rem;
-	transition: all 0.3s ease;
+	border-radius: 30px;
+	padding: 9px 22px;
+	font-size: 1.4rem;
+	transition: all 0.2s ease;
 
 	&:hover {
 		background-color: var(--gray);
@@ -165,14 +165,14 @@ const EditProfileLink = styled(Link)`
 const FollowButton = styled.button`
 	background-color: ${(props) =>
 		props.isFollowing ? 'var(--white)' : 'var(--primary)'};
-	border: 2px solid
+	border: 1px solid
 		${(props) => (props.isFollowing ? 'var(--gray)' : 'var(--primary)')};
 	color: ${(props) => (props.isFollowing ? 'var(--gray-300)' : 'var(--white)')};
-	border-radius: 60px;
-	padding: 18px 40px;
-	font-size: 2rem;
-	transition: all 0.3s ease;
-	width: 176px;
+	border-radius: 30px;
+	padding: 9px 22px;
+	font-size: 1.4rem;
+	transition: all 0.2s ease;
+	width: 88px;
 
 	&:active {
 		opacity: 0.8;

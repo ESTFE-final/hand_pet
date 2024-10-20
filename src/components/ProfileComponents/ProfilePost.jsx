@@ -13,22 +13,22 @@ const PostContainer = styled.section``;
 const PostNav = styled.nav`
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 32px;
-	border-bottom: 1px solid var(--gray);
-	padding: 0 36px;
+	margin-bottom: 16px;
+	border-bottom: 0.5px solid var(--gray);
+	padding: 0 23px;
 `;
 
 const PostButton = styled.button`
-	padding-top: 16px;
-	padding-bottom: 16px;
+	padding-top: 9px;
+	padding-bottom: 9px;
 
 	&.list-btn {
-		padding-right: 32px;
+		padding-right: 16px;
 	}
 
 	img {
-		width: 40px;
-		height: 40px;
+		width: 20px;
+		height: 20px;
 	}
 
 	&:hover {
@@ -37,9 +37,9 @@ const PostButton = styled.button`
 `;
 
 const EmptyState = styled.p`
-	padding-top: 48px;
+	padding-top: 26px;
 	text-align: center;
-	font-size: 3.2rem;
+	font-size: 1.6rem;
 `;
 
 const PostList = styled.ul`
@@ -53,14 +53,15 @@ const PostList = styled.ul`
 
 		img {
 			width: 100%;
-			height: 544px;
+			height: 280px;
 			object-fit: cover;
 			margin-bottom: 10px;
+			border-radius: 10px;
 		}
 
 		p {
 			margin: 10px 0;
-			font-size: 2.8rem;
+			font-size: 1.4rem;
 		}
 	}
 `;
@@ -69,7 +70,7 @@ const PostAlbum = styled.ul`
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
-	padding: 0 32px;
+	padding: 0 16px;
 	text-align: center;
 
 	&.album-post-view {
