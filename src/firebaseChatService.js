@@ -4,15 +4,14 @@ import {
 	getFirestore,
 	collection,
 	addDoc,
-	doc,
-	setDoc,
-	serverTimestamp,
-	getDocs, // getDocs 임포트 추가
+	getDocs,
+	query,
+	orderBy,
+	limit,
 } from 'firebase/firestore';
-import { auth } from './firebase'; // firebase.js에서 export한 auth를 불러옴
+import { auth } from './firebase';
 
 const db = getFirestore();
-
 // 1. 채팅방 생성 함수
 export const createChatRoom = async (roomName) => {
 	try {
@@ -63,5 +62,31 @@ export const getChatRooms = async () => {
 	} catch (error) {
 		console.error('채팅방 목록 가져오기 오류:', error);
 		throw error; // 에러를 던져서 호출한 곳에서 처리할 수 있도록
+	}
+};
+
+// 4. 채팅방의 최근 메시지 가져오기 함수
+export const getLatestMessage = async (roomId) => {
+	try {
+		const messagesRef = collection(db, 'chats', roomId, 'messages');
+		const recentMessageQuery = query(
+			messagesRef,
+			orderBy('createdAt', 'desc'),
+			limit(1)
+		);
+		const recentMessageSnapshot = await getDocs(recentMessageQuery);
+
+		if (!recentMessageSnapshot.empty) {
+			const recentMessageData = recentMessageSnapshot.docs[0].data();
+			return {
+				text: recentMessageData.text || '사진을 보냈습니다.',
+				createdAt: recentMessageData.createdAt.toDate(),
+			};
+		} else {
+			return { text: '아직 메시지가 없습니다.', createdAt: null };
+		}
+	} catch (error) {
+		console.error('최근 메시지 가져오기 오류:', error);
+		throw error;
 	}
 };

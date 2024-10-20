@@ -62,7 +62,6 @@ function AppContent() {
 			<Link to="/chatlist"> 채팅리스트 </Link>
 			<Link to="/test-404">Test 404</Link>
 			<Link to="/post">피드</Link>
-			<Link to="/chat/:id">채팅</Link>
 
 			<Routes>
 				<Route path="/" element={<MainPage />} />
