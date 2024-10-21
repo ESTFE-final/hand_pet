@@ -8,14 +8,13 @@ import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const Container = styled.div`
 	width: 100%;
-	padding: 25px 23px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 `;
 
 const ErrorMessage = styled.p`
-	padding-top: 26px;
+	margin-top: 26px;
 	font-size: 1.6rem;
 `;
 

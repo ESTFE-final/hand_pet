@@ -1,6 +1,7 @@
 import React from 'react';
 import FeedItem from './FeedItem'; // FeedItem 컴포넌트 import
 
+
 const MainFeed = ({ posts, onPostClick, onLike, onUnLike }) => {
 	return (
 		<>
@@ -16,6 +17,7 @@ const MainFeed = ({ posts, onPostClick, onLike, onUnLike }) => {
 					onLike={() => onLike(post.id)}
 					onUnlike={() => onUnLike(post.id)}
 					showNavRightButton={false}
+					commentCount={post.commentCount}
 				/>
 			))}
 		</>

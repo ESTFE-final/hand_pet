@@ -43,7 +43,6 @@ const EmptyState = styled.p`
 	text-align: center;
 	font-size: 1.6rem;
 `;
-
 const PostList = styled.ul`
 	.post-list-item {
 		width: 97%;
@@ -73,7 +72,7 @@ const PostAlbum = styled.ul`
 	flex-direction: column;
 	gap: 5px;
 	padding: 0 16px;
-	text-align: center;
+	/* text-align: center; */
 
 	&.album-post-view {
 		display: grid;
@@ -101,9 +100,12 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const accountname = localStorage.getItem('accountname');
+	const { accountname: paramAccountname } = useParams();
+	const localAccountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
+
+	const accountname = paramAccountname || localAccountname;
 
 	const fetchPosts = useCallback(async () => {
 		if (isLoading || !hasMore) return;
@@ -152,8 +154,6 @@ const PostTab = () => {
 		fetchPosts();
 	}, [fetchPosts]);
 
-	const postsWithImages = posts.filter((post) => post.image);
-
 	const handlePostClick = (postId) => {
 		navigate(`/post/${postId}`);
 	};
@@ -163,7 +163,6 @@ const PostTab = () => {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
-
 	// 좋아요
 	const handleLike = async (postId) => {
 		const token = localStorage.getItem('authToken');

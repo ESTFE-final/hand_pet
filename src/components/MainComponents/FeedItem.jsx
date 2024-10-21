@@ -23,6 +23,10 @@ const ProfileSection = styled.div`
 	margin-bottom: 12px;
 	cursor: pointer;
 `;
+const profilecontainer = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
 
 const ProfileImage = styled.img`
 	width: 43px;
@@ -31,9 +35,15 @@ const ProfileImage = styled.img`
 	margin-right: 12px;
 `;
 
-const ProfileName = styled.div`
+
+const ProfileuserName = styled.div`
 	font-size: 1.5rem;
 	color: #555555;
+`;
+const ProfileaccountName = styled.div`
+	font-size: 1.4rem;
+	color: #B4B4B4;
+	margin-top: 4px;
 `;
 
 const PostContent = styled.div`
@@ -102,52 +112,14 @@ const NavRightButton = styled.button`
 	right: 0;
 `;
 
-/* 모달 스타일 */
-const ModalBackground = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-	background: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	width: 300px;
-	text-align: center;
-`;
-
-const ModalButton = styled.button`
-	margin-top: 10px;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: #f44336;
-	color: white;
-	cursor: pointer;
-	width: 100%;
-	margin-bottom: 10px;
-`;
-
-const CloseButton = styled.button`
-	margin-top: 10px;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: #bbb;
-	color: white;
-	cursor: pointer;
-	width: 100%;
-`;
-
 const LikeCount = styled.span`
+	font-size: 1.2rem;
+	color: var(--gray-300);
+	margin-left: 6px;
+	margin-top: 1px;
+`;
+
+const CommentCount = styled.span`
 	font-size: 1.2rem;
 	color: var(--gray-300);
 	margin-left: 6px;
@@ -165,6 +137,7 @@ const FeedItem = ({
 	onUnlike,
 	onClick,
 	showNavRightButton = true,
+	commentCount,
 }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
@@ -271,10 +244,13 @@ const FeedItem = ({
 					</NavRightButton>
 				)}
 
-				<ProfileSection onClick={moveToUserProfile}>
-					<ProfileImage src={author.image || ProfileImg} alt="Profile" />
-					<ProfileName>{author.accountname || 'Unknown User'}</ProfileName>
-				</ProfileSection>
+			<ProfileSection onClick={moveToUserProfile}>
+				<ProfileImage src={author.image || ProfileImg} alt="Profile" />
+				<profilecontainer>
+					<ProfileuserName>{author.username || 'Unknown User'}</ProfileuserName>
+					<ProfileaccountName>@{author.accountname || 'Unknown User'}</ProfileaccountName>
+				</profilecontainer>
+			</ProfileSection>
 
 				<PostContent>{content}</PostContent>
 				{imageLoaded && hasImage && (
@@ -291,6 +267,7 @@ const FeedItem = ({
 					</IconButton>
 					<IconButton>
 						<img src={MessageIcon} alt="Message" />
+						<CommentCount>{commentCount}</CommentCount>
 					</IconButton>
 				</ReactionIcons>
 			</FeedWrapper>

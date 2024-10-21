@@ -61,6 +61,37 @@ const CommentText = styled.p`
 	margin-right: 38px;
 `;
 
+// 댓글 작성 시간
+const formatTime = (dateString) => {
+	const now = new Date();
+	const date = new Date(dateString);
+
+	const diffInMilliseconds = now - date;
+	const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+	const diffInMinutes = Math.floor(diffInSeconds / 60);
+	const diffInHours = Math.floor(diffInMinutes / 60);
+	const diffInDays = Math.floor(diffInHours / 24);
+
+	if (diffInSeconds < 60) {
+		return '방금 전';
+	} else if (diffInMinutes < 60) {
+		return `${diffInMinutes}분 전`;
+	} else if (diffInHours < 24) {
+		return `${diffInHours}시간 전`;
+	} else if (diffInDays < 7) {
+		return `${diffInDays}일 전`;
+	} else {
+		return date
+			.toLocaleDateString('ko-KR', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+			})
+			.replace(/\. /g, '.')
+			.slice(0, -1);
+	}
+};
+
 const FeedDetail = ({ comments, onDeleteComment }) => {
 	const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 	const [currentCommentId, setCurrentCommentId] = useState(null);
@@ -100,9 +131,7 @@ const FeedDetail = ({ comments, onDeleteComment }) => {
 						<CommentUser>
 							<UserId className="user-id">{comment.author.username}</UserId>
 							<CommetSeparator>·</CommetSeparator>
-							<CommentTime>
-								{new Date(comment.createdAt).toLocaleString()}
-							</CommentTime>
+							<CommentTime>{formatTime(comment.createdAt)}</CommentTime>
 							<CommentButton
 								type="button"
 								aria-label="더보기"

@@ -119,24 +119,11 @@ const tabs = [
 
 function TabNaviComponent() {
 	const [hoverIndex, setHoverIndex] = useState(null);
-	const location = useLocation();
-
-	const isProfileActive = (path) => {
-		return location.pathname.startsWith('/profile');
-	};
 
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (
-				<StyledNavLink
-					key={index}
-					to={tab.path}
-					isActive={
-						tab.path === '/profile'
-							? isProfileActive
-							: (match, location) => location.pathname === tab.path
-					}
-				>
+				<StyledNavLink key={index} to={tab.path}>
 					{({ isActive }) => (
 						<TabNaviButton
 							isActive={isActive}
