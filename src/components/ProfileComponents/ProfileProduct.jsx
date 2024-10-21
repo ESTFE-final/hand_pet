@@ -11,6 +11,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 2.6rem 2.4rem;
 `;
 
 const ErrorMessage = styled.p`
