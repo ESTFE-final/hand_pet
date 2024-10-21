@@ -7,6 +7,7 @@ import {
 	Link,
 	useNavigate,
 } from 'react-router-dom';
+import styled from 'styled-components';
 import SplashScreenPage from './pages/SplashScreenPage';
 import MainPage from './pages/MainPage';
 import LoginEmailPage from './pages/LoginEmailPage';
@@ -75,6 +76,8 @@ function AppContent() {
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
 				<Route path="/following" element={<FollowingListPage />} />
+				<Route path="/follower/:accountname" element={<FollowerListPage />} />
+				<Route path="/following/:accountname" element={<FollowingListPage />} />
 				<Route path="/chatlist" element={<ChatListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />

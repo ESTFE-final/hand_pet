@@ -6,13 +6,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../SharedComponents/Button';
 
 const Container = styled.div`
-	width: 90%;
-	margin: 52px auto;
+	width: 100%;
+	/* margin: 52px auto; */
+	padding: 25px 23px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 const ErrorMessage = styled.p`
-	color: red;
-	font-size: 1.2rem;
+	padding-top: 26px;
+	font-size: 1.6rem;
 `;
 
 const ProfileProduct = () => {

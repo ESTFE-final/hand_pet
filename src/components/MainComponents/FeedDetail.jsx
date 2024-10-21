@@ -7,20 +7,20 @@ import { current } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 
 const CommentSection = styled.div`
-	padding: 28px 32px;
-	margin-bottom: 56px;
+	padding: 20px 16px;
+	margin-bottom: 30px;
 `;
 
 const CommentItem = styled.div`
 	display: flex;
 	align-items: flex-start;
-	margin-bottom: 28px;
-	gap: 18px;
+	margin-bottom: 18px;
+	gap: 12px;
 `;
 
 const CommentProfileImg = styled.img`
-	width: 54px;
-	height: 54px;
+	width: 36px;
+	height: 36px;
 	border-radius: 50%;
 	cursor: pointer;
 `;
@@ -32,33 +32,33 @@ const CommentContent = styled.div`
 const CommentUser = styled.div`
 	display: flex;
 	align-items: center;
-	margin: 6px 0 18px 0;
+	margin: 4px 0 10px 0;
 `;
 
 const UserId = styled.span`
-	font-size: 2.2rem;
+	font-size: 1.6rem;
 `;
 
 const CommetSeparator = styled.span`
-	margin: 0 8px;
+	margin: 0 6px;
 `;
 
 const CommentTime = styled.div`
-	font-size: 1.4rem;
+	font-size: 1rem;
 	color: #a5a5a5;
 `;
 
 const CommentButton = styled.button`
 	background: url(${moreIcon}) no-repeat;
 	background-size: 100%;
-	width: 25px;
-	height: 25px;
+	width: 20px;
+	height: 20px;
 	margin-left: auto;
 `;
 
 const CommentText = styled.p`
-	font-size: 2rem;
-	margin-right: 46px;
+	font-size: 1.6rem;
+	margin-right: 38px;
 `;
 
 const FeedDetail = ({ comments, onDeleteComment }) => {

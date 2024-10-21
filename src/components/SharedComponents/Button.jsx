@@ -51,6 +51,13 @@ const StyledButton = styled.button`
 	max-width: var(--button-max-width);
 	padding: var(--button-padding);
 	cursor: pointer;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background: var(--button-bg-color, #fff);
+		border-color: var(--button-border-color, #dbdbdb);
+		color: var(--button-color, #b4b4b4);
+	}
 
 	&:active {
 		background: var(--button-bg-color, #fff);

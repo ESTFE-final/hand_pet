@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
 	TitleWrap,
@@ -18,6 +18,13 @@ const SignupPage = () => {
 	const [isButtonDisabled, setButtonDisabled] = useState(true);
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (token) {
+			navigate('/home', { replace: true });
+		}
+	}, [navigate]);
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
@@ -71,7 +78,11 @@ const SignupPage = () => {
 				console.log(response);
 
 				if (response.data.message === '사용 가능한 이메일 입니다.') {
-					navigate('/profile/new', { state: { email, password } });
+					navigate('/profile/new', {
+						state: { email, password },
+						replace: true,
+						// replace 구문을 navigate 함수에 추가하면 뒤로가기 버튼을 눌렀을때 히스토리 스택에서 제거되어 이 페이지로 돌아오지 못하게합니다.
+					});
 				}
 			} catch (error) {
 				setServerMessage('이메일 확인 중 오류가 발생했습니다.');

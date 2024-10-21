@@ -7,28 +7,29 @@ import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
+import FeedItemCompoents from '../MainComponents/FeedItemCompoents';
 
 const PostContainer = styled.section``;
 
 const PostNav = styled.nav`
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 32px;
-	border-bottom: 1px solid var(--gray);
-	padding: 0 36px;
+	margin-bottom: 16px;
+	border-bottom: 0.5px solid var(--gray);
+	padding: 0 23px;
 `;
 
 const PostButton = styled.button`
-	padding-top: 16px;
-	padding-bottom: 16px;
+	padding-top: 9px;
+	padding-bottom: 9px;
 
 	&.list-btn {
-		padding-right: 32px;
+		padding-right: 16px;
 	}
 
 	img {
-		width: 40px;
-		height: 40px;
+		width: 20px;
+		height: 20px;
 	}
 
 	&:hover {
@@ -37,9 +38,9 @@ const PostButton = styled.button`
 `;
 
 const EmptyState = styled.p`
-	padding-top: 48px;
+	padding-top: 26px;
 	text-align: center;
-	font-size: 3.2rem;
+	font-size: 1.6rem;
 `;
 
 const PostList = styled.ul`
@@ -53,14 +54,15 @@ const PostList = styled.ul`
 
 		img {
 			width: 100%;
-			height: 544px;
+			height: 280px;
 			object-fit: cover;
 			margin-bottom: 10px;
+			border-radius: 10px;
 		}
 
 		p {
 			margin: 10px 0;
-			font-size: 2.8rem;
+			font-size: 1.4rem;
 		}
 	}
 `;
@@ -69,7 +71,7 @@ const PostAlbum = styled.ul`
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
-	padding: 0 32px;
+	padding: 0 16px;
 	text-align: center;
 
 	&.album-post-view {
@@ -91,12 +93,9 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const { accountname: paramAccountname } = useParams();
-	const localAccountname = localStorage.getItem('accountname');
+	const accountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
-
-	const accountname = paramAccountname || localAccountname;
 
 	const fetchPosts = useCallback(async () => {
 		if (isLoading || !hasMore) return;
@@ -157,6 +156,55 @@ const PostTab = () => {
 		}
 	};
 
+	// 좋아요
+	const handleLike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await Axios.post(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/heart`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, true, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 오류:', error);
+		}
+	};
+
+	// 좋아요 취소
+	const handleUnlike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await Axios.delete(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/unheart`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, false, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 취소 오류:', error);
+		}
+	};
+
+	const updateLike = (postId, isLiked, newHeartCount) => {
+		setPosts((prevPosts) =>
+			prevPosts.map((post) =>
+				post.id === postId
+					? { ...post, hearted: isLiked, heartCount: newHeartCount }
+					: post
+			)
+		);
+	};
+
 	return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
@@ -188,14 +236,19 @@ const PostTab = () => {
 					{postView === 'list' ? (
 						<PostList>
 							{posts.map((post) => (
-								<li
+								<FeedItemCompoents
 									key={post.id}
-									className="post-list-item"
-									onClick={() => handlePostClick(post.id)}
-								>
-									{post.image && <img src={post.image} alt="" />}
-									<p>{post.content}</p>
-								</li>
+									content={post.content}
+									postImgSrc={post.image}
+									author={post.author}
+									postId={post.id}
+									onPostClick={handlePostClick}
+									hearted={post.hearted}
+									heartCount={post.heartCount}
+									onLike={handleLike}
+									onUnlike={handleUnlike}
+									isOwnProfile={true}
+								/>
 							))}
 						</PostList>
 					) : (
