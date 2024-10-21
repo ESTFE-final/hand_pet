@@ -72,7 +72,7 @@ const ChatRoomPage = () => {
 
 	return (
 		<>
-			<NavigationBar />
+			<NavigationBar title={'채팅방'} />
 			<Container>
 				<MessageList>
 					{messages.map((msg) => {

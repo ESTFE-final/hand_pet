@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom'; // 페이지 이동을 위해 추가
+import { useNavigate } from 'react-router-dom';
 import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
 import HeartFillIcon from '../../assets/icons/icon-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
@@ -35,14 +35,13 @@ const ProfileImage = styled.img`
 	margin-right: 12px;
 `;
 
-
 const ProfileuserName = styled.div`
 	font-size: 1.5rem;
 	color: #555555;
 `;
 const ProfileaccountName = styled.div`
 	font-size: 1.4rem;
-	color: #B4B4B4;
+	color: #b4b4b4;
 	margin-top: 4px;
 `;
 
@@ -244,13 +243,17 @@ const FeedItem = ({
 					</NavRightButton>
 				)}
 
-			<ProfileSection onClick={moveToUserProfile}>
-				<ProfileImage src={author.image || ProfileImg} alt="Profile" />
-				<profilecontainer>
-					<ProfileuserName>{author.username || 'Unknown User'}</ProfileuserName>
-					<ProfileaccountName>@{author.accountname || 'Unknown User'}</ProfileaccountName>
-				</profilecontainer>
-			</ProfileSection>
+				<ProfileSection onClick={moveToUserProfile}>
+					<ProfileImage src={author.image || ProfileImg} alt="Profile" />
+					<profilecontainer>
+						<ProfileuserName>
+							{author.username || 'Unknown User'}
+						</ProfileuserName>
+						<ProfileaccountName>
+							@{author.accountname || 'Unknown User'}
+						</ProfileaccountName>
+					</profilecontainer>
+				</ProfileSection>
 
 				<PostContent>{content}</PostContent>
 				{imageLoaded && hasImage && (

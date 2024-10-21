@@ -208,6 +208,7 @@ const ChatTimestamp = styled.span`
 	font-size: 1.4rem;
 	display: block;
 	margin-top: 0.4rem;
+	padding-right: 1.5rem;
 `;
 
 export default ChatListPage;

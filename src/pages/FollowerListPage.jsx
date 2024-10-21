@@ -1,12 +1,10 @@
-import { Link, useParams } from 'react-router-dom'; // useParams 추가
+import { useParams } from 'react-router-dom'; // useParams 추가
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
-import { useNavigate } from 'react-router-dom';
-import { LoadingSpinner } from '../components/SharedComponents/CommonComponents';
 
 function FollowerListPage() {
 	const { accountname } = useParams(); // URL에서 accountname 파라미터를 받아옴
@@ -118,13 +116,13 @@ function FollowerListPage() {
 										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
 									</FollowerText>
 								</FollowerInfo>
-								<Button
+								<FollowerButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(follower)}
 								>
 									{follower.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowerButton>
 							</FollowerListItem>
 						))
 					)}
@@ -198,4 +196,9 @@ const ErrorMessage = styled.div`
 	font-weight: bold;
 `;
 
+const FollowerButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
+`;
 export default FollowerListPage;

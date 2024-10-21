@@ -77,7 +77,7 @@ const StyledButton = styled.button`
 	}
 `;
 
-function Button({ disabled, size, children, onClick }) {
+function Button({ disabled, size, children, onClick, className }) {
 	const sizeStyle = SIZES[size];
 
 	return (
@@ -86,6 +86,7 @@ function Button({ disabled, size, children, onClick }) {
 			sizeStyle={sizeStyle}
 			size={size}
 			onClick={onClick}
+			className={className}
 		>
 			{children}
 		</StyledButton>

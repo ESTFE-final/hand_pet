@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
@@ -9,12 +9,8 @@ import imageCloseIcon from '../assets/icons/icon-image-close.svg';
 const PostUploadWrapper = styled.section`
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
-`;
-
-const CustomNavigationBar = styled(NavigationBar)`
-	border: none;
-	margin-bottom: 32px;
+	height: 100vh;
+	height: 100dvh;
 `;
 
 const UploadButton = styled.button`
@@ -35,8 +31,7 @@ const PostUploadContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	padding: 0 1.6rem;
-	padding-right: ${(props) => (props.hasImages ? '0' : '1.6rem')};
+	padding: 3.2rem ${(props) => (props.hasImages ? '0' : '1.6rem')} 3.2rem 1.6rem;
 `;
 
 const PostTextDiv = styled.div`
@@ -199,7 +194,7 @@ const PostUploadPage = () => {
 
 	return (
 		<PostUploadWrapper>
-			<CustomNavigationBar
+			<NavigationBar
 				title={'게시글 올리기'}
 				rightButton={
 					<UploadButton onClick={uploadImageData}>업로드</UploadButton>

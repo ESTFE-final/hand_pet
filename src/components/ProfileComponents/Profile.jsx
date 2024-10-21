@@ -24,6 +24,7 @@ const CustomProfileNavBar = styled(NavigationBar)`
 		background-size: contain;
 		width: 22px;
 		height: 22px;
+		cursor: pointer;
 	}
 
 	.nav-right-button {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import {
 	TitleWrap,
 	InputWrap,
@@ -83,13 +84,13 @@ const LoginEmailPage = () => {
 		<>
 			<TitleWrap>로그인</TitleWrap>
 			<InputWrap>
-				<Input
+				<LoginEmailInput
 					type="email"
 					placeholder="이메일을 입력하세요"
 					value={email}
 					onChange={handleInputChange(setEmail)}
 				/>
-				<Input
+				<LoginEmailInput
 					type="password"
 					placeholder="비밀번호를 입력하세요"
 					value={password}
@@ -101,10 +102,23 @@ const LoginEmailPage = () => {
 				>
 					{isSubmitting ? '로그인 중...' : '로그인'}
 				</BottomButton>
-				<Link to="/signup">이메일로 회원가입</Link>
+				<LoginEmailLink to="/signup">이메일로 회원가입</LoginEmailLink>
 			</InputWrap>
 		</>
 	);
 };
+
+const LoginEmailInput = styled(Input)`
+	margin-bottom: 3rem;
+	display: block;
+`;
+
+const LoginEmailLink = styled(Link)`
+	color: var(--gray-300);
+	font-size: 1.4rem;
+	display: block;
+	text-align: center;
+	margin-top: 1rem;
+`;
 
 export default LoginEmailPage;

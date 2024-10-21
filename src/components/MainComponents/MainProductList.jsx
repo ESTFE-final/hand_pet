@@ -8,7 +8,6 @@ import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const Container = styled.div`
 	width: 100%;
-
 	margin: 2.4rem auto;
 `;
 

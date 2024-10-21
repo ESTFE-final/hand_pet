@@ -1,12 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
-import { useNavigate } from 'react-router-dom';
-import { LoadingSpinner } from '../components/SharedComponents/CommonComponents';
 
 function FollowingListPage() {
 	const { accountname } = useParams();
@@ -120,13 +118,13 @@ function FollowingListPage() {
 										<FollowingShopDesc>{following.intro}</FollowingShopDesc>
 									</FollowingText>
 								</FollowingInfo>
-								<Button
+								<FollowingButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(following)}
 								>
 									{following.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowingButton>
 							</FollowingListItem>
 						))
 					)}
@@ -200,6 +198,12 @@ const ErrorMessage = styled.div`
 	font-size: 4rem;
 	font-weight: bold;
 	color: black;
+`;
+
+const FollowingButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
 `;
 
 export default FollowingListPage;

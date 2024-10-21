@@ -1,13 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import {
-	BrowserRouter,
-	Routes,
-	Route,
-	Link,
-	useNavigate,
-} from 'react-router-dom';
-import styled from 'styled-components';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import SplashScreenPage from './pages/SplashScreenPage';
 import MainPage from './pages/MainPage';
 import LoginEmailPage from './pages/LoginEmailPage';
@@ -53,17 +46,6 @@ function AppContent() {
 
 	return (
 		<>
-			<Link to="/"> 메인(홈) </Link>
-			<Link to="/login"> 로그인 </Link>
-			<Link to="/signup"> 회원가입 </Link>
-			<Link to="/product/add"> 상품등록 </Link>
-			<Link to="/profile"> 내 프로필 </Link>
-			<Link to="/follower"> 팔로워 </Link>
-			<Link to="/following"> 팔로잉 </Link>
-			<Link to="/chatlist"> 채팅리스트 </Link>
-			<Link to="/test-404">Test 404</Link>
-			<Link to="/post">피드</Link>
-
 			<Routes>
 				<Route path="/" element={<MainPage />} />
 				<Route path="/login/email" element={<LoginEmailPage />} />

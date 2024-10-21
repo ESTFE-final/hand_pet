@@ -23,6 +23,12 @@ const NotFoundText = styled.span`
 	color: var(--gray-300);
 `;
 
+const NotFoundButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
+`;
+
 const NotFoundPage = () => {
 	const navigate = useNavigate();
 
@@ -34,9 +40,9 @@ const NotFoundPage = () => {
 		<NotFoundWrapper>
 			<NotFoundIcon src={notFoundIcon} alt="" />
 			<NotFoundText>페이지를 찾을 수 없습니다. :&#40;</NotFoundText>
-			<Button size="sm" onClick={handleBack}>
+			<NotFoundButton size="sm" onClick={handleBack}>
 				이전 페이지
-			</Button>
+			</NotFoundButton>
 		</NotFoundWrapper>
 	);
 };
