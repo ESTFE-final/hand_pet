@@ -1,29 +1,32 @@
-// ChatRoomPage.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { db } from '../firebase'; // Firebase 설정 import
+import { db } from '../firebase';
 import {
 	collection,
 	onSnapshot,
 	addDoc,
+	deleteDoc,
+	doc,
 	orderBy,
 	query,
 	Timestamp,
 } from 'firebase/firestore';
 import styled from 'styled-components';
+import uploadIcon from '../assets/icons/upload-file.svg';
+import uploadButton from '../assets/icons/icon-feed-upload.svg';
+import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
 const ChatRoomPage = () => {
-	const { userId } = useParams(); // URL에서 userId 가져오기
-	const { state } = useLocation(); // useLocation 훅 사용
-	const otherProfile = state?.otherProfile || '/default_profile_image.png'; // 전달받은 프로필 이미지 사용
-
+	const { userId } = useParams();
+	const { state } = useLocation();
+	const otherProfile = state?.otherProfile || '/default_profile_image.png';
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState('');
 	const [image, setImage] = useState(null);
+	const [imageUrl, setImageUrl] = useState(null);
+	const currentUserId = localStorage.getItem('accountname');
 
 	useEffect(() => {
-		// 메시지 컬렉션을 정렬하여 가장 최근 메시지가 아래로 쌓이도록 설정
 		const messagesRef = collection(db, 'chats', userId, 'messages');
 		const q = query(messagesRef, orderBy('createdAt', 'asc'));
 
@@ -43,54 +46,90 @@ const ChatRoomPage = () => {
 
 		const newMessage = {
 			text: message,
-			senderId: '내 아이디', // 현재 사용자 ID로 수정 필요
+			senderId: currentUserId,
 			createdAt: Timestamp.now(),
-			imageUrl: image ? URL.createObjectURL(image) : null,
+			imageUrl: imageUrl || null,
 		};
 
 		await addDoc(collection(db, 'chats', userId, 'messages'), newMessage);
 		setMessage('');
 		setImage(null);
+		setImageUrl(null);
 	};
 
 	const handleImageChange = (e) => {
-		setImage(e.target.files[0]);
+		const file = e.target.files[0];
+		if (file) {
+			setImage(file);
+			setImageUrl(URL.createObjectURL(file));
+		}
+	};
+
+	const handleDeleteMessage = async (messageId) => {
+		const messageRef = doc(db, 'chats', userId, 'messages', messageId);
+		await deleteDoc(messageRef);
 	};
 
 	return (
-		<Container>
-			<MessageList>
-				{messages.map((msg) => (
-					<Message
-						key={msg.id}
-						isOwnMessage={msg.senderId === '내 아이디'} // 현재 사용자 ID와 비교
-					>
-						{msg.senderId !== '내 아이디' && (
-							<ProfileImg src={otherProfile} alt="상대방 프로필" />
-						)}
-						<MessageContent isOwnMessage={msg.senderId === '내 아이디'}>
-							{msg.text && <p>{msg.text}</p>}
-							{msg.imageUrl && <img src={msg.imageUrl} alt="전송된 이미지" />}
-							<Time>
-								{msg.createdAt && msg.createdAt.toDate
-									? msg.createdAt.toDate().toLocaleTimeString()
-									: '날짜 정보 없음'}
-							</Time>
-						</MessageContent>
-					</Message>
-				))}
-			</MessageList>
-			<MessageInput>
-				<input
-					type="text"
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-					placeholder="메세지를 입력하세요"
-				/>
-				<input type="file" accept="image/*" onChange={handleImageChange} />
-				<button onClick={handleSendMessage}>전송</button>
-			</MessageInput>
-		</Container>
+		<>
+			<NavigationBar />
+			<Container>
+				<MessageList>
+					{messages.map((msg) => {
+						const isOwnMessage = msg.senderId === currentUserId;
+						return (
+							<Message key={msg.id} isOwnMessage={isOwnMessage}>
+								{!isOwnMessage && (
+									<ProfileImg src={otherProfile} alt="상대방 프로필" />
+								)}
+								<MessageContent isOwnMessage={isOwnMessage}>
+									{msg.text && <p>{msg.text}</p>}
+									{msg.imageUrl && (
+										<img src={msg.imageUrl} alt="전송된 이미지" />
+									)}
+									<Time>
+										{msg.createdAt && msg.createdAt.toDate
+											? msg.createdAt.toDate().toLocaleTimeString()
+											: '날짜 정보 없음'}
+									</Time>
+									{isOwnMessage && (
+										<DeleteButton onClick={() => handleDeleteMessage(msg.id)}>
+											삭제
+										</DeleteButton>
+									)}
+								</MessageContent>
+							</Message>
+						);
+					})}
+				</MessageList>
+				<MessageInput>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleImageChange}
+						id="image-upload"
+						style={{ display: 'none' }}
+					/>
+					<label htmlFor="image-upload">
+						<UploadIcon src={uploadIcon} alt="이미지 업로드" />
+					</label>
+					<input
+						type="text"
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+						placeholder="메세지를 입력하세요"
+					/>
+					<SendButton onClick={handleSendMessage}>
+						<img src={uploadButton} alt="전송" />
+					</SendButton>
+				</MessageInput>
+				{imageUrl && (
+					<Preview>
+						<img src={imageUrl} alt="미리보기" />
+					</Preview>
+				)}
+			</Container>
+		</>
 	);
 };
 
@@ -105,7 +144,7 @@ const Container = styled.div`
 const MessageList = styled.div`
 	flex: 1;
 	overflow-y: scroll;
-	padding-bottom: 6rem; /* 입력창 공간 확보 */
+	padding-bottom: 6rem;
 `;
 
 const Message = styled.div`
@@ -163,18 +202,39 @@ const MessageInput = styled.div`
 		border-radius: 4px;
 		border: 1px solid #ddd;
 	}
-
-	input[type='file'] {
-		flex: 0 0 auto;
+`;
+const SendButton = styled.button`
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	img {
+		width: 30px;
+		height: 30px;
 	}
+`;
 
-	button {
-		padding: 0.5rem 1rem;
-		border: none;
-		background-color: #007bff;
-		color: white;
-		border-radius: 4px;
-		cursor: pointer;
+const UploadIcon = styled.img`
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+`;
+
+const DeleteButton = styled.button`
+	margin-top: 0.5rem;
+	padding: 0.2rem 0.5rem;
+	border: none;
+	background-color: #ff4d4d;
+	color: white;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.8rem;
+`;
+
+const Preview = styled.div`
+	margin: 1rem 0;
+	img {
+		max-width: 100%;
+		border-radius: 10px;
 	}
 `;
 

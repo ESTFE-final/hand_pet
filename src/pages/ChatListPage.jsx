@@ -1,17 +1,24 @@
-// ChatListPage.jsx
-
 import styled from 'styled-components';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getLatestMessage } from '../firebaseChatService'; // Firebase에서 최근 메시지 가져오는 함수
+import {
+	getLatestMessage,
+	createChatRoom,
+	getChatRooms,
+} from '../firebaseChatService';
 
 const ChatListPage = () => {
 	const [followers, setFollowers] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
+
+	const getChatRoomId = (userId1, userId2) => {
+		const sortedIds = [userId1, userId2].sort();
+		return `${sortedIds[0]}_${sortedIds[1]}`;
+	};
 
 	useEffect(() => {
 		const token = localStorage.getItem('authToken');
@@ -20,7 +27,6 @@ const ChatListPage = () => {
 		const fetchFollowers = async () => {
 			setLoading(true);
 			try {
-				// 팔로워 리스트 가져오기
 				const response = await axios.get(
 					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
 					{
@@ -30,12 +36,17 @@ const ChatListPage = () => {
 						},
 					}
 				);
-				const followersData = response.data;
 
-				// 각 팔로워의 최근 메시지 가져오기
+				const followersData = response.data;
+				const currentUserId = accountname;
+
 				const followersWithMessages = await Promise.all(
 					followersData.map(async (follower) => {
-						const latestMessage = await getLatestMessage(follower.accountname);
+						const chatRoomId = getChatRoomId(
+							currentUserId,
+							follower.accountname
+						);
+						const latestMessage = await getLatestMessage(chatRoomId);
 						return {
 							...follower,
 							lastMessage: latestMessage.text,
@@ -66,10 +77,30 @@ const ChatListPage = () => {
 		return <div>Error: {error}</div>;
 	}
 
-	const handleChatClick = (follower) => {
-		navigate(`/chat/${follower.accountname}`, {
-			state: { otherProfile: follower.image }, // 팔로워의 프로필 이미지 전달
-		});
+	const handleChatClick = async (follower) => {
+		const currentUserId = localStorage.getItem('accountname');
+		const targetUserId = follower.accountname;
+		const chatRoomId = getChatRoomId(currentUserId, targetUserId);
+
+		try {
+			const existingChatRooms = await getChatRooms();
+			const existingRoom = existingChatRooms.find(
+				(room) => room.id === chatRoomId
+			);
+
+			if (existingRoom) {
+				navigate(`/chat/${chatRoomId}`, {
+					state: { otherProfile: follower.image },
+				});
+			} else {
+				await createChatRoom(chatRoomId);
+				navigate(`/chat/${chatRoomId}`, {
+					state: { otherProfile: follower.image },
+				});
+			}
+		} catch (error) {
+			console.error('채팅방 클릭 처리 중 오류:', error);
+		}
 	};
 
 	return (

@@ -76,15 +76,15 @@ function AppContent() {
 				<Route path="/product/add" element={<AddProductPage />} />
 				<Route path="/follower" element={<FollowerListPage />} />
 				<Route path="/following" element={<FollowingListPage />} />
-				<Route path="/chatlist" element={<ChatListPage />} />
 				<Route path="/post" element={<PostListPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/post/:id" element={<PostDetailPage />} />
 				<Route path="/postsu/:post_id" element={<Postsu />} />
 				<Route path="/product/:product_id" element={<ProductPage />} />
 				<Route path="/product/edit/:product_id" element={<ProductEditPage />} />
-				<Route path="*" element={<NotFoundPage />} />
+				<Route path="/chatlist" element={<ChatListPage />} />
 				<Route path="/chat/:userId" element={<ChatRoom />} />
+				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 		</>
 	);
