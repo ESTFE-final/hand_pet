@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import userProfileImg from '../../assets/icons/profile-img.svg';
 import uploadIcon from '../../assets/icons/icon-feed-upload.svg';
+import uploadFillIcon from '../../assets/icons/icon-feed-upload-fill.svg';
 
 const CommentFormWrapper = styled.form`
 	display: flex;
@@ -32,8 +33,9 @@ const CommentInput = styled.input`
 `;
 
 const CommentSubmit = styled.button`
-	color: var(--gray-200);
-	font-size: 1.5rem;
+	background: url(${uploadIcon}) no-repeat;
+	width: 19px;
+	height: 19px;
 `;
 
 const UploadIcon = styled.img`
@@ -69,9 +71,9 @@ const CommentForm = ({ onSubmit }) => {
 			/>
 			<CommentSubmit type="submit" hasContent={!comment.trim().length > 0}>
 				{comment.trim().length > 0 ? (
-					<UploadIcon src={uploadIcon} alt="댓글 업로드" />
+					<UploadIcon src={uploadFillIcon} alt="댓글 업로드" />
 				) : (
-					'게시'
+					''
 				)}
 			</CommentSubmit>
 		</CommentFormWrapper>

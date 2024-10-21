@@ -14,7 +14,7 @@ const CommentSection = styled.div`
 const CommentItem = styled.div`
 	display: flex;
 	align-items: flex-start;
-	margin-bottom: 18px;
+	margin-bottom: 20px;
 	gap: 12px;
 `;
 
@@ -32,11 +32,11 @@ const CommentContent = styled.div`
 const CommentUser = styled.div`
 	display: flex;
 	align-items: center;
-	margin: 4px 0 10px 0;
+	margin: 4px 0 15px 0;
 `;
 
 const UserId = styled.span`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 `;
 
 const CommetSeparator = styled.span`
@@ -57,7 +57,7 @@ const CommentButton = styled.button`
 `;
 
 const CommentText = styled.p`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-right: 38px;
 `;
 

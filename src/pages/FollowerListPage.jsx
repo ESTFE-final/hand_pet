@@ -122,7 +122,7 @@ function FollowerListPage() {
 
 	return (
 		<>
-			<NavigationBar title="팔로워" />
+			<CustomProfileNavBar title="팔로워" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
 				<FollowerListContent>
@@ -153,6 +153,7 @@ function FollowerListPage() {
 					)}
 				</FollowerListContent>
 			</InnerWMobileFull>
+			<TabNaviComponent />
 		</>
 	);
 }
@@ -197,16 +198,17 @@ const FollowerImg = styled.img`
 
 const FollowerText = styled.div`
 	padding-top: 0.7rem;
+	margin-right: 2rem;
 `;
 
 const FollowerShopName = styled.p`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-bottom: 0.6rem;
 `;
 
 const FollowerShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 `;
 
 const ErrorMessage = styled.div`

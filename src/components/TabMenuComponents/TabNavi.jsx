@@ -28,7 +28,7 @@ const TabNavi = styled.div`
 	margin: 0 auto;
 	height: 60px;
 	background-color: #ffffff;
-	border: 1px solid var(--gray);
+	border-top: 1px solid var(--gray);
 	z-index: 10;
 `;
 
@@ -48,7 +48,7 @@ const TabNaviButton = styled.button`
 	gap: 4px;
 	width: 100%;
 	height: 100%;
-	font-size: 1.2rem;
+	font-size: 1rem;
 	color: ${(props) =>
 		props.isActive || props.isHovered ? '#FF3239' : '#767676'};
 	word-break: keep-all;
@@ -85,7 +85,6 @@ const TabNaviIcon = styled.img`
 
 // 탭 정보를 담은 배열
 const tabs = [
-
 	{
 		path: '/',
 		label: '홈',
@@ -116,7 +115,6 @@ const tabs = [
 		icon: iconProfile,
 		activeIcon: iconProfileFill,
 	},
-
 ];
 
 function TabNaviComponent() {
@@ -130,7 +128,6 @@ function TabNaviComponent() {
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (
-
 				<StyledNavLink
 					key={index}
 					to={tab.path}
@@ -157,7 +154,6 @@ function TabNaviComponent() {
 						</TabNaviButton>
 					)}
 				</StyledNavLink>
-
 			))}
 		</TabNavi>
 	);

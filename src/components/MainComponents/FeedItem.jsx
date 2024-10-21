@@ -7,10 +7,11 @@ import HeartFillIcon from '../../assets/icons/icon-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
 import ProfileImg from '../../assets/icons/profile-img.svg';
 import RightmenuIcon from '../../assets/icons/s-icon-more-vertical.svg';
+import { PostModal } from '../SharedComponents/CommonComponents';
 
 const FeedWrapper = styled.div`
 	max-width: 480px;
-	margin: 20px 16px 34px 16px;
+	margin: 20px 16px 24px 16px;
 	background-color: #fff;
 	position: relative;
 	cursor: pointer;
@@ -36,7 +37,7 @@ const ProfileName = styled.div`
 `;
 
 const PostContent = styled.div`
-	font-size: 1.6rem;
+	font-size: 1.5rem;
 	margin-bottom: 15px;
 `;
 
@@ -147,9 +148,10 @@ const CloseButton = styled.button`
 `;
 
 const LikeCount = styled.span`
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	color: var(--gray-300);
 	margin-left: 6px;
+	margin-top: 1px;
 `;
 
 const FeedItem = ({
@@ -162,6 +164,7 @@ const FeedItem = ({
 	onLike,
 	onUnlike,
 	onClick,
+	showNavRightButton = true,
 }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
@@ -254,45 +257,50 @@ const FeedItem = ({
 		navigate(`/profile/${author.accountname}`);
 	};
 
+	const postModalOptions = [
+		{ text: '게시글 수정', onClick: handleEditPost },
+		{ text: '게시글 삭제', onClick: handleDeletePost },
+	];
+
 	return (
-		<FeedWrapper onClick={onClick}>
-			<NavRightButton onClick={handleRightBtnClick}>
-				{/* 우측 버튼 클릭 시 모달 띄우기 */}
-			</NavRightButton>
+		<>
+			<FeedWrapper onClick={onClick}>
+				{showNavRightButton && (
+					<NavRightButton onClick={handleRightBtnClick}>
+						{/* 우측 버튼 클릭 시 모달 띄우기 */}
+					</NavRightButton>
+				)}
 
-			{showModal && (
-				<ModalBackground onClick={handleCloseModal}>
-					<ModalContent onClick={(e) => e.stopPropagation()}>
-						<ModalButton onClick={handleEditPost}>게시글 수정</ModalButton>
-						<ModalButton onClick={handleDeletePost}>게시글 삭제</ModalButton>
-						<CloseButton onClick={handleCloseModal}>닫기</CloseButton>
-					</ModalContent>
-				</ModalBackground>
-			)}
+				<ProfileSection onClick={moveToUserProfile}>
+					<ProfileImage src={author.image || ProfileImg} alt="Profile" />
+					<ProfileName>{author.accountname || 'Unknown User'}</ProfileName>
+				</ProfileSection>
 
-			<ProfileSection onClick={moveToUserProfile}>
-				<ProfileImage src={author.image || ProfileImg} alt="Profile" />
-				<ProfileName>{author.accountname || 'Unknown User'}</ProfileName>
-			</ProfileSection>
+				<PostContent>{content}</PostContent>
+				{imageLoaded && hasImage && (
+					<PostImageWrapper>
+						<PostImage src={postImgSrc} alt="Post" />
+					</PostImageWrapper>
+				)}
+				<ReactionIcons>
+					<IconButton onClick={handleLikeClick}>
+						<HeartIconWrapper animate={animateHeart}>
+							<img src={hearted ? HeartFillIcon : HeartIcon} alt="Heart" />
+						</HeartIconWrapper>
+						<LikeCount>{heartCount}</LikeCount>
+					</IconButton>
+					<IconButton>
+						<img src={MessageIcon} alt="Message" />
+					</IconButton>
+				</ReactionIcons>
+			</FeedWrapper>
 
-			<PostContent>{content}</PostContent>
-			{imageLoaded && hasImage && (
-				<PostImageWrapper>
-					<PostImage src={postImgSrc} alt="Post" />
-				</PostImageWrapper>
-			)}
-			<ReactionIcons>
-				<IconButton onClick={handleLikeClick}>
-					<HeartIconWrapper animate={animateHeart}>
-						<img src={hearted ? HeartFillIcon : HeartIcon} alt="Heart" />
-					</HeartIconWrapper>
-					<LikeCount>{heartCount}</LikeCount>
-				</IconButton>
-				<IconButton>
-					<img src={MessageIcon} alt="Message" />
-				</IconButton>
-			</ReactionIcons>
-		</FeedWrapper>
+			<PostModal
+				isOpen={showModal}
+				onClose={handleCloseModal}
+				options={postModalOptions}
+			/>
+		</>
 	);
 };
 

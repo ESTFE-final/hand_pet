@@ -123,7 +123,7 @@ function FollowingListPage() {
 
 	return (
 		<>
-			<NavigationBar title="팔로잉" />
+			<CustomProfileNavBar title="팔로잉" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
 				<FollowingListContent>
@@ -154,6 +154,7 @@ function FollowingListPage() {
 					)}
 				</FollowingListContent>
 			</InnerWMobileFull>
+			<TabNaviComponent />
 		</>
 	);
 }
@@ -199,16 +200,17 @@ const FollowingImg = styled.img`
 
 const FollowingText = styled.div`
 	padding-top: 0.7rem;
+	margin-right: 2rem;
 `;
 
 const FollowingShopName = styled.p`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-bottom: 0.6rem;
 `;
 
 const FollowingShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 `;
 
 const ErrorMessage = styled.div`
