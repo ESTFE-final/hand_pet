@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 // SVG 이미지 import
 import iconMain from '../../assets/icons/icon-home.svg';
@@ -18,27 +18,36 @@ import iconFeedFill from '../../assets/icons/icon-tab-feed-fill.svg';
 const TabNavi = styled.div`
 	display: flex;
 	position: fixed;
+	bottom: 0;
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
 	max-width: 480px;
-	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
 	height: 60px;
 	background-color: #ffffff;
-	border-top: 1px solid #e5e5e5;
+	border: 1px solid var(--gray);
 	z-index: 10;
 `;
 
-const StyledNavLink = styled(NavLink)``;
+const StyledNavLink = styled(NavLink)`
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
 
 // Button 스타일
 const TabNaviButton = styled.button`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	gap: 4px;
-	/* width: 107px; */
-	font-family: 'Gmarket Sans TTF';
+	width: 100%;
+	height: 100%;
 	font-size: 1.2rem;
 	color: ${(props) =>
 		props.isActive || props.isHovered ? '#FF3239' : '#767676'};
@@ -47,6 +56,23 @@ const TabNaviButton = styled.button`
 
 	&:hover {
 		color: #ff3239;
+		animation: clickAnimation 0.4s ease;
+	}
+
+	&:active {
+		animation: clickAnimation 0.4s ease;
+	}
+
+	@keyframes clickAnimation {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(0.9);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 `;
 
@@ -66,7 +92,7 @@ const tabs = [
 		activeIcon: iconMainFill,
 	},
 	{
-		path: '/About',
+		path: '/chatlist',
 		label: '채팅',
 		icon: iconAbout,
 		activeIcon: iconAboutFill,
@@ -93,11 +119,24 @@ const tabs = [
 
 function TabNaviComponent() {
 	const [hoverIndex, setHoverIndex] = useState(null);
+	const location = useLocation();
+
+	const isProfileActive = (path) => {
+		return location.pathname.startsWith('/profile');
+	};
 
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (
-				<StyledNavLink key={index} to={tab.path}>
+				<StyledNavLink
+					key={index}
+					to={tab.path}
+					isActive={
+						tab.path === '/profile'
+							? isProfileActive
+							: (match, location) => location.pathname === tab.path
+					}
+				>
 					{({ isActive }) => (
 						<TabNaviButton
 							isActive={isActive}
