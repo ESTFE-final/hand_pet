@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
+import SearchIconPath from '../../assets/icons/icon-search.svg'; // Search Icon 경로 추가
 
 const NavBar = styled.nav`
-	/* position: fixed; */
 	top: 0;
 	width: 100%;
 	max-width: 480px;
@@ -16,7 +16,6 @@ const NavBar = styled.nav`
 	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
 	z-index: 999;
-	/* margin-bottom: 16px; */
 `;
 
 const NavLeftGroup = styled.div`
@@ -115,19 +114,9 @@ const PostModalContainer = styled.aside`
 	max-width: 480px;
 	margin: 0 auto;
 	background-color: var(--white);
-
 	border-radius: 20px 20px 0 0;
 	transition: transform 0.3s;
 	z-index: 999;
-
- /*	border-radius: 10px 10px 0 0;
-	opacity: 0;
-	transform: translateY(100%);
-	transition:
-	opacity 0.3s,
- 		transform 0.3s;
-	z-index: 1000; */
-
 
 	&.visible {
 		display: block;
@@ -161,7 +150,13 @@ const PostModalOption = styled.button`
 	font-size: 1.4rem;
 `;
 
-//  NavigationBar이것만 바꾸었는데 아래에 뒤로가기 버튼기능 구현 위한 navigate 추가함
+const SearchIcon = styled.img`
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	display: none;
+`;
+
 export const NavigationBar = ({
 	title,
 	rightButton = null,
@@ -195,6 +190,7 @@ export const NavigationBar = ({
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
 			{searchInput}
+			<SearchIcon src={SearchIconPath} alt="검색" /> {/* Search Icon 추가 */}
 			{rightButton}
 		</NavBar>
 	);
@@ -219,7 +215,7 @@ export const AlertModal = ({
 	alertText,
 	modalClose,
 	buttonText,
-	buttonAction, // 버튼 액션을 props로 전달
+	buttonAction,
 }) => {
 	const dialogRef = useRef();
 
@@ -242,8 +238,8 @@ export const AlertModal = ({
 					<AlertButtonRight
 						type="button"
 						onClick={() => {
-							buttonAction(); // 버튼 액션 호출
-							modalClose(); // 모달 닫기
+							buttonAction();
+							modalClose();
 						}}
 					>
 						{buttonText}
