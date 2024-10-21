@@ -106,6 +106,13 @@ const LikeCount = styled.span`
 	margin-top: 1px;
 `;
 
+const CommentCount = styled.span`
+	font-size: 1.2rem;
+	color: var(--gray-300);
+	margin-left: 6px;
+	margin-top: 1px;
+`;
+
 const FeedItemCompoents = ({
 	content,
 	postImgSrc,
@@ -118,6 +125,7 @@ const FeedItemCompoents = ({
 	onPostClick,
 	onMoreClick,
 	showNavRightButton = true,
+	commentCount,
 }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
@@ -189,6 +197,7 @@ const FeedItemCompoents = ({
 				</IconButton>
 				<IconButton>
 					<img src={MessageIcon} alt="Message" />
+					<CommentCount>{commentCount}</CommentCount>
 				</IconButton>
 			</ReactionIcons>
 		</FeedWrapper>

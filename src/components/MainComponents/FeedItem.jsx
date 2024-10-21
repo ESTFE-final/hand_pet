@@ -102,52 +102,14 @@ const NavRightButton = styled.button`
 	right: 0;
 `;
 
-/* 모달 스타일 */
-const ModalBackground = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-	background: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	width: 300px;
-	text-align: center;
-`;
-
-const ModalButton = styled.button`
-	margin-top: 10px;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: #f44336;
-	color: white;
-	cursor: pointer;
-	width: 100%;
-	margin-bottom: 10px;
-`;
-
-const CloseButton = styled.button`
-	margin-top: 10px;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	background-color: #bbb;
-	color: white;
-	cursor: pointer;
-	width: 100%;
-`;
-
 const LikeCount = styled.span`
+	font-size: 1.2rem;
+	color: var(--gray-300);
+	margin-left: 6px;
+	margin-top: 1px;
+`;
+
+const CommentCount = styled.span`
 	font-size: 1.2rem;
 	color: var(--gray-300);
 	margin-left: 6px;
@@ -165,6 +127,7 @@ const FeedItem = ({
 	onUnlike,
 	onClick,
 	showNavRightButton = true,
+	commentCount,
 }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
@@ -291,6 +254,7 @@ const FeedItem = ({
 					</IconButton>
 					<IconButton>
 						<img src={MessageIcon} alt="Message" />
+						<CommentCount>{commentCount}</CommentCount>
 					</IconButton>
 				</ReactionIcons>
 			</FeedWrapper>

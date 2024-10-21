@@ -38,7 +38,7 @@ const PostButton = styled.button`
 `;
 
 const EmptyState = styled.p`
-	padding-top: 26px;
+	margin-top: 26px;
 	text-align: center;
 	font-size: 1.6rem;
 `;
@@ -248,6 +248,7 @@ const PostTab = () => {
 									onLike={handleLike}
 									onUnlike={handleUnlike}
 									showNavRightButton={false}
+									commentCount={post.commentCount}
 								/>
 							))}
 						</PostList>
