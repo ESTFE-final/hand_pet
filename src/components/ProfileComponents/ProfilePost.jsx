@@ -93,7 +93,7 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const accountname = localStorage.getItem('accountname');
+	const { accountname: paramAccountname } = useParams(); // URL에서 accountname 가져오기
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
 
@@ -102,7 +102,7 @@ const PostTab = () => {
 		setIsLoading(true);
 		try {
 			const response = await Axios.get(
-				`https://estapi.mandarin.weniv.co.kr/post/${accountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
+				`https://estapi.mandarin.weniv.co.kr/post/${paramAccountname}/userpost?limit=${limit}&skip=${(page - 1) * limit}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -138,7 +138,7 @@ const PostTab = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [accountname, token, page, limit]);
+	}, [paramAccountname, token, page, limit]); // 의존성 배열에서 accountname 변경
 
 	useEffect(() => {
 		fetchPosts();
@@ -223,7 +223,7 @@ const PostTab = () => {
 						</PostButton>
 						<PostButton
 							type="button"
-							className={postView === 'album' ? 'active' : ''}
+							className={postView === 'album' ? 'active' : '' }
 							onClick={() => setPostView('album')}
 							aria-pressed={postView === 'album'}
 						>
