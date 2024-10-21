@@ -7,6 +7,7 @@ import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
+import FeedItemCompoents from '../MainComponents/FeedItemCompoents';
 
 const PostContainer = styled.section``;
 
@@ -92,12 +93,9 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const { accountname: paramAccountname } = useParams();
-	const localAccountname = localStorage.getItem('accountname');
+	const accountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
-
-	const accountname = paramAccountname || localAccountname;
 
 	const fetchPosts = useCallback(async () => {
 		if (isLoading || !hasMore) return;
@@ -158,6 +156,55 @@ const PostTab = () => {
 		}
 	};
 
+	// 좋아요
+	const handleLike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await Axios.post(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/heart`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, true, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 오류:', error);
+		}
+	};
+
+	// 좋아요 취소
+	const handleUnlike = async (postId) => {
+		const token = localStorage.getItem('authToken');
+		try {
+			const response = await Axios.delete(
+				`https://estapi.mandarin.weniv.co.kr/post/${postId}/unheart`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			updateLike(postId, false, response.data.post.heartCount);
+		} catch (error) {
+			console.error('좋아요 취소 오류:', error);
+		}
+	};
+
+	const updateLike = (postId, isLiked, newHeartCount) => {
+		setPosts((prevPosts) =>
+			prevPosts.map((post) =>
+				post.id === postId
+					? { ...post, hearted: isLiked, heartCount: newHeartCount }
+					: post
+			)
+		);
+	};
+
 	return (
 		<PostContainer aria-label="게시물 목록">
 			{posts.length > 0 ? (
@@ -189,14 +236,19 @@ const PostTab = () => {
 					{postView === 'list' ? (
 						<PostList>
 							{posts.map((post) => (
-								<li
+								<FeedItemCompoents
 									key={post.id}
-									className="post-list-item"
-									onClick={() => handlePostClick(post.id)}
-								>
-									{post.image && <img src={post.image} alt="" />}
-									<p>{post.content}</p>
-								</li>
+									content={post.content}
+									postImgSrc={post.image}
+									author={post.author}
+									postId={post.id}
+									onPostClick={handlePostClick}
+									hearted={post.hearted}
+									heartCount={post.heartCount}
+									onLike={handleLike}
+									onUnlike={handleUnlike}
+									isOwnProfile={true}
+								/>
 							))}
 						</PostList>
 					) : (
