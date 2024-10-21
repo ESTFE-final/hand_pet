@@ -90,16 +90,17 @@ const PostModalOverlay = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
-	opacity: 0;
-	visibility: hidden;
-	transition:
-		opacity 0.3s,
-		visibility 0.3s;
+	transition: opacity 0.3s;
 	z-index: 998;
 
 	&.visible {
+		display: block;
 		opacity: 1;
-		visibility: visible;
+	}
+
+	&.hidden {
+		display: none;
+		opacity: 0;
 	}
 `;
 
@@ -110,16 +111,17 @@ const PostModalContainer = styled.aside`
 	width: 100%;
 	background-color: var(--white);
 	border-radius: 20px 20px 0 0;
-	opacity: 0;
-	transform: translateY(100%);
-	transition:
-		opacity 0.3s,
-		transform 0.3s;
+	transition: transform 0.3s;
 	z-index: 999;
 
 	&.visible {
-		opacity: 1;
+		display: block;
 		transform: translateY(0);
+	}
+
+	&.hidden {
+		display: none;
+		transform: translateY(100%);
 	}
 `;
 
@@ -277,11 +279,11 @@ export const PostModal = ({ isOpen, onClose, options = [] }) => {
 	return (
 		<>
 			<PostModalOverlay
-				className={isVisible ? 'visible' : ''}
+				className={isVisible ? 'visible' : 'hidden'}
 				onClick={handleClose}
 			/>
 			<PostModalContainer
-				className={isVisible ? 'visible' : ''}
+				className={isVisible ? 'visible' : 'hidden'}
 				onTouchStart={handleTouchStart}
 				onTouchMove={handleTouchMove}
 				onTouchEnd={handleTouchEnd}

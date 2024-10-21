@@ -5,8 +5,8 @@ import {
 	InputWrap,
 	ErrorMessageWrap,
 	BottomButton,
+	LoginInput,
 } from '../components/LoginComponents/loginindex';
-import { Input } from '../components/SharedComponents/CommonComponents';
 import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
@@ -83,14 +83,14 @@ const SignupPage = () => {
 		<>
 			<TitleWrap>회원가입</TitleWrap>
 			<InputWrap>
-				<Input
+				<LoginInput
 					type="email"
 					placeholder="이메일을 입력하세요"
 					value={email}
 					onChange={handleEmailChange}
 				/>
 				<ErrorMessageWrap>{emailError}</ErrorMessageWrap>
-				<Input
+				<LoginInput
 					type="password"
 					placeholder="비밀번호를 입력하세요"
 					value={password}

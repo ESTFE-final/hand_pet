@@ -8,10 +8,10 @@ const ProductUserContainer = styled.div`
 `;
 
 const StoreImage = styled.img`
-	width: 50px;
-	height: 50px;
+	width: 48px;
+	height: 48px;
 	border-radius: 50%;
-	margin-right: 10px;
+	margin-right: 1.2rem;
 `;
 
 const StoreDetails = styled.div`
@@ -21,14 +21,12 @@ const StoreDetails = styled.div`
 
 const StoreName = styled.p`
 	font-size: 1.2rem;
-	font-weight: bold;
-	margin: 0;
+	line-height: 1.4;
 `;
 
 const AccountName = styled.p`
-	font-size: 1rem;
-	color: gray;
-	margin: 0;
+	font-size: .9rem;
+	color: var(--gray-300);
 `;
 
 const ProductUser = ({ author }) => (

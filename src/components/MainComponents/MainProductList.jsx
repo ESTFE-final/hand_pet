@@ -6,33 +6,38 @@ import { useNavigate } from 'react-router-dom';
 import MainCategory from './MainCategory';
 
 const Container = styled.div`
-	width: 90%;
-	margin: 52px auto;
+	width: 100%;
+	margin: 2.4rem auto;
 `;
 
 const Title = styled.span`
-	font-size: 3rem;
+	font-size: 1.8rem;
 `;
 
 const ButtonContainer = styled.div`
-	margin: 36px auto;
+	margin: 1.8rem auto;
 `;
 
 const Button = styled.button`
-	padding: 10px 15px;
-	margin: 0 5px;
-	height: 44px;
-	line-height: 1.5;
+	padding: 0.5rem 1rem;
+	margin: 0 0.4rem;
 	background-color: ${(props) => (props.isSelected ? '#000' : '#f3f3f5')};
 	color: ${(props) => (props.isSelected ? '#fff' : '#6C6D7A')};
 	cursor: pointer;
-	font-size: 2rem;
+	font-size: 1rem;
 	border-radius: 20px;
 	&:hover {
 		background-color: #000;
 		color: #fff;
 	}
+	&:first-child{
+		margin-left: 0;
+	};
 `;
+
+const Productscontent = styled.section`
+	padding: 2.6rem 2.4rem;
+`
 
 const MainProductList = () => {
 	const [products, setProducts] = useState([]);
@@ -132,28 +137,29 @@ const MainProductList = () => {
 	return (
 		<Container>
 			<MainCategory setSelectedCategory={setSelectedCategory} />
-			<Title>판매 중인 상품</Title>
-
-			<ButtonContainer>
-				{options.map((option) => (
-					<Button
-						key={option}
-						isSelected={selectedSort === option}
-						onClick={() => setSelectedSort(option)}
-					>
-						{option}
-					</Button>
-				))}
-			</ButtonContainer>
-			<ProductList
-				products={filteredProducts.map((product) => ({
-					id: product.id,
-					img: product.itemImage,
-					name: product.itemName,
-					price: `${product.price.toLocaleString()}원`,
-				}))}
-				onProductClick={handleProductClick}
-			/>
+			<Productscontent>
+				<Title>판매 중인 상품</Title>
+				<ButtonContainer>
+					{options.map((option) => (
+						<Button
+							key={option}
+							isSelected={selectedSort === option}
+							onClick={() => setSelectedSort(option)}
+						>
+							{option}
+						</Button>
+					))}
+				</ButtonContainer>
+				<ProductList
+					products={filteredProducts.map((product) => ({
+						id: product.id,
+						img: product.itemImage,
+						name: product.itemName,
+						price: `${product.price.toLocaleString()}원`,
+					}))}
+					onProductClick={handleProductClick}
+				/>
+			</Productscontent>
 		</Container>
 	);
 };

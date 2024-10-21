@@ -18,40 +18,40 @@ const InputBox = ({ id, type, name, placeholder, error, onChange, value }) => (
 );
 
 const AddProductContent = styled.div`
-	padding: 3rem 3.4rem 0;
+	padding: 0 3.4rem;
 `;
 
 const AddProductInputItem = styled.div`
-	margin-bottom: 3rem;
+	margin-bottom: 1.5rem;
 	&:last-child {
 		margin-bottom: 0;
 	}
 `;
 
 const AddProductLabel = styled.label`
-	padding-left: 2.2rem;
-	font-size: 2.4rem;
-	color: #666;
+	padding-left: 1.1rem;
+	font-size: 1.2rem;
+	color: var(--gray-300);
 `;
 
 const AddProductInput = styled(Input)`
-	margin-top: 1.5rem;
+	margin-top: 1rem;
 	display: block;
 `;
 
 const AddProductImageContent = styled.div`
 	position: relative;
-	margin-bottom: 6rem;
+	margin-bottom: 3rem;
 `;
 
 const AddProductImageLabel = styled.label`
 	position: absolute;
-	bottom: 24px;
-	right: 24px;
+	bottom: 12px;
+	right: 12px;
 	display: block;
 	background: url(${uploadIcon}) no-repeat center / 100%;
-	width: 72px;
-	height: 72px;
+	width: 36px;
+	height: 36px;
 	border-radius: 50%;
 	cursor: pointer;
 `;
@@ -63,20 +63,20 @@ const AddProductImageInput = styled.input`
 const AddProductPreviewImage = styled.img`
 	width: 100%;
 	height: auto;
-	max-height: 408px;
+	max-height: 204px;
 	object-fit: cover;
-	border-radius: 2rem;
+	border-radius: 1rem;
 	overflow: hidden;
-	margin-top: 1.5rem;
+	margin-top: 1.8rem;
 `;
 
 const AddProductPlaceholderImage = styled.div`
 	width: 100%;
-	height: 408px;
+	height: 204px;
 	background-color: #f2f2f2;
 	border: 1px solid var(--gray);
-	border-radius: 2rem;
-	margin-top: 1.5rem;
+	border-radius: 1rem;
+	margin-top: 1rem;
 `;
 
 const ErrorMessage = styled.p`
