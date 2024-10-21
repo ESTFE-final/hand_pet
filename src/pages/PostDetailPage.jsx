@@ -5,6 +5,7 @@ import FeedItem from '../components/MainComponents/FeedItem'; // FeedItem import
 import styled from 'styled-components';
 import FeedDetail from '../components/MainComponents/FeedDetail';
 import CommentForm from '../components/MainComponents/CommentForm';
+import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
 const PostDetailWrapper = styled.section`
 	height: 100vh;
@@ -234,6 +235,7 @@ const PostDetailPage = () => {
 
 	return (
 		<PostDetailWrapper>
+			<NavigationBar />
 			<MenuButton
 				onClick={(e) => {
 					e.stopPropagation(); // 클릭 이벤트 전파 방지

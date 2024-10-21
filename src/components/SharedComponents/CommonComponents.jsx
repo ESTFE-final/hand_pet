@@ -4,18 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 
 const NavBar = styled.nav`
+	/* position: fixed; */
 	top: 0;
-	left: 0;
 	width: 100%;
-	height: 96px;
-	padding: 0 32px;
+	max-width: 480px;
+	padding: 13px 16px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	background-color: var(--white);
-	border-bottom: 2px solid var(--gray);
+	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
-	margin-bottom: 32px;
+	z-index: 999;
+	/* margin-bottom: 16px; */
 `;
 
 const NavLeftGroup = styled.div`
@@ -26,18 +27,18 @@ const NavLeftGroup = styled.div`
 `;
 
 const NavTitle = styled.h1`
-	margin-left: 20px;
+	margin-left: 10px;
 	font-weight: normal;
-	font-size: 3.6rem;
-	margin-top: 4px;
+	font-size: 2rem;
+	margin-top: 2px;
 `;
 
 const CommonInput = styled.input`
 	width: 100%;
-	padding: 2.126rem 2rem;
+	padding: 1.7rem 2.5rem;
 	background-color: var(--graylight);
-	border: 2px solid var(--graylight-100);
-	border-radius: 88px;
+	border: 1px solid var(--graylight-100);
+	border-radius: 44px;
 	outline: none;
 
 	&::placeholder {
@@ -51,8 +52,8 @@ const CommonInput = styled.input`
 `;
 
 const AlertModalContainer = styled.dialog`
-	width: 504px;
-	border-radius: 20px;
+	width: 252px;
+	border-radius: 10px;
 	border: none;
 	padding: 0;
 	margin: auto;
@@ -64,23 +65,23 @@ const ModalWrap = styled.form`
 	align-items: center;
 
 	p {
-		padding: 48px 0;
+		padding: 24px 0;
 	}
 `;
 
 const AlertButtonLeft = styled.button`
-	width: 252px;
+	width: 126px;
 	background-color: transparent;
-	padding: 30px 0;
-	border-top: 1px solid var(--gray);
+	padding: 15px 0;
+	border-top: 0.5px solid var(--gray);
 `;
 
 const AlertButtonRight = styled.button`
-	width: 252px;
+	width: 126px;
 	background-color: transparent;
-	padding: 30px 0;
-	border-top: 1px solid var(--gray);
-	border-left: 1px solid var(--gray);
+	padding: 15px 0;
+	border-top: 0.5px solid var(--gray);
+	border-left: 0.5px solid var(--gray);
 	color: var(--primary);
 `;
 
@@ -105,18 +106,21 @@ const PostModalOverlay = styled.div`
 `;
 
 const PostModalContainer = styled.aside`
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
+	right: 0;
 	width: 100%;
+	max-width: 480px;
+	margin: 0 auto;
 	background-color: var(--white);
-	border-radius: 20px 20px 0 0;
+	border-radius: 10px 10px 0 0;
 	opacity: 0;
 	transform: translateY(100%);
 	transition:
 		opacity 0.3s,
 		transform 0.3s;
-	z-index: 999;
+	z-index: 1000;
 
 	&.visible {
 		opacity: 1;
@@ -125,24 +129,24 @@ const PostModalContainer = styled.aside`
 `;
 
 const PostModalContent = styled.div`
-	padding: 32px 0 48px 0;
+	padding: 16px 0 26px 0;
 	display: flex;
 	flex-direction: column;
 `;
 
 const PostModalHandle = styled.button`
 	width: 100px;
-	height: 8px;
+	height: 4px;
 	background-color: var(--gray);
 	border-radius: 10px;
-	margin: 0 auto 24px;
+	margin: 0 auto 12px;
 `;
 
 const PostModalOption = styled.button`
 	width: 100%;
 	text-align: left;
-	padding: 30px 52px;
-	font-size: 2.8rem;
+	padding: 15px 26px;
+	font-size: 1.4rem;
 `;
 
 //  NavigationBar이것만 바꾸었는데 아래에 뒤로가기 버튼기능 구현 위한 navigate 추가함
@@ -167,7 +171,7 @@ export const NavigationBar = ({
 			<img
 				src={LeftArrowIcon}
 				alt="뒤로가기"
-				style={{ width: '44px', height: '44px' }}
+				style={{ width: '22px', height: '22px' }}
 			/>
 		</button>
 	);

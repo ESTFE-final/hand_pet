@@ -13,9 +13,9 @@ const CategoryContainer = styled.div`
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(2, 1fr);
 	gap: 20px;
-	width: 631px;
-	height: 308px;
-	margin: 26px auto;
+	/* width: 631px; */
+	/* height: 308px; */
+	margin: 13px auto;
 `;
 
 const CategoryWrapper = styled.div`

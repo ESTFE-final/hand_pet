@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
+
 import { useNavigate } from 'react-router-dom';
 import { keyframes } from 'styled-components';
 
@@ -27,7 +30,9 @@ const LoadingSpinner = styled.div`
 	transform: translate(-50%, -50%);
 `;
 
+
 function FollowingListPage() {
+
     const { accountname } = useParams();
     const [followings, setFollowings] = useState([]);
     const [loading, setLoading] = useState(true); // loading 변수 정의
@@ -146,19 +151,28 @@ function FollowingListPage() {
             </InnerWMobileFull>
         </>
     );
+
 }
 
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
+
 const InnerWMobileFull = styled.div`
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-    padding-bottom: 10rem;
+
+	width: 100%;
+	margin: 24px auto;
+	position: relative;
+	padding-bottom: 10rem;
+
 `;
 
 const FollowingInfo = styled.div`
-    display: flex;
-    align-items: flex-start;
-    gap: 1.6rem;
+
+	display: flex;
+	align-items: flex-start;
+	gap: 1.2rem;
+
 `;
 
 const FollowingListContent = styled.ul`
@@ -166,21 +180,23 @@ const FollowingListContent = styled.ul`
 `;
 
 const FollowingListItem = styled.li`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    & + & {
-        margin-top: 3.4rem;
-    }
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	& + & {
+		margin-top: 1.6rem;
+	}
 `;
 
 const FollowingImg = styled.img`
-    background: var(--gray);
-    width: 72px;
-    height: 72px;
-    overflow: hidden;
-    border-radius: 50%;
-    flex-shrink: 0;
+	background: var(--gray);
+	width: 50px;
+	height: 50px;
+	overflow: hidden;
+	border-radius: 50%;
+	flex-shrink: 0;
+
 `;
 
 const FollowingText = styled.div`
@@ -188,13 +204,18 @@ const FollowingText = styled.div`
 `;
 
 const FollowingShopName = styled.p`
-    font-size: 2rem;
-    margin-bottom: 0.6rem;
+
+	font-size: 1.6rem;
+	margin-bottom: 0.6rem;
+
 `;
 
 const FollowingShopDesc = styled.p`
-    color: var(--gray-300);
-    font-size: 1.8rem;
+
+	color: var(--gray-300);
+	font-size: 1.4rem;
+
+  
 `;
 
 const ErrorMessage = styled.div`
@@ -206,6 +227,7 @@ const ErrorMessage = styled.div`
 	font-size: 4rem;
 	font-weight: bold;
 	color: black;
+
 `;
 
 export default FollowingListPage;

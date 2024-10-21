@@ -9,58 +9,62 @@ import { useEffect } from 'react';
 const LoginContainer = styled.div`
 	width: 100%;
 	height: 100vh; /* 화면 전체 높이 */
-	background-color: #ff3329;
+	background-color: var(--primary);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
+	color: var(--white);
+`;
+
+const LogoContainer = styled.div`
+	flex: 1;
+	display: flex;
 	justify-content: center;
-	color: white;
-	position: relative;
+	align-items: center;
 `;
 
 const Logo = styled.img`
-	width: 308px;
-	height: 308px;
-	margin-bottom: 80px; /* 로고 아래에 여백 추가 */
+	width: 200px;
+	height: 200px;
 `;
 
 const ButtonWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 30px; /* 버튼 사이 여백 */
+	gap: 20px; /* 버튼 사이 여백 */
 	width: 100%;
 	align-items: center;
-	max-width: 500px; /* 최대 너비 제한 */
 `;
 
 const StyledLink = styled(Link)`
 	text-decoration: none;
-	font-size: 1.8rem;
-	padding: 10px 20px;
+	/* font-size: 1.8rem; */
+	padding: 14px 0;
 	border-radius: 50px;
 	width: 100%;
-	height: 70px;
 	text-align: center;
 	color: var(--gray-300);
 	border: 1px solid var(--primary);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background-color: var(--primary);
+		color: var(--white);
+	}
 `;
 
 const BottomBox = styled.div`
 	width: 100%;
-	max-width: 780px; /* 최대 너비 제한 */
 	height: auto; /* height를 자동으로 맞춤 */
-	padding: 100px 20px; /* 여백 추가 */
+	padding: 50px 34px; /* 여백 추가 */
 	border-radius: 20px 20px 0 0;
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	bottom: 0;
+	background-color: var(--white);
 `;
+
 
 const LoginPage = () => {
 	const navigate = useNavigate();
@@ -74,7 +78,9 @@ const LoginPage = () => {
 
 	return (
 		<LoginContainer>
+      <LogoContainer>
 			<Logo src={logo2} alt="Logo2" />
+      </LogoContainer>
 			<BottomBox>
 				<ButtonWrapper>
 					<StyledLink to="/login/email">이메일 로그인</StyledLink>
