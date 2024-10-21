@@ -1,14 +1,20 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
+
 import { useNavigate } from 'react-router-dom';
+import { keyframes } from 'styled-components';
+
+// 로딩 스피너로 적용  try catch finally  그리고 setloading true false 그리고 if loading으로 처리
 
 const spin = keyframes`
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 `;
 
 const LoadingSpinner = styled.div`
@@ -24,193 +30,204 @@ const LoadingSpinner = styled.div`
 	transform: translate(-50%, -50%);
 `;
 
+
 function FollowingListPage() {
-	const { accountname } = useParams();
-	const [following, setFollowing] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 
-	const navigate = useNavigate();
+    const { accountname } = useParams();
+    const [followings, setFollowings] = useState([]);
+    const [loading, setLoading] = useState(true); // loading 변수 정의
+    const [error, setError] = useState(null);
 
-	useEffect(() => {
-		const token = localStorage.getItem('authToken');
-		if (!token) {
-			navigate('/login', { replace: true });
-		}
-	}, [navigate, accountname]);
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        console.log('Token:', token); // 토큰 확인
+    console.log('Accountname:', accountname); // accountname 확인
 
-	useEffect(() => {
-		const token = localStorage.getItem('authToken');
-		console.log('Token:', token);
-		console.log('Accountname:', accountname);
+        const fetchFollowings = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/following`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                setFollowings(response.data);
+            } catch (err) {
+                setError(err.response?.data?.message || err.message);
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-		const fetchFollowing = async () => {
-			setLoading(true);
-			setError(null);
-			try {
-				const response = await axios.get(
-					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/following`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							'Content-type': 'application/json',
-						},
-					}
-				);
-				setFollowing(response.data);
-			} catch (err) {
-				setError(err.response?.data?.message || err.message);
-				console.error(err);
-			} finally {
-				setLoading(false);
-			}
-		};
+        if (accountname) {
+            fetchFollowings();
+        }
+    }, [accountname]);
 
-		if (accountname) {
-			fetchFollowing();
-		}
-	}, [accountname]);
+    const toggleFollow = async (following) => {
+        const token = localStorage.getItem('authToken');
+        const followingAccountname = following.accountname;
 
-	const toggleFollow = async (followee) => {
-		const token = localStorage.getItem('authToken');
-		const followeeAccountname = followee.accountname;
-		setLoading(true);
-		try {
-			if (followee.isfollow) {
-				await axios.delete(
-					`https://estapi.mandarin.weniv.co.kr/profile/${followeeAccountname}/unfollow`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							'Content-type': 'application/json',
-						},
-					}
-				);
-				setFollowing((prevFollowing) =>
-					prevFollowing.map((item) =>
-						item._id === followee._id ? { ...item, isfollow: false } : item
-					)
-				);
-			} else {
-				await axios.post(
-					`https://estapi.mandarin.weniv.co.kr/profile/${followeeAccountname}/follow`,
-					{},
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							'Content-type': 'application/json',
-						},
-					}
-				);
-				setFollowing((prevFollowing) =>
-					prevFollowing.map((item) =>
-						item._id === followee._id ? { ...item, isfollow: true } : item
-					)
-				);
-			}
-		} catch (err) {
-			console.error(err);
-			alert(
-				err.response?.data?.message ||
-					'팔로우/언팔로우 처리 중 오류가 발생했습니다.'
-			);
-		} finally {
-			setLoading(false);
-		}
-	};
+        try {
+            if (following.isfollow) {
+                await axios.delete(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/unfollow`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                setFollowings((prevFollowings) =>
+                    prevFollowings.map((item) =>
+                        item._id === following._id ? { ...item, isfollow: false } : item
+                    )
+                );
+            } else {
+                await axios.post(
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/follow`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-type': 'application/json',
+                        },
+                    }
+                );
+                setFollowings((prevFollowings) =>
+                    prevFollowings.map((item) =>
+                        item._id === following._id ? { ...item, isfollow: true } : item
+                    )
+                );
+            }
+        } catch (err) {
+            console.error(err);
+            alert(err.response?.data?.message || '팔로우/언팔로우 처리 중 오류가 발생했습니다.');
+        }
+    };
 
-	if (loading) {
-		return <LoadingSpinner />;
-	}
+    if (loading) {
+        return <div>Loading...</div>; // loading이 true일 때 로딩 메시지
+    }
 
-	if (error) {
-		return <div>Error: {error}</div>;
-	}
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
-	return (
-		<>
-			<NavigationBar title="팔로잉" />
-			<InnerWMobileFull>
-				<h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
-				<FollowingListContent>
-					{following.length === 0 ? (
-						<div>팔로잉이 없습니다.</div>
-					) : (
-						following.map((followee) => (
-							<FollowingListItem key={followee._id}>
-								<FollowingInfo>
-									<FollowingImg
-										src={followee.image || 'default_image_url'}
-										alt={followee.username}
-									/>
-									<FollowingText>
-										<FollowingShopName>{followee.username}</FollowingShopName>
-										<FollowingShopDesc>{followee.intro}</FollowingShopDesc>
-									</FollowingText>
-								</FollowingInfo>
-								<Button
-									size="sm"
-									type="button"
-									onClick={() => toggleFollow(followee)}
-								>
-									{followee.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
-							</FollowingListItem>
-						))
-					)}
-				</FollowingListContent>
-			</InnerWMobileFull>
-		</>
-	);
+    return (
+        <>
+            <NavigationBar title="팔로잉" />
+            <InnerWMobileFull>
+                <h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
+                <FollowingListContent>
+                    {followings.length === 0 ? (
+                        <div>팔로잉이 없습니다.</div>
+                    ) : (
+                        followings.map((following) => (
+                            <FollowingListItem key={following._id}>
+                                <FollowingInfo>
+                                    <FollowingImg
+                                        src={following.image || 'default_image_url'}
+                                        alt={following.username}
+                                    />
+                                    <FollowingText>
+                                        <FollowingShopName>{following.username}</FollowingShopName>
+                                        <FollowingShopDesc>{following.intro}</FollowingShopDesc>
+                                    </FollowingText>
+                                </FollowingInfo>
+                                <Button size="sm" type="button" onClick={() => toggleFollow(following)}>
+                                    {following.isfollow ? '언팔로우' : '팔로우'}
+                                </Button>
+                            </FollowingListItem>
+                        ))
+                    )}
+                </FollowingListContent>
+            </InnerWMobileFull>
+        </>
+    );
+
 }
 
-export default FollowingListPage;
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
 
 const InnerWMobileFull = styled.div`
+
 	width: 100%;
-	margin: 0 auto;
+	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
+
 `;
 
 const FollowingInfo = styled.div`
+
 	display: flex;
 	align-items: flex-start;
-	gap: 1.6rem;
+	gap: 1.2rem;
+
 `;
 
 const FollowingListContent = styled.ul`
-	padding: 0 1.6rem;
+    padding: 0 1.6rem;
 `;
 
 const FollowingListItem = styled.li`
+
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	& + & {
-		margin-top: 3.4rem;
+		margin-top: 1.6rem;
 	}
 `;
 
 const FollowingImg = styled.img`
 	background: var(--gray);
-	width: 72px;
-	height: 72px;
+	width: 50px;
+	height: 50px;
 	overflow: hidden;
 	border-radius: 50%;
 	flex-shrink: 0;
+
 `;
 
 const FollowingText = styled.div`
-	padding-top: 0.7rem;
+    padding-top: 0.7rem;
 `;
 
 const FollowingShopName = styled.p`
-	font-size: 2rem;
+
+	font-size: 1.6rem;
 	margin-bottom: 0.6rem;
+
 `;
 
 const FollowingShopDesc = styled.p`
+
 	color: var(--gray-300);
-	font-size: 1.8rem;
+	font-size: 1.4rem;
+
+  
 `;
+
+const ErrorMessage = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	font-size: 4rem;
+	font-weight: bold;
+	color: black;
+
+`;
+
+export default FollowingListPage;
