@@ -55,13 +55,6 @@ const NewProfilePage = () => {
 		};
 
 		try {
-			useEffect(() => {
-				const token = localStorage.getItem('authToken');
-				if (token) {
-					navigate('/', { replace: true });
-				}
-			}, [navigate]);
-
 			const response = await axios.post(
 				'https://estapi.mandarin.weniv.co.kr/user',
 				userData,
@@ -72,6 +65,8 @@ const NewProfilePage = () => {
 				}
 			);
 			console.log('회원가입 성공:', response.data);
+			alert('회원가입이 완료되었습니다.');
+			navigate('/login');
 		} catch (error) {
 			console.error('회원가입 실패:', error);
 		} finally {
