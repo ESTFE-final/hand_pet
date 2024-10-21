@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
+import { keyframes } from 'styled-components';
 
 const NavBar = styled.nav`
 	/* position: fixed; */
@@ -327,4 +328,26 @@ export const PostModal = ({ isOpen, onClose, options = [] }) => {
 			</PostModalContainer>
 		</>
 	);
+};
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+	border: 4px solid rgba(0, 0, 0, 0.1);
+	border-left-color: #22a6b3;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	animation: ${spin} 1s linear infinite;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+`;
+
+export const LoadingSpinner = () => {
+	return <Spinner />;
 };

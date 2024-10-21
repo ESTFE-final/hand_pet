@@ -1,37 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import ProductList from './ProductList';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MainCategory from './MainCategory';
-
-// 로딩 스피너로 적용  try catch finally  그리고 setloading true false 그리고 if loading으로 처리
-
-const spin = keyframes`
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
-`;
-
-const LoadingSpinner = styled.div`
-	border: 4px solid rgba(0, 0, 0, 0.1);
-	border-left-color: #22a6b3;
-	border-radius: 50%;
-	width: 36px;
-	height: 36px;
-	animation: ${spin} 1s linear infinite;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-`;
+import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const Container = styled.div`
 	width: 100%;
 
-
 	margin: 2.4rem auto;
-
-
 `;
 
 const Title = styled.span`
@@ -39,8 +17,6 @@ const Title = styled.span`
 `;
 
 const ButtonContainer = styled.div`
-
-
 	margin: 1.8rem auto;
 `;
 
@@ -53,19 +29,18 @@ const Button = styled.button`
 	font-size: 1rem;
 	border-radius: 20px;
 
-
 	&:hover {
 		background-color: #000;
 		color: #fff;
 	}
-	&:first-child{
+	&:first-child {
 		margin-left: 0;
-	};
+	}
 `;
 
 const Productscontent = styled.section`
 	padding: 2.6rem 2.4rem;
-`
+`;
 
 const MainProductList = () => {
 	const [products, setProducts] = useState([]);

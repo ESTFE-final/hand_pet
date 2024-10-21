@@ -4,10 +4,10 @@ import axios from 'axios';
 import ProductList from '../MainComponents/ProductList';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../SharedComponents/Button';
+import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const Container = styled.div`
 	width: 100%;
-	/* margin: 52px auto; */
 	padding: 25px 23px;
 	display: flex;
 	flex-direction: column;
@@ -17,6 +17,13 @@ const Container = styled.div`
 const ErrorMessage = styled.p`
 	padding-top: 26px;
 	font-size: 1.6rem;
+`;
+
+const SpinnerContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; /* 화면 전체 높이 */
 `;
 
 const ProfileProduct = () => {
@@ -92,7 +99,11 @@ const ProfileProduct = () => {
 	return (
 		<Container>
 			{error && <ErrorMessage>{error}</ErrorMessage>}
-			{products.length > 0 ? (
+			{isLoading ? (
+				<SpinnerContainer>
+					<LoadingSpinner />
+				</SpinnerContainer>
+			) : products.length > 0 ? (
 				<>
 					<ProductList
 						products={products.map((product) => ({
@@ -110,7 +121,11 @@ const ProfileProduct = () => {
 					)}
 				</>
 			) : (
-				!error && <p>등록된 상품이 없습니다.</p>
+				!error && (
+					<SpinnerContainer>
+						<LoadingSpinner />
+					</SpinnerContainer>
+				)
 			)}
 		</Container>
 	);

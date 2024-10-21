@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Axios from 'axios';
 import Button from '../SharedComponents/Button';
@@ -8,6 +8,7 @@ import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
 import FeedItemCompoents from '../MainComponents/FeedItemCompoents';
+import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const PostContainer = styled.section``;
 
@@ -84,6 +85,13 @@ const PostAlbum = styled.ul`
 		height: 152px;
 		object-fit: cover;
 	}
+`;
+
+const SpinnerContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; /* 화면 전체 높이 */
 `;
 
 const PostTab = () => {
@@ -207,72 +215,84 @@ const PostTab = () => {
 
 	return (
 		<PostContainer aria-label="게시물 목록">
-			{posts.length > 0 ? (
+			{isLoading ? (
+				<SpinnerContainer>
+					<LoadingSpinner />
+				</SpinnerContainer>
+			) : (
 				<>
-					<PostNav>
-						<PostButton
-							type="button"
-							className={`list-btn ${postView === 'list' ? 'active' : ''}`}
-							onClick={() => setPostView('list')}
-							aria-pressed={postView === 'list'}
-						>
-							<img
-								src={postView === 'list' ? postListBtnOn : postListBtnOff}
-								alt="목록으로 보기"
-							/>
-						</PostButton>
-						<PostButton
-							type="button"
-							className={postView === 'album' ? 'active' : ''}
-							onClick={() => setPostView('album')}
-							aria-pressed={postView === 'album'}
-						>
-							<img
-								src={postView === 'album' ? postAlbumBtnOn : postAlbumBtnOff}
-								alt="앨범으로 보기"
-							/>
-						</PostButton>
-					</PostNav>
-					{postView === 'list' ? (
-						<PostList>
-							{posts.map((post) => (
-								<FeedItemCompoents
-									key={post.id}
-									content={post.content}
-									postImgSrc={post.image}
-									author={post.author}
-									postId={post.id}
-									onPostClick={handlePostClick}
-									hearted={post.hearted}
-									heartCount={post.heartCount}
-									onLike={handleLike}
-									onUnlike={handleUnlike}
-									showNavRightButton={false}
-								/>
-							))}
-						</PostList>
-					) : (
-						<PostAlbum className="album-post-view">
-							{postsWithImages.map((post) => (
-								<li
-									key={post.id}
-									className="post-album-item"
-									onClick={() => handlePostClick(post.id)}
+					{posts.length > 0 ? (
+						<>
+							<PostNav>
+								<PostButton
+									type="button"
+									className={`list-btn ${postView === 'list' ? 'active' : ''}`}
+									onClick={() => setPostView('list')}
+									aria-pressed={postView === 'list'}
 								>
-									<img src={post.image} alt="" />
-								</li>
-							))}
-						</PostAlbum>
-					)}
+									<img
+										src={postView === 'list' ? postListBtnOn : postListBtnOff}
+										alt="목록으로 보기"
+									/>
+								</PostButton>
+								<PostButton
+									type="button"
+									className={postView === 'album' ? 'active' : ''}
+									onClick={() => setPostView('album')}
+									aria-pressed={postView === 'album'}
+								>
+									<img
+										src={
+											postView === 'album' ? postAlbumBtnOn : postAlbumBtnOff
+										}
+										alt="앨범으로 보기"
+									/>
+								</PostButton>
+							</PostNav>
+							{postView === 'list' ? (
+								<PostList>
+									{posts.map((post) => (
+										<FeedItemCompoents
+											key={post.id}
+											content={post.content}
+											postImgSrc={post.image}
+											author={post.author}
+											postId={post.id}
+											onPostClick={handlePostClick}
+											hearted={post.hearted}
+											heartCount={post.heartCount}
+											onLike={handleLike}
+											onUnlike={handleUnlike}
+											showNavRightButton={false}
+										/>
+									))}
+								</PostList>
+							) : (
+								<PostAlbum className="album-post-view">
+									{postsWithImages.map((post) => (
+										<li
+											key={post.id}
+											className="post-album-item"
+											onClick={() => handlePostClick(post.id)}
+										>
+											<img src={post.image} alt="" />
+										</li>
+									))}
+								</PostAlbum>
+							)}
 
-					{hasMore && (
-						<Button size="more" onClick={loadMore} disabled={isLoading}>
-							{isLoading ? '로딩 중...' : '더보기'}
-						</Button>
+							{hasMore && (
+								<Button size="more" onClick={loadMore} disabled={isLoading}>
+									{isLoading ? '로딩 중...' : '더보기'}
+								</Button>
+							)}
+						</>
+					) : (
+						<SpinnerContainer>
+							<LoadingSpinner />
+						</SpinnerContainer>
 					)}
 				</>
-			) : (
-				<EmptyState>등록된 게시물이 없습니다.</EmptyState>
 			)}
 		</PostContainer>
 	);
