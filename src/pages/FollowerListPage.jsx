@@ -141,13 +141,13 @@ function FollowerListPage() {
 										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
 									</FollowerText>
 								</FollowerInfo>
-								<Button
+								<FollowerButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(follower)}
 								>
 									{follower.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowerButton>
 							</FollowerListItem>
 						))
 					)}
@@ -221,4 +221,9 @@ const ErrorMessage = styled.div`
 	font-weight: bold;
 `;
 
+const FollowerButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
+`;
 export default FollowerListPage;

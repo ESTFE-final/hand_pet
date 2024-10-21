@@ -18,7 +18,7 @@ const InputBox = ({ id, type, name, placeholder, error, onChange, value }) => (
 );
 
 const AddProductContent = styled.div`
-	padding: 0 3.4rem;
+	padding: 3rem 3.4rem 0;
 `;
 
 const AddProductInputItem = styled.div`
@@ -81,8 +81,8 @@ const AddProductPlaceholderImage = styled.div`
 
 const ErrorMessage = styled.p`
 	color: var(--primary);
-	font-size: 2.4rem;
-	padding: 1.4rem 2rem 0 4rem;
+	font-size: 1.2rem;
+	padding: .7rem 1.2rem 0 1.2rem;
 `;
 
 const ProductForm = ({

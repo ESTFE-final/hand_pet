@@ -145,6 +145,7 @@ const ChatTimestamp = styled.p`
 	font-size: 1rem;
 	color: var(--gray);
 	margin-top: 0.4rem;
+	padding-right: 1.5rem;
 `;
 
 export default ChatListPage;

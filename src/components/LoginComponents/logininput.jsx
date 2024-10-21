@@ -18,4 +18,11 @@ export const ErrorMessageWrap = styled.div`
 	font-size: 1.2rem;
 	padding-left: 2.1rem;
 	margin-bottom: 1.5rem;
+
+	${(props) =>
+		props.isServerMessage &&`
+		margin-top: 1rem;
+		padding-left: 0;
+		text-align: center;
+	`}
 `;

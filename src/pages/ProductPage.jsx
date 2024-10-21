@@ -33,8 +33,8 @@ const CustomProfileNavBar = styled(NavigationBar)`
 	.nav-right-button {
 		background: url(${RightmenuIcon}) no-repeat;
 		background-size: contain;
-		width: 48px;
-		height: 48px;
+		width: 22px;
+		height: 22px;
 	}
 `;
 
