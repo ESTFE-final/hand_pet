@@ -1,22 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
-// 선언부 구조분해 할당
 function FollowingListPage() {
-    const [followings, setFollowings] = useState([]); // 변수명 수정
-    const [loading, setLoading] = useState(true);
+    const { accountname } = useParams();
+    const [followings, setFollowings] = useState([]);
+    const [loading, setLoading] = useState(true); // loading 변수 정의
     const [error, setError] = useState(null);
 
-    // 로직 부분
     useEffect(() => {
         const token = localStorage.getItem('authToken');
-        const accountname = localStorage.getItem('accountname');
+        console.log('Token:', token); // 토큰 확인
+    console.log('Accountname:', accountname); // accountname 확인
 
-        // 예외처리 필수
         const fetchFollowings = async () => {
             setLoading(true);
             try {
@@ -29,8 +28,7 @@ function FollowingListPage() {
                         },
                     }
                 );
-                console.log(response.data);
-                setFollowings(response.data); // 변수명 수정
+                setFollowings(response.data);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
                 console.error(err);
@@ -39,19 +37,19 @@ function FollowingListPage() {
             }
         };
 
-        fetchFollowings();
-    }, []);
+        if (accountname) {
+            fetchFollowings();
+        }
+    }, [accountname]);
 
-    const toggleFollow = async (following) => { // 변수명 수정
+    const toggleFollow = async (following) => {
         const token = localStorage.getItem('authToken');
-        const accountname = following.accountname; // 팔로우/언팔로우할 유저의 accountname
+        const followingAccountname = following.accountname;
 
         try {
-            // 팔로우/언팔로우 상태에 따라 적절한 API 호출
             if (following.isfollow) {
-                // 언팔로우
                 await axios.delete(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/unfollow`,
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/unfollow`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -59,15 +57,14 @@ function FollowingListPage() {
                         },
                     }
                 );
-                setFollowings((prevFollowings) => // 변수명 수정
+                setFollowings((prevFollowings) =>
                     prevFollowings.map((item) =>
                         item._id === following._id ? { ...item, isfollow: false } : item
                     )
                 );
             } else {
-                // 팔로우
                 await axios.post(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follow`,
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/follow`,
                     {},
                     {
                         headers: {
@@ -76,7 +73,7 @@ function FollowingListPage() {
                         },
                     }
                 );
-                setFollowings((prevFollowings) => // 변수명 수정
+                setFollowings((prevFollowings) =>
                     prevFollowings.map((item) =>
                         item._id === following._id ? { ...item, isfollow: true } : item
                     )
@@ -89,28 +86,27 @@ function FollowingListPage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>; // loading이 true일 때 로딩 메시지
     }
 
     if (error) {
         return <div>Error: {error}</div>;
     }
 
-    // 렌더링 부분
     return (
         <>
             <NavigationBar title="팔로잉" />
             <InnerWMobileFull>
                 <h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
                 <FollowingListContent>
-                    {followings.length === 0 ? ( // 변수명 수정
+                    {followings.length === 0 ? (
                         <div>팔로잉이 없습니다.</div>
                     ) : (
-                        followings.map((following) => ( // 변수명 수정
+                        followings.map((following) => (
                             <FollowingListItem key={following._id}>
                                 <FollowingInfo>
                                     <FollowingImg
-                                        src={following.image || 'default_image_url'} // 기본 이미지 URL을 지정
+                                        src={following.image || 'default_image_url'}
                                         alt={following.username}
                                     />
                                     <FollowingText>
@@ -119,7 +115,7 @@ function FollowingListPage() {
                                     </FollowingText>
                                 </FollowingInfo>
                                 <Button size="sm" type="button" onClick={() => toggleFollow(following)}>
-                                    {following.isfollow ? '언팔로우' : '팔로우'} {/* 변수명 수정 */}
+                                    {following.isfollow ? '언팔로우' : '팔로우'}
                                 </Button>
                             </FollowingListItem>
                         ))

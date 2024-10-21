@@ -258,7 +258,7 @@ const Profile = ({
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
-					<ProfileFollow>
+					<ProfileFollow to={`/following/${accountname}`}>
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
