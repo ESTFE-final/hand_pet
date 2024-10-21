@@ -8,6 +8,7 @@ import MainFeed from '../components/MainComponents/MainFeed';
 import Button from '../components/SharedComponents/Button';
 import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 import styled from 'styled-components';
+import { LoadingSpinner } from '../components/SharedComponents/CommonComponents';
 
 const PostListWrapper = styled.div`
 	margin-bottom: 20%;
@@ -58,6 +59,7 @@ const PostListPage = () => {
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+	const [isInitialLoading, setIsInitialLoading] = useState(true);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	let token = useSelector((state) => state.auth.token);
 	const navigate = useNavigate();
@@ -71,6 +73,7 @@ const PostListPage = () => {
 			navigate('/login');
 		} else if (token) {
 			const getPosts = async () => {
+				if (isLoading) return; // 이미 로딩 중이면 함수를 종료
 				setIsLoading(true); // 로딩 시작
 				const offset = (page - 1) * limit;
 				const fetchedPosts = await fetchFollowingFeed(token, limit, offset);
@@ -78,10 +81,7 @@ const PostListPage = () => {
 				// 불러온 게시물이 limit보다 적으면 더 이상 게시물이 없다고 판단
 				if (fetchedPosts.length < limit) {
 					setHasMore(false);
-				} else {
-					setHasMore(true);
 				}
-
 				// 각 게시물의 accountname을 사용하여 프로필 정보를 가져오기
 				const postsWithProfiles = await Promise.all(
 					fetchedPosts.map(async (post) => {
@@ -95,6 +95,7 @@ const PostListPage = () => {
 
 				setPosts((prevPosts) => [...prevPosts, ...postsWithProfiles]);
 				setIsLoading(false); // 로딩 끝
+				setIsInitialLoading(false);
 			};
 			getPosts();
 		}
@@ -160,8 +161,10 @@ const PostListPage = () => {
 
 	return (
 		<PostListWrapper>
-			<NavigationBar title={'핸드펫 피드'} searchIconVisible={true}/>
-			{posts.length > 0 ? (
+			<NavigationBar title={'핸드펫 피드'} searchIconVisible={true} />
+			{isInitialLoading ? (
+				<LoadingSpinner />
+			) : posts.length > 0 ? (
 				<>
 					<MainFeed
 						posts={posts}

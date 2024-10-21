@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import { Input } from '../components/SharedComponents/CommonComponents';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/authSlice';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
 const LoginEmailPage = () => {
@@ -65,7 +67,8 @@ const LoginEmailPage = () => {
 			const { token, accountname } = response.data.user;
 			localStorage.setItem('authToken', token);
 			localStorage.setItem('accountname', accountname);
-
+			await signInWithEmailAndPassword(auth, email, password);
+			console.log('현재 로그인된 사용자:', auth.currentUser);
 			dispatch(login(token));
 			// 특정 이벤트 핸들러나 라이프사이클 메서드 내에서 호출될 수 있습니다.
 			// 예를 들어, 로그인 버튼을 클릭했을 때 이 코드가 실행되어 사용자를 홈 페이지로 리디렉션할 수 있습니다.

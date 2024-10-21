@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import userProfileImg from '../../assets/icons/profile-img.svg';
 import moreIcon from '../../assets/icons/more-vertical.svg';
 import { PostModal } from '../SharedComponents/CommonComponents';
-import { current } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 
 const CommentSection = styled.div`
