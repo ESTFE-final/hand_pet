@@ -61,23 +61,12 @@ const TabNaviIcon = styled.img`
 // 탭 정보를 담은 배열
 const tabs = [
 	{ path: '/', label: '홈', icon: iconMain },
-	{ path: '/About', label: '채팅', icon: iconAbout },
+	{ path: '/Chatlist', label: '채팅', icon: iconAbout },
 	{ path: '/post/upload', label: '게시물 작성', icon: iconContact },
 	{ path: '/profile', label: '프로필', icon: iconProfile },
 ];
 
 function TabNaviComponent() {
-	return (
-		<TabNavi>
-			{tabs.map((tab, index) => (
-				<Link key={index} to={tab.path}>
-					<TabNaviButton>
-						<TabNaviIcon src={tab.icon} alt={`${tab.label} icon`} /> {tab.label}
-					</TabNaviButton>
-				</Link>
-			))}
-		</TabNavi>
-	);
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (

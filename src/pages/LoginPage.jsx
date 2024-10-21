@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo2 from '../assets/icons/logo2.svg';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // 스타일 컴포넌트 정의
 const LoginContainer = styled.div`
@@ -60,16 +62,27 @@ const BottomBox = styled.div`
 	bottom: 0;
 `;
 
-const LoginPage = () => (
-	<LoginContainer>
-		<Logo src={logo2} alt="Logo2" />
-		<BottomBox>
-			<ButtonWrapper>
-				<StyledLink to="/login/email">이메일 로그인</StyledLink>
-				<StyledLink to="/signup">회원가입</StyledLink>
-			</ButtonWrapper>
-		</BottomBox>
-	</LoginContainer>
-);
+const LoginPage = () => {
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (token) {
+			navigate('/home', { replace: true });
+		}
+	}, []);
+
+	return (
+		<LoginContainer>
+			<Logo src={logo2} alt="Logo2" />
+			<BottomBox>
+				<ButtonWrapper>
+					<StyledLink to="/login/email">이메일 로그인</StyledLink>
+					<StyledLink to="/signup">회원가입</StyledLink>
+				</ButtonWrapper>
+			</BottomBox>
+		</LoginContainer>
+	);
+};
 
 export default LoginPage;
