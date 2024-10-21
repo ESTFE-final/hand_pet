@@ -180,7 +180,14 @@ const FollowButton = styled.button`
 	}
 `;
 
-const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
+const Profile = ({
+	profile,
+	openModal,
+	onLogout,
+	isMyProfile,
+	onFollow,
+	onUnFollow,
+}) => {
 	if (!profile) return null;
 
 	const {
@@ -225,7 +232,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage>
+						<UserImage to={`/profile/${accountname}`}>
 							<img
 								src={image || profileImage}
 								alt={`${username}의 프로필 이미지`}
@@ -255,11 +262,11 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow to="/follower">
+					<ProfileFollow to={`/follower/${accountname}`}>
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
-					<ProfileFollow>
+					<ProfileFollow to={`/following/${accountname}`}>
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>
