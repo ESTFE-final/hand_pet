@@ -160,10 +160,11 @@ const AddProductPage = () => {
 const Container = styled.div`
 	width: 100%;
 	margin: 0 auto;
+	height: ;
 `;
 
 const InnerContainer = styled.div`
-	padding-top: 2.8rem;
+
 `;
 
 export default AddProductPage;

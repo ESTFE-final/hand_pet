@@ -21,15 +21,14 @@ import RightmenuIcon from '../assets/icons/icon-vertical-color.svg';
 
 const Container = styled.div`
 	width: 100%;
-	max-width: 768px;
 	margin: 0 auto;
-	padding: 16px;
 	position: relative;
 `;
 
 const CustomProfileNavBar = styled(NavigationBar)`
 	background-color: transparent;
 	padding: 32px;
+	margin-bottom: 0;
 
 	.nav-right-button {
 		background: url(${RightmenuIcon}) no-repeat;
@@ -38,6 +37,10 @@ const CustomProfileNavBar = styled(NavigationBar)`
 		height: 48px;
 	}
 `;
+
+const ProductInfoContent = styled.div`
+	padding: 1.6rem 1.8rem;
+`
 
 const ProductPage = () => {
 	const { product_id } = useParams();
@@ -171,10 +174,11 @@ const ProductPage = () => {
 			/>
 			<Container>
 				<ProductImage src={product.itemImage} alt={product.itemName} />
-				<ProductUser author={product.author} />
-				<ProductName>{product.itemName}</ProductName>
-				<ProductPrice>{`${product.price.toLocaleString()}원`}</ProductPrice>
-
+				<ProductInfoContent>
+					<ProductUser author={product.author} />
+					<ProductName>{product.itemName}</ProductName>
+					<ProductPrice>{`${product.price.toLocaleString()}원`}</ProductPrice>
+				</ProductInfoContent>
 				<QuantitySelector
 					quantity={quantity}
 					onIncrease={handleIncreaseQuantity}
@@ -182,6 +186,8 @@ const ProductPage = () => {
 				/>
 
 				<TotalPrice amount={totalPrice} />
+				<ProductButton />
+
 				<PostModal
 					isOpen={isModalOpen}
 					onClose={closeModal}
@@ -194,7 +200,6 @@ const ProductPage = () => {
 					modalClose={closeAlertModal}
 					buttonAction={alertButtonAction}
 				/>
-				<ProductButton />
 			</Container>
 		</>
 	);

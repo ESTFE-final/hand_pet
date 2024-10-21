@@ -27,9 +27,11 @@ const LoadingSpinner = styled.div`
 
 const Container = styled.div`
 	width: 100%;
-	margin: 26px 0;
-	padding: 0 24px;
-	margin-bottom: 20%;
+
+
+	margin: 2.4rem auto;
+
+
 `;
 
 const Title = styled.span`
@@ -37,24 +39,33 @@ const Title = styled.span`
 `;
 
 const ButtonContainer = styled.div`
-	margin: 18px 0 16px 0;
+
+
+	margin: 1.8rem auto;
 `;
 
 const Button = styled.button`
-	padding: 5px 10px;
-	margin-right: 5px;
+	padding: 0.5rem 1rem;
+	margin: 0 0.4rem;
 	background-color: ${(props) => (props.isSelected ? '#000' : '#f3f3f5')};
 	color: ${(props) => (props.isSelected ? '#fff' : '#6C6D7A')};
 	cursor: pointer;
-	font-size: 1.2rem;
-	border-radius: 30px;
-	transition: all 0.2s ease;
+	font-size: 1rem;
+	border-radius: 20px;
+
 
 	&:hover {
 		background-color: #000;
 		color: #fff;
 	}
+	&:first-child{
+		margin-left: 0;
+	};
 `;
+
+const Productscontent = styled.section`
+	padding: 2.6rem 2.4rem;
+`
 
 const MainProductList = () => {
 	const [products, setProducts] = useState([]);
@@ -162,28 +173,29 @@ const MainProductList = () => {
 	return (
 		<Container>
 			<MainCategory setSelectedCategory={setSelectedCategory} />
-			<Title>판매 중인 상품</Title>
-
-			<ButtonContainer>
-				{options.map((option) => (
-					<Button
-						key={option}
-						isSelected={selectedSort === option}
-						onClick={() => setSelectedSort(option)}
-					>
-						{option}
-					</Button>
-				))}
-			</ButtonContainer>
-			<ProductList
-				products={filteredProducts.map((product) => ({
-					id: product.id,
-					img: product.itemImage,
-					name: product.itemName,
-					price: `${product.price.toLocaleString()}원`,
-				}))}
-				onProductClick={handleProductClick}
-			/>
+			<Productscontent>
+				<Title>판매 중인 상품</Title>
+				<ButtonContainer>
+					{options.map((option) => (
+						<Button
+							key={option}
+							isSelected={selectedSort === option}
+							onClick={() => setSelectedSort(option)}
+						>
+							{option}
+						</Button>
+					))}
+				</ButtonContainer>
+				<ProductList
+					products={filteredProducts.map((product) => ({
+						id: product.id,
+						img: product.itemImage,
+						name: product.itemName,
+						price: `${product.price.toLocaleString()}원`,
+					}))}
+					onProductClick={handleProductClick}
+				/>
+			</Productscontent>
 		</Container>
 	);
 };

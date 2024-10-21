@@ -79,6 +79,7 @@ body {
 	padding: 0;
 	margin: 0;
 	font-family: 'GmarketSans', sans-serif;
+	background-color: #f3f3f3;
 }
 
 input,
@@ -103,6 +104,9 @@ textarea {
 	min-height: 100%;
 	max-width: 480px;
 	margin: 0 auto;
-	border: 1px solid var(--gray);
+
+	background-color: var(--white);
+
 	overflow: hidden;
+
 }

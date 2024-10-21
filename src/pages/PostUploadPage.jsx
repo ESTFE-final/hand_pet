@@ -14,15 +14,15 @@ const PostUploadWrapper = styled.section`
 
 const CustomNavigationBar = styled(NavigationBar)`
 	border: none;
-	margin-bottom: 64px;
+	margin-bottom: 32px;
 `;
 
 const UploadButton = styled.button`
 	background-color: var(--gray-100);
 	color: var(--white);
-	padding: 15px 50px;
-	border-radius: 64px;
-	font-size: 2.8rem;
+	padding: 0.9rem 2.4rem;
+	border-radius: 3.2rem;
+	font-size: 1.4rem;
 	transition: all 0.3s ease;
 
 	&:hover {
@@ -35,18 +35,18 @@ const PostUploadContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	padding: 0 32px;
-	padding-right: ${(props) => (props.hasImages ? '0' : '32px')};
+	padding: 0 1.6rem;
+	padding-right: ${(props) => (props.hasImages ? '0' : '1.6rem')};
 `;
 
 const PostTextDiv = styled.div`
-	width: calc(100% - 32px);
-	min-height: 150px;
-	font-size: 2.8rem;
+	width: calc(100% - 16px);
+	min-height: 120px;
+	font-size: 1.4rem;
 	border: none;
 	outline: none;
 	overflow: auto;
-	margin-bottom: 32px;
+	margin-bottom: 1.6rem;
 
 	&:empty:before {
 		content: attr(data-placeholder);
@@ -56,61 +56,61 @@ const PostTextDiv = styled.div`
 
 // 이미지 프리뷰
 const ImagePreviewContainer = styled.div`
-	width: ${(props) => (props.isSingle ? 'calc(100% - 32px)' : '100%')};
-	height: ${(props) => (props.isSingle ? '492px' : '330px')};
-	overflow-x: auto;
+	width: calc(100% - 16px);
+	height: ${(props) => (props.isSingle ? '246px' : '165px')};
+	overflow-x: ${(props) => (props.isSingle ? 'hidden' : 'auto')};
 	overflow-y: hidden;
 	white-space: nowrap;
 	display: flex;
-	gap: 15px;
-	margin-right: ${(props) => (props.isSingle ? '0' : '32px')};
+	gap: 1rem;
+	margin-right: ${(props) => (props.isSingle ? '0' : '16px')};
 
-	&::-webkit-scrollbar {
+	/* &::-webkit-scrollbar {
 		display: none;
 	}
 
 	-ms-overflow-style: none;
-	scrollbar-width: none;
+	scrollbar-width: none; */
 `;
 
 const ImagePreviewWrapper = styled.div`
 	position: relative;
 	height: 100%;
-	width: ${(props) => (props.isSingle ? '100%' : '330px')};
+	width: ${(props) => (props.isSingle ? '100%' : '165px')};
 	flex-shrink: 0;
-	margin-right: ${(props) => (props.isLast && !props.isSingle ? '32px' : '0')};
+	margin-right: ${(props) => (props.isLast && !props.isSingle ? '16px' : '0')};
 `;
 
 const ImagePreview = styled.img`
 	height: 100%;
 	width: 100%;
 	object-fit: cover;
-	border-radius: 20px;
+	border-radius: 1rem;
 `;
 
 // 이미지 삭제
 const DeleteImageButton = styled.button`
 	background: url(${imageCloseIcon}) no-repeat;
 	background-size: 100%;
-	width: 46px;
-	height: 46px;
+	width: 24px;
+	height: 24px;
 	position: absolute;
-	top: 12px;
-	right: 12px;
+	top: 8px;
+	right: 6px;
 `;
 
 // 업로드 파일
 const UploadFileContainer = styled.div`
 	position: absolute;
-	bottom: 32px;
-	right: 32px;
+	bottom: 16px;
+	right: 16px;
 `;
 
 const UploadFileLabel = styled.label`
 	display: block;
 	background: url(${uploadIcon}) no-repeat center;
-	width: 100px;
-	height: 100px;
+	width: 50px;
+	height: 50px;
 	background-size: 100%;
 	cursor: pointer;
 `;
