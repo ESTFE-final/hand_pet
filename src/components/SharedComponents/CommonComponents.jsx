@@ -5,6 +5,7 @@ import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 import SearchIconPath from '../../assets/icons/icon-search.svg'; // Search Icon 경로 추가
 
 const NavBar = styled.nav`
+	/* position: fixed; */
 	top: 0;
 	width: 100%;
 	max-width: 480px;
@@ -15,8 +16,10 @@ const NavBar = styled.nav`
 	background-color: var(--white);
 	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
-	z-index: 999;
+	z-index: 998;
+	/* margin-bottom: 16px; */
 `;
+
 
 const NavLeftGroup = styled.div`
 	display: flex;
@@ -58,6 +61,7 @@ const AlertModalContainer = styled.dialog`
 	margin: auto;
 `;
 
+
 const ModalWrap = styled.form`
 	display: flex;
 	flex-direction: column;
@@ -91,17 +95,16 @@ const PostModalOverlay = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
-	transition: opacity 0.3s;
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.3s,
+		visibility 0.3s;
 	z-index: 998;
 
 	&.visible {
-		display: block;
 		opacity: 1;
-	}
-
-	&.hidden {
-		display: none;
-		opacity: 0;
+		visibility: visible;
 	}
 `;
 
@@ -114,18 +117,17 @@ const PostModalContainer = styled.aside`
 	max-width: 480px;
 	margin: 0 auto;
 	background-color: var(--white);
-	border-radius: 20px 20px 0 0;
-	transition: transform 0.3s;
-	z-index: 999;
+	border-radius: 10px 10px 0 0;
+	opacity: 0;
+	transform: translateY(100%);
+	transition:
+		opacity 0.3s,
+		transform 0.3s;
+	z-index: 1000;
 
 	&.visible {
-		display: block;
+		opacity: 1;
 		transform: translateY(0);
-	}
-
-	&.hidden {
-		display: none;
-		transform: translateY(100%);
 	}
 `;
 
