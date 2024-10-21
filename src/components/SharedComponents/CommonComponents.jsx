@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 import SearchIconPath from '../../assets/icons/icon-search.svg'; // Search Icon 경로 추가
+import { keyframes } from 'styled-components';
 
 const NavBar = styled.nav`
 	/* position: fixed; */
@@ -19,7 +20,6 @@ const NavBar = styled.nav`
 	z-index: 998;
 	/* margin-bottom: 16px; */
 `;
-
 
 const NavLeftGroup = styled.div`
 	display: flex;
@@ -60,7 +60,6 @@ const AlertModalContainer = styled.dialog`
 	padding: 0;
 	margin: auto;
 `;
-
 
 const ModalWrap = styled.form`
 	display: flex;
@@ -161,9 +160,9 @@ const SearchIcon = styled.img`
 	display: ${({ visible }) => (visible ? 'block' : 'none')};
 	filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(0deg);
 
-  &:hover {
-	filter: invert(0%) sepia(100%) saturate(1000%) hue-rotate(-50deg);
-  }
+	&:hover {
+		filter: invert(0%) sepia(100%) saturate(1000%) hue-rotate(-50deg);
+	}
 `;
 
 export const NavigationBar = ({
@@ -192,7 +191,7 @@ export const NavigationBar = ({
 			/>
 		</button>
 	);
-	
+
 	const handleSearchClick = () => {
 		navigate('/search'); // 검색 페이지의 경로로 변경
 	};
@@ -203,7 +202,12 @@ export const NavigationBar = ({
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
 			{searchInput}
-			<SearchIcon src={SearchIconPath} alt="검색" style={{ display: searchIconVisible ? 'block' : 'none' }} onClick={handleSearchClick} />
+			<SearchIcon
+				src={SearchIconPath}
+				alt="검색"
+				style={{ display: searchIconVisible ? 'block' : 'none' }}
+				onClick={handleSearchClick}
+			/>
 			{rightButton}
 		</NavBar>
 	);
@@ -348,4 +352,26 @@ export const PostModal = ({ isOpen, onClose, options = [] }) => {
 			</PostModalContainer>
 		</>
 	);
+};
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+	border: 4px solid rgba(0, 0, 0, 0.1);
+	border-left-color: #22a6b3;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	animation: ${spin} 1s linear infinite;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+`;
+
+export const LoadingSpinner = () => {
+	return <Spinner />;
 };

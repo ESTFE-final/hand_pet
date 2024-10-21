@@ -7,7 +7,8 @@ import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
-import FeedItemComponents from '../MainComponents/FeedItemCompoents'; 
+import FeedItemComponents from '../MainComponents/FeedItemCompoents';
+import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const PostContainer = styled.section``;
 
@@ -86,6 +87,12 @@ const PostAlbum = styled.ul`
 		border-radius: 10px; */
 	}
 `;
+const SpinnerContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; /* 화면 전체 높이 */
+`;
 
 const PostTab = () => {
 	const [postView, setPostView] = useState('list');
@@ -120,7 +127,8 @@ const PostTab = () => {
 
 				setPosts((prevPosts) => {
 					const uniquePosts = newPosts.filter(
-						(newPost) => !prevPosts.some((existingPost) => existingPost.id === newPost.id)
+						(newPost) =>
+							!prevPosts.some((existingPost) => existingPost.id === newPost.id)
 					);
 					return [...prevPosts, ...uniquePosts];
 				});
@@ -133,7 +141,10 @@ const PostTab = () => {
 				setHasMore(false);
 			}
 		} catch (error) {
-			console.error('Error fetching posts:', error.response?.data || error.message);
+			console.error(
+				'Error fetching posts:',
+				error.response?.data || error.message
+			);
 			setHasMore(false);
 		} finally {
 			setIsLoading(false);
@@ -230,38 +241,40 @@ const PostTab = () => {
 							/>
 						</PostButton>
 					</PostNav>
-					
+
 					<PostAlbum>
 						{postView === 'list' ? (
 							<PostList>
 								{posts.map((post) => (
 									<FeedItemComponents
-									key={post.id}
-									content={post.content}
-									postImgSrc={post.image}
-									author={post.author}
-									postId={post.id}
-									onPostClick={handlePostClick}
-									hearted={post.hearted}
-									heartCount={post.heartCount}
-									onLike={handleLike}
-									onUnlike={handleUnlike}
-									showNavRightButton={false}
-									commentCount={post.commentCount}
+										key={post.id}
+										content={post.content}
+										postImgSrc={post.image}
+										author={post.author}
+										postId={post.id}
+										onPostClick={handlePostClick}
+										hearted={post.hearted}
+										heartCount={post.heartCount}
+										onLike={handleLike}
+										onUnlike={handleUnlike}
+										showNavRightButton={false}
+										commentCount={post.commentCount}
 									/>
 								))}
 							</PostList>
 						) : (
 							<PostAlbum className="album-post-view">
-								{posts.filter(post => post.image).map((post) => (
-									<li
-										key={post.id}
-										className="post-album-item"
-										onClick={() => handlePostClick(post.id)}
-									>
-										<img src={post.image} alt="" />
-									</li>
-								))}
+								{posts
+									.filter((post) => post.image)
+									.map((post) => (
+										<li
+											key={post.id}
+											className="post-album-item"
+											onClick={() => handlePostClick(post.id)}
+										>
+											<img src={post.image} alt="" />
+										</li>
+									))}
 							</PostAlbum>
 						)}
 					</PostAlbum>
@@ -273,7 +286,9 @@ const PostTab = () => {
 					)}
 				</>
 			) : (
-				<EmptyState>등록된 게시물이 없습니다.</EmptyState>
+				<SpinnerContainer>
+					<LoadingSpinner />
+				</SpinnerContainer>
 			)}
 		</PostContainer>
 	);

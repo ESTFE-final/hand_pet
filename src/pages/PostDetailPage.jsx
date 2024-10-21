@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import FeedItem from '../components/MainComponents/FeedItem'; // FeedItem import
+import FeedItem from '../components/MainComponents/FeedItem';
 import styled from 'styled-components';
 import FeedDetail from '../components/MainComponents/FeedDetail';
 import CommentForm from '../components/MainComponents/CommentForm';

@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { Input } from '../components/SharedComponents/CommonComponents';
 import basicprofileimg from '../assets/icons/profile-img.svg';
 import uploadIcon from '../assets/icons/upload-file.svg';
+import { useNavigate } from 'react-router-dom';
 
 const NewProfilePage = () => {
 	const location = useLocation();
@@ -15,18 +16,19 @@ const NewProfilePage = () => {
 	const [image, setImage] = useState(basicprofileimg);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isFormValid, setIsFormValid] = useState(false);
+	const navigate = useNavigate();
 
-    useEffect(() => {
-			const validateForm = () => {
-				const isUsernameValid = username.length >= 2 && username.length <= 10;
-				const isAccountnameValid = /^[A-Za-z0-9._]+$/.test(accountname);
-				const isIntroValid = intro.trim() !== '';
+	useEffect(() => {
+		const validateForm = () => {
+			const isUsernameValid = username.length >= 2 && username.length <= 10;
+			const isAccountnameValid = /^[A-Za-z0-9._]+$/.test(accountname);
+			const isIntroValid = intro.trim() !== '';
 
-				setIsFormValid(isUsernameValid && isAccountnameValid && isIntroValid);
-			};
+			setIsFormValid(isUsernameValid && isAccountnameValid && isIntroValid);
+		};
 
-			validateForm();
-		}, [username, accountname, intro]);
+		validateForm();
+	}, [username, accountname, intro]);
 
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
@@ -80,6 +82,7 @@ const NewProfilePage = () => {
 				}
 			);
 			console.log('회원가입 성공:', response.data);
+			navigate('/login/email');
 		} catch (error) {
 			console.error('회원가입 실패:', error);
 		} finally {
@@ -239,7 +242,5 @@ const BottomButton = styled.button`
 		background-color 0.3s,
 		opacity 0.3s;
 `;
-
-
 
 export default NewProfilePage;

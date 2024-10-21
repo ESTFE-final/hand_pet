@@ -28,32 +28,44 @@ const SignupPage = () => {
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
-		validateForm(e.target.value, password);
+		validateForm('email', e.target.value, password);
 	};
 
 	const handlePasswordChange = (e) => {
 		setPassword(e.target.value);
-		validateForm(email, e.target.value);
+		validateForm('password', email, e.target.value);
 	};
 
-	const validateForm = (email, password) => {
+	const validateForm = (field, email, password) => {
 		let isValid = true;
 
-		if (!email.includes('@')) {
-			setEmailError('올바른 이메일 주소를 입력해주세요');
-			isValid = false;
-		} else {
-			setEmailError('');
+		if (field === 'email') {
+			if (!email) {
+				setEmailError('');
+			} else if (!email.includes('@')) {
+				setEmailError('올바른 이메일 주소를 입력해주세요');
+				isValid = false;
+			} else {
+				setEmailError('');
+			}
 		}
 
-		if (password.length < 8) {
-			setPasswordError('영문, 숫자, 특수문자 포함 8자 이상 입력해주세요');
-			isValid = false;
-		} else {
-			setPasswordError('');
+		if (field === 'password') {
+			if (!password) {
+				setPasswordError('');
+			} else if (password.length < 8) {
+				setPasswordError('영문, 숫자, 특수문자 포함 8자 이상 입력해주세요');
+				isValid = false;
+			} else {
+				setPasswordError('');
+			}
 		}
 
-		setButtonDisabled(!isValid);
+		if (email.includes('@') && password.length >= 8) {
+			setButtonDisabled(false);
+		} else {
+			setButtonDisabled(true);
+		}
 	};
 
 	const handleSubmit = async (e) => {
@@ -81,7 +93,6 @@ const SignupPage = () => {
 					navigate('/profile/new', {
 						state: { email, password },
 						replace: true,
-						// replace 구문을 navigate 함수에 추가하면 뒤로가기 버튼을 눌렀을때 히스토리 스택에서 제거되어 이 페이지로 돌아오지 못하게합니다.
 					});
 				}
 			} catch (error) {
