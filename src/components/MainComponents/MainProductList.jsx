@@ -27,11 +27,7 @@ const LoadingSpinner = styled.div`
 
 const Container = styled.div`
 	width: 100%;
-
-
 	margin: 2.4rem auto;
-
-
 `;
 
 const Title = styled.span`
@@ -39,8 +35,6 @@ const Title = styled.span`
 `;
 
 const ButtonContainer = styled.div`
-
-
 	margin: 1.8rem auto;
 `;
 
@@ -52,7 +46,6 @@ const Button = styled.button`
 	cursor: pointer;
 	font-size: 1rem;
 	border-radius: 20px;
-
 
 	&:hover {
 		background-color: #000;

@@ -142,13 +142,13 @@ function FollowingListPage() {
 										<FollowingShopDesc>{following.intro}</FollowingShopDesc>
 									</FollowingText>
 								</FollowingInfo>
-								<Button
+								<FollowingButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(following)}
 								>
 									{following.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowingButton>
 							</FollowingListItem>
 						))
 					)}
@@ -222,6 +222,12 @@ const ErrorMessage = styled.div`
 	font-size: 4rem;
 	font-weight: bold;
 	color: black;
+`;
+
+const FollowingButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
 `;
 
 export default FollowingListPage;

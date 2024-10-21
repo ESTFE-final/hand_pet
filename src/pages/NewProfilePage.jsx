@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Input } from '../components/SharedComponents/CommonComponents';
 import basicprofileimg from '../assets/icons/profile-img.svg';
 import uploadIcon from '../assets/icons/upload-file.svg';
 
@@ -13,7 +14,19 @@ const NewProfilePage = () => {
 	const [intro, setIntro] = useState('');
 	const [image, setImage] = useState(basicprofileimg);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const navigate = useNavigate();
+	const [isFormValid, setIsFormValid] = useState(false);
+
+    useEffect(() => {
+			const validateForm = () => {
+				const isUsernameValid = username.length >= 2 && username.length <= 10;
+				const isAccountnameValid = /^[A-Za-z0-9._]+$/.test(accountname);
+				const isIntroValid = intro.trim() !== '';
+
+				setIsFormValid(isUsernameValid && isAccountnameValid && isIntroValid);
+			};
+
+			validateForm();
+		}, [username, accountname, intro]);
 
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
@@ -41,6 +54,8 @@ const NewProfilePage = () => {
 	};
 
 	const handleSubmit = async () => {
+		if (!isFormValid) return;
+
 		setIsSubmitting(true);
 
 		const userData = {
@@ -55,13 +70,6 @@ const NewProfilePage = () => {
 		};
 
 		try {
-			useEffect(() => {
-				const token = localStorage.getItem('authToken');
-				if (token) {
-					navigate('/', { replace: true });
-				}
-			}, [navigate]);
-
 			const response = await axios.post(
 				'https://estapi.mandarin.weniv.co.kr/user',
 				userData,
@@ -133,7 +141,7 @@ const NewProfilePage = () => {
 				<BottomButton
 					type="button"
 					onClick={handleSubmit}
-					disabled={isSubmitting}
+					disabled={!isFormValid || isSubmitting}
 				>
 					{isSubmitting ? '저장 중...' : '저장'}
 				</BottomButton>
@@ -146,55 +154,49 @@ const InnerWMobileFull = styled.div`
 	width: 100%;
 	margin: 0 auto;
 	position: relative;
-	padding-bottom: 10rem;
+	padding-top: 28px;
 `;
 
 const ProfileTitle = styled.h2`
 	width: 100%;
 	text-align: center;
-	color: black;
-	font-size: 4.8rem;
+	color: var(--black);
+	font-size: 2.4rem;
+	font-weight: normal;
+	margin-bottom: 1.2rem;
 `;
 
-const ProfileText = styled.h3`
+const ProfileText = styled.p`
 	width: 100%;
 	text-align: center;
-	color: gray;
-	font-size: 2.4rem;
-	margin: 10px 0;
+	color: var(--gray-300);
+	font-size: 1.4rem;
 `;
 
 const ProfileModifyContent = styled.div`
-	padding: 0 3.4rem;
+	padding: 3rem 3.4rem 0;
 `;
 
 const ProfileModifyLabel = styled.label`
-	padding-left: 1.6rem;
-	font-size: 1.8rem;
+	padding-left: 1.1rem;
+	font-size: 1.2rem;
 	color: #666;
 `;
 
-const ProfileModifyInput = styled.input`
-	width: 644px;
-	height: 96px;
-	margin-top: 1rem;
+const ProfileModifyInput = styled(Input)`
+	margin-top: 0.75rem;
 	display: block;
-	padding: 1.8rem 2rem;
-	font-size: 1.6rem;
-	border: 1px solid #dbdbdb;
-	border-radius: 4px;
-	background-color: #fff;
 `;
 
 const ProfileModifyInputBox = styled.div`
-	margin-bottom: 20px;
+	margin-bottom: 1.517rem;
 `;
 
 const ProfileImageContent = styled.div`
 	position: relative;
-	width: 180px;
-	height: 180px;
-	margin: 0 auto 6rem;
+	width: 110px;
+	height: 110px;
+	margin: 0 auto 3rem;
 `;
 
 const ProfileImage = styled.img`
@@ -210,8 +212,8 @@ const ProfileImageLabel = styled.label`
 	right: 0;
 	display: block;
 	background: url(${uploadIcon}) no-repeat center;
-	width: 50px;
-	height: 50px;
+	width: 36px;
+	height: 36px;
 	border-radius: 50%;
 	cursor: pointer;
 	background-size: 100%;
@@ -222,23 +224,22 @@ const ProfileImageInput = styled.input`
 `;
 
 const BottomButton = styled.button`
-	width: 644px;
-	height: 96px;
-	margin-top: 20px;
+	width: 100%;
+	margin-top: 3rem;
 	display: block;
 	padding: 1.8rem 2rem;
-	font-size: 1.6rem;
-	border: 1px solid #dbdbdb;
-	border-radius: 50px;
-	background-color: ${(props) => (props.disabled ? 'gray' : 'blue')};
+	font-size: 1.4rem;
+	border-radius: 4.4rem;
+	background-color: ${(props) =>
+		props.disabled ? 'var(--gray-100)' : 'var(--primary)'};
 	color: white;
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 	text-align: center;
-	transition: background-color 0.3s;
-
-	&:hover {
-		background-color: ${(props) => (props.disabled ? 'gray' : 'red')};
-	}
+	transition:
+		background-color 0.3s,
+		opacity 0.3s;
 `;
+
+
 
 export default NewProfilePage;

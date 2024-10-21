@@ -111,7 +111,7 @@ const SignupPage = () => {
 				<BottomButton onClick={handleSubmit} disabled={isButtonDisabled}>
 					다음
 				</BottomButton>
-				<ErrorMessageWrap>{serverMessage}</ErrorMessageWrap>
+				<ErrorMessageWrap isServerMessage>{serverMessage}</ErrorMessageWrap>
 			</InputWrap>
 		</>
 	);

@@ -74,6 +74,7 @@ const AlertButtonLeft = styled.button`
 	background-color: transparent;
 	padding: 15px 0;
 	border-top: 0.5px solid var(--gray);
+	font-size: 1.4rem;
 `;
 
 const AlertButtonRight = styled.button`
@@ -83,6 +84,7 @@ const AlertButtonRight = styled.button`
 	border-top: 0.5px solid var(--gray);
 	border-left: 0.5px solid var(--gray);
 	color: var(--primary);
+	font-size: 1.4rem;
 `;
 
 const PostModalOverlay = styled.div`
