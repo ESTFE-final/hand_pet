@@ -4,29 +4,24 @@ import styled from 'styled-components';
 const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	gap: 16px;
 `;
 
 const CartButton = styled.button`
 	flex: 1;
-	padding: 12px;
-	font-size: 1.2rem;
-	background-color: #ff5722;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
+	padding: 1.8rem 0;
+	font-size: 1.6rem;
+	background-color: var(--white);
+	color: var(--primary);
+	border: 1px solid var(--primary);
 `;
 
 const BuyNowButton = styled.button`
 	flex: 1;
-	padding: 12px;
-	font-size: 1.2rem;
-	background-color: #ff3d00;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
+	padding: 1.8rem 0;
+	font-size: 1.6rem;
+	background-color: var(--primary);
+	color: var(--white);
+	border: 1px solid transparent;
 `;
 
 const ProductButton = () => (

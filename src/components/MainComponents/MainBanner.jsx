@@ -6,8 +6,9 @@ const BannerContainer = styled.div`
 	display: flex;
 	margin: auto;
 	position: relative;
-	width: 712px;
+	max-width: 468px;
 	overflow: hidden;
+	margin: 0 1.7rem;
 `;
 
 const SlideWrapper = styled.div`
@@ -23,17 +24,17 @@ const Banner = styled.img`
 `;
 
 const SlideButton = styled.button`
-	width: 136px;
-	height: 48px;
+	width: 68px;
+	height: 24px;
 	position: absolute;
-	bottom: 16px;
-	right: 16px;
+	bottom: 8px;
+	right: 8px;
 	background-color: #000000b2;
-	color: white;
-	padding: 8px 16px;
+	color: var(--white);
+	padding: 6px 16px 5px;
 	border-radius: 30px;
 	border: none;
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	cursor: pointer;
 `;
 

@@ -66,6 +66,7 @@ a {
     text-decoration: none;
     background: transparent;
     font-family: inherit;
+    cursor: pointer;
 }
 
 a:active,

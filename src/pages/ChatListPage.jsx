@@ -8,6 +8,7 @@ import {
 	createChatRoom,
 	getChatRooms,
 } from '../firebaseChatService';
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 
 const ChatListPage = () => {
 	const [followers, setFollowers] = useState([]);
@@ -105,7 +106,7 @@ const ChatListPage = () => {
 
 	return (
 		<>
-			<NavigationBar title="채팅 리스트" />
+			<CustomProfileNavBar title="채팅 리스트" />
 			<ChatListContainer>
 				<h1 className="sr-only">채팅 리스트 페이지입니다</h1>
 				<FollowerListContent>
@@ -137,13 +138,18 @@ const ChatListPage = () => {
 					)}
 				</FollowerListContent>
 			</ChatListContainer>
+			<TabNaviComponent />
 		</>
 	);
 };
 
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
+
 const ChatListContainer = styled.div`
 	width: 100%;
-	margin: 0 auto;
+	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
 `;
@@ -179,6 +185,12 @@ const FollowerImg = styled.img`
 
 const FollowerText = styled.div`
 	padding-top: 0.7rem;
+`;
+
+const ChatTextBox = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 `;
 
 const FollowerShopName = styled.p`
