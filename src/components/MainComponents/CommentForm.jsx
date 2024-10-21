@@ -6,7 +6,7 @@ import uploadIcon from '../../assets/icons/icon-feed-upload.svg';
 const CommentFormWrapper = styled.form`
 	display: flex;
 	align-items: center;
-	padding: 13px 36px;
+	padding: 13px 16px;
 	background-color: white;
 	border-top: 1px solid #e0e0e0;
 	position: absolute;
@@ -16,15 +16,14 @@ const CommentFormWrapper = styled.form`
 `;
 
 const CommentProfileImg = styled.img`
-	width: 54px;
-	height: 54px;
+	width: 36px;
+	height: 36px;
 	border-radius: 50%;
 `;
 
 const CommentInput = styled.input`
 	flex: 1;
-	padding: 20px 0;
-	font-size: 2.4rem;
+	font-size: 1.5rem;
 	margin-left: 18px;
 
 	&::placeholder {
@@ -34,14 +33,12 @@ const CommentInput = styled.input`
 
 const CommentSubmit = styled.button`
 	color: var(--gray-200);
-	font-size: 2.4rem;
-	margin-left: 10px;
-	padding: 10px;
+	font-size: 1.5rem;
 `;
 
 const UploadIcon = styled.img`
-	width: 30px;
-	height: 30px;
+	width: 19px;
+	height: 19px;
 `;
 
 const CommentForm = ({ onSubmit }) => {

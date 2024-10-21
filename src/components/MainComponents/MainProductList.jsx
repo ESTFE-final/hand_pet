@@ -9,7 +9,7 @@ const Container = styled.div`
 	width: 100%;
 	margin: 26px 0;
 	padding: 0 24px;
-	margin-bottom: 70px; /* 탭 메뉴에 가려져서 일단 넣어놓음 */
+	margin-bottom: 20%;
 `;
 
 const Title = styled.span`

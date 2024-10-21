@@ -3,18 +3,19 @@ import styled from 'styled-components';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 
 const NavBar = styled.nav`
+	/* position: fixed; */
 	top: 0;
-	left: 0;
 	width: 100%;
-	height: 48px;
-	padding: 0 16px;
+	max-width: 480px;
+	padding: 13px 16px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	background-color: var(--white);
 	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
-	margin-bottom: 16px;
+	z-index: 999;
+	/* margin-bottom: 16px; */
 `;
 
 const NavLeftGroup = styled.div`
@@ -104,10 +105,13 @@ const PostModalOverlay = styled.div`
 `;
 
 const PostModalContainer = styled.aside`
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
+	right: 0;
 	width: 100%;
+	max-width: 480px;
+	margin: 0 auto;
 	background-color: var(--white);
 	border-radius: 10px 10px 0 0;
 	opacity: 0;
@@ -115,7 +119,7 @@ const PostModalContainer = styled.aside`
 	transition:
 		opacity 0.3s,
 		transform 0.3s;
-	z-index: 999;
+	z-index: 1000;
 
 	&.visible {
 		opacity: 1;

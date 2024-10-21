@@ -10,16 +10,16 @@ const NotFoundWrapper = styled.section`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 30px;
+	gap: 20px;
 `;
 
 const NotFoundIcon = styled.img`
-	width: 264px;
-	height: 302px;
+	width: 132px;
+	height: 151px;
 `;
 
 const NotFoundText = styled.span`
-	font-size: 2.8rem;
+	font-size: 1.4rem;
 	color: var(--gray-300);
 `;
 

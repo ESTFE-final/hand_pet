@@ -14,6 +14,7 @@ import { logout } from '../redux/slices/authSlice'; // Redux에서 logout 액션
 
 const PageWrapper = styled.div`
 	position: relative;
+	margin-bottom: 20%;
 `;
 
 const API_URL = 'https://estapi.mandarin.weniv.co.kr';
@@ -62,7 +63,6 @@ const ProfilePage = () => {
 			}
 		}
 	};
-
 
 	const fetchUserProducts = async () => {
 		const token = localStorage.getItem('authToken');
@@ -169,7 +169,7 @@ const ProfilePage = () => {
 	// 로그아웃 함수
 	const confirmLogout = () => {
 		localStorage.removeItem('authToken'); // 로컬스토리지에서 토큰 삭제
-		localStorage.removeItem('accountname'); 
+		localStorage.removeItem('accountname');
 		dispatch(logout()); // Redux에서 로그아웃
 		navigate('/login'); // 로그인 페이지로 리다이렉트
 	};

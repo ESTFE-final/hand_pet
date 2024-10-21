@@ -247,11 +247,11 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow to="/follower">
+					<ProfileFollow to="/profile/follower">
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
-					<ProfileFollow>
+					<ProfileFollow to="/profile/following">
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>

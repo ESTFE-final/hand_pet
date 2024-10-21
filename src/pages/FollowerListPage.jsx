@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 
 // 선언부 구조분해 할당
 function FollowerListPage() {
@@ -59,7 +60,7 @@ function FollowerListPage() {
 	// 렌더링 부분
 	return (
 		<>
-			<NavigationBar title="팔로워" />
+			<CustomProfileNavBar title="팔로워" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
 				<FollowerListContent>
@@ -86,20 +87,24 @@ function FollowerListPage() {
 					)}
 				</FollowerListContent>
 			</InnerWMobileFull>
+			<TabNaviComponent />
 		</>
 	);
 }
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
 
 const InnerWMobileFull = styled.div`
 	width: 100%;
-	margin: 0 auto;
+	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
 `;
 const FollowerInfo = styled.div`
 	display: flex;
 	align-items: flex-start;
-	gap: 1.6rem;
+	gap: 1.2rem;
 `;
 const FollowerListContent = styled.ul`
 	padding: 0 1.6rem;
@@ -110,14 +115,14 @@ const FollowerListItem = styled.li`
 	align-items: center;
 	justify-content: space-between;
 	& + & {
-		margin-top: 3.4rem;
+		margin-top: 1.6rem;
 	}
 `;
 
 const FollowerImg = styled.img`
 	background: var(--gray);
-	width: 72px;
-	height: 72px;
+	width: 50px;
+	height: 50px;
 	overflow: hidden;
 	border-radius: 50%;
 	flex-shrink: 0;
@@ -126,12 +131,12 @@ const FollowerText = styled.div`
 	padding-top: 0.7rem;
 `;
 const FollowerShopName = styled.p`
-	font-size: 2rem;
+	font-size: 1.6rem;
 	margin-bottom: 0.6rem;
 `;
 const FollowerShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.8rem;
+	font-size: 1.4rem;
 `;
 
 export default FollowerListPage;
