@@ -85,6 +85,7 @@ const TabNaviIcon = styled.img`
 
 // 탭 정보를 담은 배열
 const tabs = [
+
 	{
 		path: '/',
 		label: '홈',
@@ -115,6 +116,7 @@ const tabs = [
 		icon: iconProfile,
 		activeIcon: iconProfileFill,
 	},
+
 ];
 
 function TabNaviComponent() {
@@ -128,6 +130,7 @@ function TabNaviComponent() {
 	return (
 		<TabNavi>
 			{tabs.map((tab, index) => (
+
 				<StyledNavLink
 					key={index}
 					to={tab.path}
@@ -154,6 +157,7 @@ function TabNaviComponent() {
 						</TabNaviButton>
 					)}
 				</StyledNavLink>
+
 			))}
 		</TabNavi>
 	);

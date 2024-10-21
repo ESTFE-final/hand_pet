@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
 import profileImage from '../../assets/icons/profile-img.svg';
@@ -23,13 +23,16 @@ const CustomProfileNavBar = styled(NavigationBar)`
 		background-size: contain;
 		width: 22px;
 		height: 22px;
+
 	}
 
 	.nav-right-button {
 		background: url(${RightmenuIcon}) no-repeat;
 		background-size: contain;
+
 		width: 24px;
 		height: 24px;
+
 	}
 `;
 
@@ -179,7 +182,14 @@ const FollowButton = styled.button`
 	}
 `;
 
-const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
+const Profile = ({
+	profile,
+	openModal,
+	onLogout,
+	isMyProfile,
+	onFollow,
+	onUnFollow,
+}) => {
 	if (!profile) return null;
 
 	const {
@@ -192,6 +202,13 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 		followingCount,
 	} = profile;
 
+	const navigate = useNavigate();
+
+	const handleBackClick = () => {
+		navigate(-1); // 이전 페이지로 이동
+	};
+	// 하얀색 뒤로가기 버튼 활성화
+
 	const rightBtnClick = () => {
 		openModal([
 			{ text: '설정 및 개인정보', onClick: () => {} },
@@ -203,7 +220,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 		<ProfileWrapper>
 			<CustomProfileNavBar
 				leftButton={
-					<button className="nav-left-button" aria-label="뒤로 가기" />
+					<div className="nav-left-button" onClick={handleBackClick}></div>
 				}
 				rightButton={
 					<button
@@ -217,7 +234,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 			<ProfileMain>
 				<ProfileInfo>
 					<ProfileInfoText>
-						<UserImage>
+						<UserImage to={`/profile/${accountname}`}>
 							<img
 								src={image || profileImage}
 								alt={`${username}의 프로필 이미지`}
@@ -247,11 +264,12 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow to="/profile/follower">
+					<ProfileFollow to={`/follower/${accountname}`}>
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
-					<ProfileFollow to="/profile/following">
+					<ProfileFollow to={`/following/${accountname}`}>
+  
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>

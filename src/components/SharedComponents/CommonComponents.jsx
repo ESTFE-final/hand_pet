@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
 
 const NavBar = styled.nav`
@@ -148,15 +149,25 @@ const PostModalOption = styled.button`
 	font-size: 1.4rem;
 `;
 
+//  NavigationBar이것만 바꾸었는데 아래에 뒤로가기 버튼기능 구현 위한 navigate 추가함
 export const NavigationBar = ({
 	title,
-	rightButton,
-	className,
-	leftButton,
+	rightButton = null,
+	className = '',
+	leftButton = null,
 	searchInput,
 }) => {
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
+
 	const defaultLeftButton = (
-		<button>
+		<button onClick={() => navigate(-1)}>
 			<img
 				src={LeftArrowIcon}
 				alt="뒤로가기"

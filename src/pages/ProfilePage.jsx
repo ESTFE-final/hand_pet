@@ -32,6 +32,13 @@ const ProfilePage = () => {
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
+
+	useEffect(() => {
 		fetchProfileData();
 		fetchUserProducts();
 		fetchUserPosts();
