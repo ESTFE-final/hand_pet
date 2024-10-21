@@ -247,7 +247,7 @@ const PostTab = () => {
 									heartCount={post.heartCount}
 									onLike={handleLike}
 									onUnlike={handleUnlike}
-									isOwnProfile={true}
+									showNavRightButton={false}
 								/>
 							))}
 						</PostList>

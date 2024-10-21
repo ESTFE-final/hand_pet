@@ -116,8 +116,8 @@ const FeedItemCompoents = ({
 	onLike,
 	onUnlike,
 	onPostClick,
-	onAuthorClick,
 	onMoreClick,
+	showNavRightButton = true,
 }) => {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [hasImage, setHasImage] = useState(false);
@@ -154,12 +154,16 @@ const FeedItemCompoents = ({
 
 	return (
 		<FeedWrapper onClick={() => onPostClick(postId)}>
-			<NavRightButton
-				onClick={(e) => {
-					e.stopPropagation();
-					onMoreClick(postId);
-				}}
-			/>
+			{showNavRightButton && (
+				<NavRightButton
+					onClick={(e) => {
+						e.stopPropagation();
+						onMoreClick(postId);
+					}}
+				>
+					{/* 우측 버튼 클릭 시 모달 띄우기 */}
+				</NavRightButton>
+			)}
 
 			<ProfileSection
 				onClick={(e) => {

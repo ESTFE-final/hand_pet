@@ -15,7 +15,7 @@ const NavBar = styled.nav`
 	background-color: var(--white);
 	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
-	z-index: 999;
+	z-index: 998;
 	/* margin-bottom: 16px; */
 `;
 
@@ -129,7 +129,7 @@ const PostModalContainer = styled.aside`
 `;
 
 const PostModalContent = styled.div`
-	padding: 16px 0 26px 0;
+	margin: 16px 0 10px 0;
 	display: flex;
 	flex-direction: column;
 `;
