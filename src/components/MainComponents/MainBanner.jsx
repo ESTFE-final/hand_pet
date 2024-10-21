@@ -9,6 +9,7 @@ const BannerContainer = styled.div`
 	max-width: 468px;
 	overflow: hidden;
 	margin: 0 1.7rem;
+	padding-top: 1.6rem;
 `;
 
 const SlideWrapper = styled.div`

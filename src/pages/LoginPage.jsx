@@ -39,7 +39,6 @@ const ButtonWrapper = styled.div`
 
 const StyledLink = styled(Link)`
 	text-decoration: none;
-	/* font-size: 1.8rem; */
 	padding: 14px 0;
 	border-radius: 50px;
 	width: 100%;
@@ -56,6 +55,8 @@ const StyledLink = styled(Link)`
 		color: var(--white);
 	}
 `;
+
+
 
 const BottomBox = styled.div`
 	width: 100%;
@@ -78,9 +79,9 @@ const LoginPage = () => {
 
 	return (
 		<LoginContainer>
-      <LogoContainer>
-			<Logo src={logo2} alt="Logo2" />
-      </LogoContainer>
+		<LogoContainer>
+				<Logo src={logo2} alt="Logo2" />
+		</LogoContainer>
 			<BottomBox>
 				<ButtonWrapper>
 					<StyledLink to="/login/email">이메일 로그인</StyledLink>

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeftArrowIcon from '../../assets/icons/icon-arrow-left.svg';
+import SearchIconPath from '../../assets/icons/icon-search.svg'; // Search Icon 경로 추가
 
 const NavBar = styled.nav`
 	/* position: fixed; */
@@ -15,9 +16,10 @@ const NavBar = styled.nav`
 	background-color: var(--white);
 	border-bottom: 1px solid var(--gray);
 	box-sizing: border-box;
-	z-index: 999;
+	z-index: 998;
 	/* margin-bottom: 16px; */
 `;
+
 
 const NavLeftGroup = styled.div`
 	display: flex;
@@ -59,6 +61,7 @@ const AlertModalContainer = styled.dialog`
 	margin: auto;
 `;
 
+
 const ModalWrap = styled.form`
 	display: flex;
 	flex-direction: column;
@@ -74,6 +77,7 @@ const AlertButtonLeft = styled.button`
 	background-color: transparent;
 	padding: 15px 0;
 	border-top: 0.5px solid var(--gray);
+	font-size: 1.4rem;
 `;
 
 const AlertButtonRight = styled.button`
@@ -83,6 +87,7 @@ const AlertButtonRight = styled.button`
 	border-top: 0.5px solid var(--gray);
 	border-left: 0.5px solid var(--gray);
 	color: var(--primary);
+	font-size: 1.4rem;
 `;
 
 const PostModalOverlay = styled.div`
@@ -92,17 +97,16 @@ const PostModalOverlay = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
-	transition: opacity 0.3s;
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.3s,
+		visibility 0.3s;
 	z-index: 998;
 
 	&.visible {
-		display: block;
 		opacity: 1;
-	}
-
-	&.hidden {
-		display: none;
-		opacity: 0;
+		visibility: visible;
 	}
 `;
 
@@ -115,33 +119,22 @@ const PostModalContainer = styled.aside`
 	max-width: 480px;
 	margin: 0 auto;
 	background-color: var(--white);
-
-	border-radius: 20px 20px 0 0;
-	transition: transform 0.3s;
-	z-index: 999;
-
- /*	border-radius: 10px 10px 0 0;
+	border-radius: 10px 10px 0 0;
 	opacity: 0;
 	transform: translateY(100%);
 	transition:
-	opacity 0.3s,
- 		transform 0.3s;
-	z-index: 1000; */
-
+		opacity 0.3s,
+		transform 0.3s;
+	z-index: 1000;
 
 	&.visible {
-		display: block;
+		opacity: 1;
 		transform: translateY(0);
-	}
-
-	&.hidden {
-		display: none;
-		transform: translateY(100%);
 	}
 `;
 
 const PostModalContent = styled.div`
-	padding: 16px 0 26px 0;
+	margin: 16px 0 10px 0;
 	display: flex;
 	flex-direction: column;
 `;
@@ -161,13 +154,25 @@ const PostModalOption = styled.button`
 	font-size: 1.4rem;
 `;
 
-//  NavigationBar이것만 바꾸었는데 아래에 뒤로가기 버튼기능 구현 위한 navigate 추가함
+const SearchIcon = styled.img`
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	display: ${({ visible }) => (visible ? 'block' : 'none')};
+	filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(0deg);
+
+  &:hover {
+	filter: invert(0%) sepia(100%) saturate(1000%) hue-rotate(-50deg);
+  }
+`;
+
 export const NavigationBar = ({
 	title,
 	rightButton = null,
 	className = '',
 	leftButton = null,
 	searchInput,
+	searchIconVisible = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -187,7 +192,10 @@ export const NavigationBar = ({
 			/>
 		</button>
 	);
-
+	
+	const handleSearchClick = () => {
+		navigate('/search'); // 검색 페이지의 경로로 변경
+	};
 	return (
 		<NavBar className={className}>
 			<NavLeftGroup>
@@ -195,6 +203,7 @@ export const NavigationBar = ({
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
 			{searchInput}
+			<SearchIcon src={SearchIconPath} alt="검색" style={{ display: searchIconVisible ? 'block' : 'none' }} onClick={handleSearchClick} />
 			{rightButton}
 		</NavBar>
 	);
@@ -219,7 +228,7 @@ export const AlertModal = ({
 	alertText,
 	modalClose,
 	buttonText,
-	buttonAction, // 버튼 액션을 props로 전달
+	buttonAction,
 }) => {
 	const dialogRef = useRef();
 
@@ -242,8 +251,8 @@ export const AlertModal = ({
 					<AlertButtonRight
 						type="button"
 						onClick={() => {
-							buttonAction(); // 버튼 액션 호출
-							modalClose(); // 모달 닫기
+							buttonAction();
+							modalClose();
 						}}
 					>
 						{buttonText}

@@ -260,6 +260,7 @@ const PostDetailPage = () => {
 						heartCount={post.heartCount}
 						onLike={handleLike}
 						onUnlike={handleUnLike}
+						commentCount={post.commentCount}
 					/>
 				)}
 				<CommentSection>

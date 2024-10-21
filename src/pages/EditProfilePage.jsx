@@ -103,7 +103,7 @@ const EditProfilePage = () => {
 			<InnerWMobileFull>
 				<ProfileModifyContent>
 					<ProfileImageContent>
-						<img src={profileImage} alt="프로필 이미지" />
+						<ProfileImage src={profileImage} alt="프로필 이미지" />
 						<ProfileImageLabel htmlFor="profileimg"></ProfileImageLabel>
 						<ProfileImageInput
 							id="profileimg"
@@ -183,6 +183,12 @@ const ProfileImageContent = styled.div`
 	margin: 0 auto 3rem;
 `;
 
+const ProfileImage = styled.img`
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+`;
 const ProfileImageLabel = styled.label`
 	position: absolute;
 	bottom: 0;
@@ -193,6 +199,7 @@ const ProfileImageLabel = styled.label`
 	height: 36px;
 	border-radius: 50%;
 	cursor: pointer;
+	background-size: 100%;
 `;
 
 const ProfileImageInput = styled.input`

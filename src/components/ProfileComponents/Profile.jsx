@@ -17,13 +17,14 @@ const CustomProfileNavBar = styled(NavigationBar)`
 	background-color: transparent;
 	border: none;
 	padding: 16px;
+	margin-bottom: 8px;
 
 	.nav-left-button {
 		background: url(${leftArrowIcon}) no-repeat;
 		background-size: contain;
 		width: 22px;
 		height: 22px;
-
+		cursor: pointer;
 	}
 
 	.nav-right-button {
@@ -32,7 +33,6 @@ const CustomProfileNavBar = styled(NavigationBar)`
 
 		width: 24px;
 		height: 24px;
-
 	}
 `;
 
@@ -103,7 +103,7 @@ const ProfileButtons = styled.div`
 `;
 
 const ProfileIntro = styled.p`
-	font-size: 1.4rem;
+	font-size: 1.3rem;
 	color: var(--white);
 `;
 
@@ -128,7 +128,7 @@ const ProfileFollow = styled(Link)`
 	}
 
 	.stat-label {
-		font-size: 1.2rem;
+		font-size: 1.1rem;
 		color: var(--graydark-200);
 	}
 
@@ -143,7 +143,7 @@ const ProductLink = styled(Link)`
 	color: var(--black);
 	border-radius: 30px;
 	padding: 9px 22px;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	transition: all 0.2s ease;
 
 	&:hover {
@@ -157,7 +157,7 @@ const EditProfileLink = styled(Link)`
 	color: var(--black);
 	border-radius: 30px;
 	padding: 9px 22px;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	transition: all 0.2s ease;
 
 	&:hover {
@@ -173,7 +173,7 @@ const FollowButton = styled.button`
 	color: ${(props) => (props.isFollowing ? 'var(--gray-300)' : 'var(--white)')};
 	border-radius: 30px;
 	padding: 9px 22px;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	transition: all 0.2s ease;
 	width: 88px;
 
@@ -269,7 +269,6 @@ const Profile = ({
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>
 					<ProfileFollow to={`/following/${accountname}`}>
-  
 						<span className="stat-value">{followingCount}</span>
 						<span className="stat-label">팔로잉</span>
 					</ProfileFollow>

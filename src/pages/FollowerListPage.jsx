@@ -37,12 +37,9 @@ function FollowerListPage() {
 
 	useEffect(() => {
 		const token = localStorage.getItem('authToken');
-		console.log('Token:', token); // 토큰 확인
-		console.log('Accountname:', accountname); // accountname 확인
 
 		const fetchFollowers = async () => {
 			setLoading(true);
-			setError(null); // 에러 상태 초기화
 			try {
 				const response = await axios.get(
 					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`, // 동적 accountname 사용
@@ -70,7 +67,7 @@ function FollowerListPage() {
 	const toggleFollow = async (follower) => {
 		const token = localStorage.getItem('authToken');
 		const followerAccountname = follower.accountname;
-		setLoading(true);
+
 		try {
 			if (follower.isfollow) {
 				await axios.delete(
@@ -110,13 +107,11 @@ function FollowerListPage() {
 				err.response?.data?.message ||
 					'팔로우/언팔로우 처리 중 오류가 발생했습니다.'
 			);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	if (loading) {
-		return <LoadingSpinner />; // loading이 true일 때 로딩 메시지
+		return <div>Loading...</div>;
 	}
 
 	if (error) {
@@ -125,7 +120,7 @@ function FollowerListPage() {
 
 	return (
 		<>
-			<NavigationBar title="팔로워" />
+			<CustomProfileNavBar title="팔로워" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로워 리스트 페이지입니다</h1>
 				<FollowerListContent>
@@ -144,18 +139,19 @@ function FollowerListPage() {
 										<FollowerShopDesc>{follower.intro}</FollowerShopDesc>
 									</FollowerText>
 								</FollowerInfo>
-								<Button
+								<FollowerButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(follower)}
 								>
 									{follower.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowerButton>
 							</FollowerListItem>
 						))
 					)}
 				</FollowerListContent>
 			</InnerWMobileFull>
+			<TabNaviComponent />
 		</>
 	);
 }
@@ -200,16 +196,17 @@ const FollowerImg = styled.img`
 
 const FollowerText = styled.div`
 	padding-top: 0.7rem;
+	margin-right: 2rem;
 `;
 
 const FollowerShopName = styled.p`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-bottom: 0.6rem;
 `;
 
 const FollowerShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 `;
 
 const ErrorMessage = styled.div`
@@ -222,4 +219,9 @@ const ErrorMessage = styled.div`
 	font-weight: bold;
 `;
 
+const FollowerButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
+`;
 export default FollowerListPage;

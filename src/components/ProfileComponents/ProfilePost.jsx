@@ -7,7 +7,7 @@ import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
-import FeedItemCompoents from '../MainComponents/FeedItemCompoents';
+import FeedItemComponents from '../MainComponents/FeedItemCompoents'; 
 
 const PostContainer = styled.section``;
 
@@ -42,7 +42,6 @@ const EmptyState = styled.p`
 	text-align: center;
 	font-size: 1.6rem;
 `;
-
 const PostList = styled.ul`
 	.post-list-item {
 		width: 97%;
@@ -72,7 +71,7 @@ const PostAlbum = styled.ul`
 	flex-direction: column;
 	gap: 5px;
 	padding: 0 16px;
-	text-align: center;
+	/* text-align: center; */
 
 	&.album-post-view {
 		display: grid;
@@ -80,9 +79,11 @@ const PostAlbum = styled.ul`
 	}
 
 	.post-album-item img {
-		width: 234px;
-		height: 234px;
+		width: 152px;
+		height: 152px;
 		object-fit: cover;
+		/* margin-bottom: 10px;
+		border-radius: 10px; */
 	}
 `;
 
@@ -93,9 +94,12 @@ const PostTab = () => {
 	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
-	const accountname = localStorage.getItem('accountname');
+	const { accountname: paramAccountname } = useParams();
+	const localAccountname = localStorage.getItem('accountname');
 	const token = localStorage.getItem('authToken');
 	const navigate = useNavigate();
+
+	const accountname = paramAccountname || localAccountname;
 
 	const fetchPosts = useCallback(async () => {
 		if (isLoading || !hasMore) return;
@@ -116,8 +120,7 @@ const PostTab = () => {
 
 				setPosts((prevPosts) => {
 					const uniquePosts = newPosts.filter(
-						(newPost) =>
-							!prevPosts.some((existingPost) => existingPost.id === newPost.id)
+						(newPost) => !prevPosts.some((existingPost) => existingPost.id === newPost.id)
 					);
 					return [...prevPosts, ...uniquePosts];
 				});
@@ -130,10 +133,7 @@ const PostTab = () => {
 				setHasMore(false);
 			}
 		} catch (error) {
-			console.error(
-				'Error fetching posts:',
-				error.response?.data || error.message
-			);
+			console.error('Error fetching posts:', error.response?.data || error.message);
 			setHasMore(false);
 		} finally {
 			setIsLoading(false);
@@ -144,8 +144,6 @@ const PostTab = () => {
 		fetchPosts();
 	}, [fetchPosts]);
 
-	const postsWithImages = posts.filter((post) => post.image);
-
 	const handlePostClick = (postId) => {
 		navigate(`/post/${postId}`);
 	};
@@ -155,7 +153,6 @@ const PostTab = () => {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
-
 	// 좋아요
 	const handleLike = async (postId) => {
 		const token = localStorage.getItem('authToken');
@@ -233,10 +230,12 @@ const PostTab = () => {
 							/>
 						</PostButton>
 					</PostNav>
-					{postView === 'list' ? (
-						<PostList>
-							{posts.map((post) => (
-								<FeedItemCompoents
+					
+					<PostAlbum>
+						{postView === 'list' ? (
+							<PostList>
+								{posts.map((post) => (
+									<FeedItemComponents
 									key={post.id}
 									content={post.content}
 									postImgSrc={post.image}
@@ -247,23 +246,25 @@ const PostTab = () => {
 									heartCount={post.heartCount}
 									onLike={handleLike}
 									onUnlike={handleUnlike}
-									isOwnProfile={true}
-								/>
-							))}
-						</PostList>
-					) : (
-						<PostAlbum className="album-post-view">
-							{postsWithImages.map((post) => (
-								<li
-									key={post.id}
-									className="post-album-item"
-									onClick={() => handlePostClick(post.id)}
-								>
-									<img src={post.image} alt="" />
-								</li>
-							))}
-						</PostAlbum>
-					)}
+									showNavRightButton={false}
+									commentCount={post.commentCount}
+									/>
+								))}
+							</PostList>
+						) : (
+							<PostAlbum className="album-post-view">
+								{posts.filter(post => post.image).map((post) => (
+									<li
+										key={post.id}
+										className="post-album-item"
+										onClick={() => handlePostClick(post.id)}
+									>
+										<img src={post.image} alt="" />
+									</li>
+								))}
+							</PostAlbum>
+						)}
+					</PostAlbum>
 
 					{hasMore && (
 						<Button size="more" onClick={loadMore} disabled={isLoading}>

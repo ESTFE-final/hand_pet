@@ -15,6 +15,7 @@ import { logout } from '../redux/slices/authSlice'; // Redux에서 logout 액션
 const PageWrapper = styled.div`
 	position: relative;
 	margin-bottom: 20%;
+	height: 100vh;
 `;
 
 const API_URL = 'https://estapi.mandarin.weniv.co.kr';

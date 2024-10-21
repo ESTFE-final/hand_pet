@@ -160,7 +160,7 @@ const PostListPage = () => {
 
 	return (
 		<PostListWrapper>
-			<NavigationBar title={'핸드펫 피드'} />
+			<NavigationBar title={'핸드펫 피드'} searchIconVisible={true}/>
 			{posts.length > 0 ? (
 				<>
 					<MainFeed

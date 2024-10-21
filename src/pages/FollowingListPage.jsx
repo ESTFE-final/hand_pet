@@ -114,7 +114,7 @@ function FollowingListPage() {
 	};
 
 	if (loading) {
-		return <LoadingSpinner />; // loading이 true일 때 로딩 메시지
+		return <div>Loading...</div>; // loading이 true일 때 로딩 메시지
 	}
 
 	if (error) {
@@ -123,7 +123,7 @@ function FollowingListPage() {
 
 	return (
 		<>
-			<NavigationBar title="팔로잉" />
+			<CustomProfileNavBar title="팔로잉" />
 			<InnerWMobileFull>
 				<h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
 				<FollowingListContent>
@@ -142,18 +142,19 @@ function FollowingListPage() {
 										<FollowingShopDesc>{following.intro}</FollowingShopDesc>
 									</FollowingText>
 								</FollowingInfo>
-								<Button
+								<FollowingButton
 									size="sm"
 									type="button"
 									onClick={() => toggleFollow(following)}
 								>
 									{following.isfollow ? '언팔로우' : '팔로우'}
-								</Button>
+								</FollowingButton>
 							</FollowingListItem>
 						))
 					)}
 				</FollowingListContent>
 			</InnerWMobileFull>
+			<TabNaviComponent />
 		</>
 	);
 }
@@ -209,28 +210,23 @@ const FollowingImg = styled.img`
 
 const FollowingText = styled.div`
 	padding-top: 0.7rem;
+	margin-right: 2rem;
 `;
 
 const FollowingShopName = styled.p`
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-bottom: 0.6rem;
 `;
 
 const FollowingShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.4rem;
-	//
+	font-size: 1.2rem;
 `;
 
-// const ErrorMessage = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	justify-content: center;
-// 	align-items: center;
-// 	height: 100vh;
-// 	font-size: 4rem;
-// 	font-weight: bold;
-// 	color: black;
-// `;
+const FollowingButton = styled(Button)`
+	&& {
+		--button-max-width: fit-content;
+	}
+`;
 
 export default FollowingListPage;
