@@ -157,6 +157,11 @@ const SearchIcon = styled.img`
 	height: 24px;
 	cursor: pointer;
 	display: ${({ visible }) => (visible ? 'block' : 'none')};
+	filter: invert(35%) sepia(0%) saturate(0%) hue-rotate(0deg);
+
+  &:hover {
+	filter: invert(0%) sepia(100%) saturate(1000%) hue-rotate(-50deg);
+  }
 `;
 
 export const NavigationBar = ({
