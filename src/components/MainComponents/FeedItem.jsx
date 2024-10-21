@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom'; // 페이지 이동을 위해 추가
 import HeartIcon from '../../assets/icons/icon-feed-heart.svg';
 import HeartFillIcon from '../../assets/icons/icon-heart.svg';
 import MessageIcon from '../../assets/icons/icon-feed-message.svg';
 import ProfileImg from '../../assets/icons/profile-img.svg';
-import RightmenuIcon from '../../assets/icons/icon-more-vertical.svg';
+import RightmenuIcon from '../../assets/icons/s-icon-more-vertical.svg';
 
 const FeedWrapper = styled.div`
-	width: 100%;
-	max-width: 716px;
-	margin: 0 auto;
-	padding: 16px;
+	max-width: 480px;
+	margin: 20px 16px 34px 16px;
 	background-color: #fff;
-	border: 1px solid #dbdbdb;
-	border-radius: 8px;
-	margin-bottom: 24px;
 	position: relative;
+	cursor: pointer;
 `;
 
 const ProfileSection = styled.div`
@@ -28,20 +24,20 @@ const ProfileSection = styled.div`
 `;
 
 const ProfileImage = styled.img`
-	width: 40px;
-	height: 40px;
+	width: 43px;
+	height: 43px;
 	border-radius: 50%;
 	margin-right: 12px;
 `;
 
 const ProfileName = styled.div`
-	font-size: 2rem;
+	font-size: 1.5rem;
 	color: #555555;
 `;
 
 const PostContent = styled.div`
 	font-size: 1.6rem;
-	margin-bottom: 12px;
+	margin-bottom: 15px;
 `;
 
 const PostImageWrapper = styled.div`
@@ -53,8 +49,10 @@ const PostImageWrapper = styled.div`
 
 const PostImage = styled.img`
 	width: 100%;
+	height: 246px;
 	border-radius: 8px;
 	margin-bottom: 12px;
+	object-fit: cover;
 `;
 
 const ReactionIcons = styled.div`
@@ -71,22 +69,36 @@ const IconButton = styled.button`
 	align-items: center;
 
 	img {
-		width: 24px;
-		height: 24px;
+		width: 20px;
+		height: 20px;
 	}
+`;
+
+const heartBeat = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+const HeartIconWrapper = styled.div`
+	display: inline-block;
+	animation: ${(props) => (props.animate ? heartBeat : 'none')} 0.3s ease-in-out;
 `;
 
 const NavRightButton = styled.button`
 	background: url(${RightmenuIcon}) no-repeat;
 	background-size: contain;
-	width: 48px;
-	height: 48px;
+	width: 18px;
+	height: 18px;
 	position: absolute;
 	top: 16px;
-	right: 16px;
-	border: none;
-	cursor: pointer;
-	filter: brightness(0) invert(0);
+	right: 0;
 `;
 
 /* 모달 스타일 */
@@ -135,9 +147,9 @@ const CloseButton = styled.button`
 `;
 
 const LikeCount = styled.span`
-	font-size: 2.2rem;
+	font-size: 1.3rem;
 	color: var(--gray-300);
-	margin-left: 12px;
+	margin-left: 6px;
 `;
 
 const FeedItem = ({
@@ -155,6 +167,7 @@ const FeedItem = ({
 	const [hasImage, setHasImage] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [isAuthor, setIsAuthor] = useState(false);
+	const [animateHeart, setAnimateHeart] = useState(false);
 	const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
 	const currentUserAccountName = localStorage.getItem('accountname'); // 로그인된 유저 확인
@@ -228,6 +241,8 @@ const FeedItem = ({
 
 	const handleLikeClick = (e) => {
 		e.stopPropagation();
+		setAnimateHeart(true);
+		setTimeout(() => setAnimateHeart(false), 300);
 		if (hearted) {
 			onUnlike();
 		} else {
@@ -268,7 +283,9 @@ const FeedItem = ({
 			)}
 			<ReactionIcons>
 				<IconButton onClick={handleLikeClick}>
-					<img src={hearted ? HeartFillIcon : HeartIcon} alt="Heart" />
+					<HeartIconWrapper animate={animateHeart}>
+						<img src={hearted ? HeartFillIcon : HeartIcon} alt="Heart" />
+					</HeartIconWrapper>
 					<LikeCount>{heartCount}</LikeCount>
 				</IconButton>
 				<IconButton>
