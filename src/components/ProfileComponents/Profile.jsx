@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavigationBar } from '../SharedComponents/CommonComponents';
 import profileImage from '../../assets/icons/profile-img.svg';
@@ -23,13 +23,14 @@ const CustomProfileNavBar = styled(NavigationBar)`
 		background-size: contain;
 		width: 44px;
 		height: 44px;
+		cursor: pointer; /* 커서 포인터로 변경 */
 	}
 
 	.nav-right-button {
 		background: url(${RightmenuIcon}) no-repeat;
 		background-size: contain;
-		width: 48px;
-		height: 48px;
+		width: 44px;
+		height: 44px;
 	}
 `;
 
@@ -192,6 +193,13 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 		followingCount,
 	} = profile;
 
+	const navigate = useNavigate();
+
+	const handleBackClick = () => {
+		navigate(-1); // 이전 페이지로 이동
+	};
+	// 하얀색 뒤로가기 버튼 활성화
+
 	const rightBtnClick = () => {
 		openModal([
 			{ text: '설정 및 개인정보', onClick: () => {} },
@@ -203,7 +211,7 @@ const Profile = ({ profile, openModal, onLogout, isMyProfile }) => {
 		<ProfileWrapper>
 			<CustomProfileNavBar
 				leftButton={
-					<button className="nav-left-button" aria-label="뒤로 가기" />
+					<div className="nav-left-button" onClick={handleBackClick}></div>
 				}
 				rightButton={
 					<button

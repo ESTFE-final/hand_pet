@@ -31,6 +31,13 @@ const ProfilePage = () => {
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		if (!token) {
+			navigate('/login', { replace: true });
+		}
+	}, [navigate]);
+
+	useEffect(() => {
 		fetchProfileData();
 		fetchUserProducts();
 		fetchUserPosts();
@@ -62,7 +69,6 @@ const ProfilePage = () => {
 			}
 		}
 	};
-
 
 	const fetchUserProducts = async () => {
 		const token = localStorage.getItem('authToken');
@@ -169,7 +175,7 @@ const ProfilePage = () => {
 	// 로그아웃 함수
 	const confirmLogout = () => {
 		localStorage.removeItem('authToken'); // 로컬스토리지에서 토큰 삭제
-		localStorage.removeItem('accountname'); 
+		localStorage.removeItem('accountname');
 		dispatch(logout()); // Redux에서 로그아웃
 		navigate('/login'); // 로그인 페이지로 리다이렉트
 	};

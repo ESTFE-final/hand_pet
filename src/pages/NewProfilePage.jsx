@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import basicprofileimg from '../assets/icons/profile-img.svg';
 import uploadIcon from '../assets/icons/upload-file.svg';
 
@@ -13,6 +13,7 @@ const NewProfilePage = () => {
 	const [intro, setIntro] = useState('');
 	const [image, setImage] = useState(basicprofileimg);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const navigate = useNavigate();
 
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
@@ -54,6 +55,13 @@ const NewProfilePage = () => {
 		};
 
 		try {
+			useEffect(() => {
+				const token = localStorage.getItem('authToken');
+				if (token) {
+					navigate('/', { replace: true });
+				}
+			}, [navigate]);
+
 			const response = await axios.post(
 				'https://estapi.mandarin.weniv.co.kr/user',
 				userData,
