@@ -21,6 +21,10 @@ const ProfileSection = styled.div`
 	cursor: pointer;
 `;
 
+const profilecontainer = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
 const ProfileImage = styled.img`
 	width: 43px;
 	height: 43px;
@@ -28,10 +32,16 @@ const ProfileImage = styled.img`
 	margin-right: 12px;
 `;
 
-const ProfileName = styled.div`
+const ProfileuserName = styled.div`
 	font-size: 1.5rem;
 	color: #555555;
 `;
+const ProfileaccountName = styled.div`
+	font-size: 1.4rem;
+	color: #B4B4B4;
+	margin-top: 4px;
+`;
+
 
 const PostContent = styled.div`
 	font-size: 1.5rem;
@@ -179,7 +189,10 @@ const FeedItemCompoents = ({
 				}}
 			>
 				<ProfileImage src={author.image || ProfileImg} alt="Profile" />
-				<ProfileName>{author.username || 'Unknown User'}</ProfileName>
+				<profilecontainer>
+					<ProfileuserName>{author.username || 'Unknown User'}</ProfileuserName>
+					<ProfileaccountName>@{author.accountname || 'Unknown User'}</ProfileaccountName>
+				</profilecontainer>
 			</ProfileSection>
 
 			<PostContent>{content}</PostContent>
