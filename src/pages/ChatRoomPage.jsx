@@ -139,13 +139,17 @@ const Container = styled.div`
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	background-color: var(--graylight-100);
 `;
 
 const MessageList = styled.div`
 	flex: 1;
 	overflow-y: scroll;
 	padding-bottom: 6rem;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 `;
 
 const Message = styled.div`
@@ -165,7 +169,7 @@ const ProfileImg = styled.img`
 
 const MessageContent = styled.div`
 	background-color: ${({ isOwnMessage }) =>
-		isOwnMessage ? '#ffd2c7' : '#fff'};
+		isOwnMessage ? '#ffd2c7' : 'var(--graylight-100)'};
 	padding: 1rem;
 	border-radius: 10px;
 	max-width: 60%;
