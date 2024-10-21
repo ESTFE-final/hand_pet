@@ -254,7 +254,7 @@ const Profile = ({
 				</ProfileInfo>
 				<ProfileIntro>{intro}</ProfileIntro>
 				<ProfileStats>
-					<ProfileFollow to="/follower">
+					<ProfileFollow to={`/follower/${accountname}`}>
 						<span className="stat-value">{followerCount}</span>
 						<span className="stat-label">팔로워</span>
 					</ProfileFollow>

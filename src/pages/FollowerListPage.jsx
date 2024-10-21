@@ -1,27 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom'; // useParams 추가
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 
-// 선언부 구조분해 할당
 function FollowerListPage() {
+    const { accountname } = useParams(); // URL에서 accountname 파라미터를 받아옴
     const [followers, setFollowers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // 로직 부분
     useEffect(() => {
         const token = localStorage.getItem('authToken');
-        const accountname = localStorage.getItem('accountname');
 
-        // 예외처리 필수
         const fetchFollowers = async () => {
             setLoading(true);
             try {
                 const response = await axios.get(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`,
+                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follower`, // 동적 accountname 사용
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -29,7 +26,6 @@ function FollowerListPage() {
                         },
                     }
                 );
-                console.log(response.data);
                 setFollowers(response.data);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -39,19 +35,19 @@ function FollowerListPage() {
             }
         };
 
-        fetchFollowers();
-    }, []);
+        if (accountname) {
+            fetchFollowers(); // accountname이 있을 때만 호출
+        }
+    }, [accountname]); // accountname 변경 시마다 팔로워 리스트 다시 불러옴
 
     const toggleFollow = async (follower) => {
         const token = localStorage.getItem('authToken');
-        const accountname = follower.accountname; // 팔로우/언팔로우할 유저의 accountname
+        const followerAccountname = follower.accountname;
 
         try {
-            // 팔로우/언팔로우 상태에 따라 적절한 API 호출
             if (follower.isfollow) {
-                // 언팔로우
                 await axios.delete(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/unfollow`,
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followerAccountname}/unfollow`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -65,9 +61,8 @@ function FollowerListPage() {
                     )
                 );
             } else {
-                // 팔로우
                 await axios.post(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/follow`,
+                    `https://estapi.mandarin.weniv.co.kr/profile/${followerAccountname}/follow`,
                     {},
                     {
                         headers: {
@@ -96,7 +91,6 @@ function FollowerListPage() {
         return <div>Error: {error}</div>;
     }
 
-    // 렌더링 부분
     return (
         <>
             <NavigationBar title="팔로워" />
@@ -110,7 +104,7 @@ function FollowerListPage() {
                             <FollowerListItem key={follower._id}>
                                 <FollowerInfo>
                                     <FollowerImg
-                                        src={follower.image || 'default_image_url'} // 기본 이미지 URL을 지정
+                                        src={follower.image || 'default_image_url'}
                                         alt={follower.username}
                                     />
                                     <FollowerText>
