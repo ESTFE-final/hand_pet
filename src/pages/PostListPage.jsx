@@ -14,6 +14,7 @@ const PostListWrapper = styled.div`
 	margin-bottom: 20%;
 `;
 
+// 팔로잉 유저의 피드를 가져오는 함수
 const fetchFollowingFeed = async (token, limit, skip) => {
 	try {
 		const response = await axios.get(
@@ -25,17 +26,19 @@ const fetchFollowingFeed = async (token, limit, skip) => {
 				},
 			}
 		);
-		return response.data.posts;
+
+		return response.data.posts; // 가져온 게시물 반환
 	} catch (error) {
 		console.error('Error fetching following feed:', error);
-		return [];
+		return []; // 오류 발생 시 빈 배열 반환
 	}
 };
 
+// 프로필 정보를 가져오는 함수
 const fetchProfile = async (token, accountname) => {
 	try {
 		const response = await axios.get(
-			`https://estapi.mandarin.weniv.co.kr/profile/${accountname}`,
+			`https://estapi.mandarin.weniv.co.kr/profile/${accountname}`, // accountname을 포함한 URL
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -43,19 +46,19 @@ const fetchProfile = async (token, accountname) => {
 				},
 			}
 		);
-		return response.data.profile;
+		return response.data.profile; // 가져온 프로필 반환
 	} catch (error) {
 		console.error('Error fetching profile:', error);
-		return null;
+		return null; // 오류 발생 시 null 반환
 	}
 };
 
 const PostListPage = () => {
 	const [posts, setPosts] = useState([]);
-	const [limit] = useState(6);
+	const [limit] = useState(6); // 한 페이지당 보여줄 게시물 수
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 	const [isInitialLoading, setIsInitialLoading] = useState(true);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	let token = useSelector((state) => state.auth.token);
@@ -70,16 +73,16 @@ const PostListPage = () => {
 			navigate('/login');
 		} else if (token) {
 			const getPosts = async () => {
-				if (isLoading) return;
-
-				setIsLoading(true);
+				if (isLoading) return; // 이미 로딩 중이면 함수를 종료
+				setIsLoading(true); // 로딩 시작
 				const offset = (page - 1) * limit;
 				const fetchedPosts = await fetchFollowingFeed(token, limit, offset);
 
+				// 불러온 게시물이 limit보다 적으면 더 이상 게시물이 없다고 판단
 				if (fetchedPosts.length < limit) {
 					setHasMore(false);
 				}
-
+				// 각 게시물의 accountname을 사용하여 프로필 정보를 가져오기
 				const postsWithProfiles = await Promise.all(
 					fetchedPosts.map(async (post) => {
 						const profile = await fetchProfile(token, post.author.accountname);
@@ -91,12 +94,12 @@ const PostListPage = () => {
 				);
 
 				setPosts((prevPosts) => [...prevPosts, ...postsWithProfiles]);
-				setIsLoading(false);
+				setIsLoading(false); // 로딩 끝
 				setIsInitialLoading(false);
 			};
 			getPosts();
 		}
-	}, [isAuthenticated, token, navigate, limit, page, isLoading]);
+	}, [isAuthenticated, token, navigate, limit, page]);
 
 	const handlePostClick = (postId) => {
 		navigate(`/post/${postId}`);
@@ -107,7 +110,7 @@ const PostListPage = () => {
 			setPage((prevPage) => prevPage + 1);
 		}
 	};
-
+	// 좋아요 데이터 가져오기
 	const handleLike = async (postId) => {
 		const token = localStorage.getItem('authToken');
 		try {
@@ -127,6 +130,7 @@ const PostListPage = () => {
 		}
 	};
 
+	// 좋아요 취소
 	const handleUnLike = async (postId) => {
 		const token = localStorage.getItem('authToken');
 		try {
@@ -148,7 +152,7 @@ const PostListPage = () => {
 	const updateLike = (postId, isLiked, newHeartCount) => {
 		setPosts((prevPosts) =>
 			prevPosts.map((post) =>
-				post.id === postId
+				post.id == postId
 					? { ...post, hearted: isLiked, heartCount: newHeartCount }
 					: post
 			)
@@ -157,7 +161,7 @@ const PostListPage = () => {
 
 	return (
 		<PostListWrapper>
-			<NavigationBar title={'핸드펫 피드'} />
+			<NavigationBar title={'핸드펫 피드'} searchIconVisible={true} />
 			{isInitialLoading ? (
 				<LoadingSpinner />
 			) : posts.length > 0 ? (

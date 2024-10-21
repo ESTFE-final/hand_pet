@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Axios from 'axios';
 import Button from '../SharedComponents/Button';
@@ -7,7 +7,7 @@ import postListBtnOn from '../../assets/icons/icon-post-list-on.svg';
 import postListBtnOff from '../../assets/icons/icon-post-list-off.svg';
 import postAlbumBtnOn from '../../assets/icons/icon-post-album-on.svg';
 import postAlbumBtnOff from '../../assets/icons/icon-post-album-off.svg';
-import FeedItemCompoents from '../MainComponents/FeedItemCompoents';
+import FeedItemComponents from '../MainComponents/FeedItemCompoents';
 import { LoadingSpinner } from '../SharedComponents/CommonComponents';
 
 const PostContainer = styled.section``;
@@ -83,9 +83,10 @@ const PostAlbum = styled.ul`
 		width: 152px;
 		height: 152px;
 		object-fit: cover;
+		/* margin-bottom: 10px;
+		border-radius: 10px; */
 	}
 `;
-
 const SpinnerContainer = styled.div`
 	display: flex;
 	justify-content: center;
@@ -214,61 +215,58 @@ const PostTab = () => {
 
 	return (
 		<PostContainer aria-label="게시물 목록">
-			{isLoading ? (
-				<SpinnerContainer>
-					<LoadingSpinner />
-				</SpinnerContainer>
-			) : (
+			{posts.length > 0 ? (
 				<>
-					{posts.length > 0 ? (
-						<>
-							<PostNav>
-								<PostButton
-									type="button"
-									className={`list-btn ${postView === 'list' ? 'active' : ''}`}
-									onClick={() => setPostView('list')}
-									aria-pressed={postView === 'list'}
-								>
-									<img
-										src={postView === 'list' ? postListBtnOn : postListBtnOff}
-										alt="목록으로 보기"
+					<PostNav>
+						<PostButton
+							type="button"
+							className={`list-btn ${postView === 'list' ? 'active' : ''}`}
+							onClick={() => setPostView('list')}
+							aria-pressed={postView === 'list'}
+						>
+							<img
+								src={postView === 'list' ? postListBtnOn : postListBtnOff}
+								alt="목록으로 보기"
+							/>
+						</PostButton>
+						<PostButton
+							type="button"
+							className={postView === 'album' ? 'active' : ''}
+							onClick={() => setPostView('album')}
+							aria-pressed={postView === 'album'}
+						>
+							<img
+								src={postView === 'album' ? postAlbumBtnOn : postAlbumBtnOff}
+								alt="앨범으로 보기"
+							/>
+						</PostButton>
+					</PostNav>
+
+					<PostAlbum>
+						{postView === 'list' ? (
+							<PostList>
+								{posts.map((post) => (
+									<FeedItemComponents
+										key={post.id}
+										content={post.content}
+										postImgSrc={post.image}
+										author={post.author}
+										postId={post.id}
+										onPostClick={handlePostClick}
+										hearted={post.hearted}
+										heartCount={post.heartCount}
+										onLike={handleLike}
+										onUnlike={handleUnlike}
+										showNavRightButton={false}
+										commentCount={post.commentCount}
 									/>
-								</PostButton>
-								<PostButton
-									type="button"
-									className={postView === 'album' ? 'active' : ''}
-									onClick={() => setPostView('album')}
-									aria-pressed={postView === 'album'}
-								>
-									<img
-										src={
-											postView === 'album' ? postAlbumBtnOn : postAlbumBtnOff
-										}
-										alt="앨범으로 보기"
-									/>
-								</PostButton>
-							</PostNav>
-							{postView === 'list' ? (
-								<PostList>
-									{posts.map((post) => (
-										<FeedItemCompoents
-											key={post.id}
-											content={post.content}
-											postImgSrc={post.image}
-											author={post.author}
-											postId={post.id}
-											onPostClick={handlePostClick}
-											hearted={post.hearted}
-											heartCount={post.heartCount}
-											onLike={handleLike}
-											onUnlike={handleUnlike}
-											showNavRightButton={false}
-										/>
-									))}
-								</PostList>
-							) : (
-								<PostAlbum className="album-post-view">
-									{postsWithImages.map((post) => (
+								))}
+							</PostList>
+						) : (
+							<PostAlbum className="album-post-view">
+								{posts
+									.filter((post) => post.image)
+									.map((post) => (
 										<li
 											key={post.id}
 											className="post-album-item"
@@ -277,21 +275,20 @@ const PostTab = () => {
 											<img src={post.image} alt="" />
 										</li>
 									))}
-								</PostAlbum>
-							)}
+							</PostAlbum>
+						)}
+					</PostAlbum>
 
-							{hasMore && (
-								<Button size="more" onClick={loadMore} disabled={isLoading}>
-									{isLoading ? '로딩 중...' : '더보기'}
-								</Button>
-							)}
-						</>
-					) : (
-						<SpinnerContainer>
-							<LoadingSpinner />
-						</SpinnerContainer>
+					{hasMore && (
+						<Button size="more" onClick={loadMore} disabled={isLoading}>
+							{isLoading ? '로딩 중...' : '더보기'}
+						</Button>
 					)}
 				</>
+			) : (
+				<SpinnerContainer>
+					<LoadingSpinner />
+				</SpinnerContainer>
 			)}
 		</PostContainer>
 	);
