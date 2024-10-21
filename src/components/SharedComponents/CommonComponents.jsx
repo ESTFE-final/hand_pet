@@ -154,7 +154,7 @@ const SearchIcon = styled.img`
 	width: 24px;
 	height: 24px;
 	cursor: pointer;
-	display: none;
+	display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
 export const NavigationBar = ({
@@ -163,6 +163,7 @@ export const NavigationBar = ({
 	className = '',
 	leftButton = null,
 	searchInput,
+	searchIconVisible = false,
 }) => {
 	const navigate = useNavigate();
 
@@ -182,7 +183,10 @@ export const NavigationBar = ({
 			/>
 		</button>
 	);
-
+	
+	const handleSearchClick = () => {
+		navigate('/search'); // 검색 페이지의 경로로 변경
+	};
 	return (
 		<NavBar className={className}>
 			<NavLeftGroup>
@@ -190,7 +194,7 @@ export const NavigationBar = ({
 				<NavTitle>{title}</NavTitle>
 			</NavLeftGroup>
 			{searchInput}
-			<SearchIcon src={SearchIconPath} alt="검색" /> {/* Search Icon 추가 */}
+			<SearchIcon src={SearchIconPath} alt="검색" style={{ display: searchIconVisible ? 'block' : 'none' }} onClick={handleSearchClick} />
 			{rightButton}
 		</NavBar>
 	);
