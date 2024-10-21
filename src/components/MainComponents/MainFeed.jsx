@@ -15,6 +15,7 @@ const MainFeed = ({ posts, onPostClick, onLike, onUnLike }) => {
 					heartCount={post.heartCount}
 					onLike={() => onLike(post.id)}
 					onUnlike={() => onUnLike(post.id)}
+					showNavRightButton={false}
 				/>
 			))}
 		</>

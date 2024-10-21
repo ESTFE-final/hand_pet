@@ -80,8 +80,8 @@ const PostAlbum = styled.ul`
 	}
 
 	.post-album-item img {
-		width: 234px;
-		height: 234px;
+		width: 152px;
+		height: 152px;
 		object-fit: cover;
 	}
 `;
@@ -247,7 +247,7 @@ const PostTab = () => {
 									heartCount={post.heartCount}
 									onLike={handleLike}
 									onUnlike={handleUnlike}
-									isOwnProfile={true}
+									showNavRightButton={false}
 								/>
 							))}
 						</PostList>
