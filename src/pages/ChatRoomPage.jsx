@@ -92,12 +92,12 @@ const ChatRoomPage = () => {
 											? msg.createdAt.toDate().toLocaleTimeString()
 											: '날짜 정보 없음'}
 									</Time>
-									{isOwnMessage && (
-										<DeleteButton onClick={() => handleDeleteMessage(msg.id)}>
-											삭제
-										</DeleteButton>
-									)}
 								</MessageContent>
+								{isOwnMessage && (
+									<DeleteButton onClick={() => handleDeleteMessage(msg.id)}>
+										삭제
+									</DeleteButton>
+								)}
 							</Message>
 						);
 					})}
@@ -139,6 +139,7 @@ const Container = styled.div`
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	background-color: var(--graylight-100);
 `;
 
 const MessageList = styled.div`
@@ -149,7 +150,7 @@ const MessageList = styled.div`
 
 const Message = styled.div`
 	display: flex;
-	align-items: flex-start;
+	align-items: flex-end;
 	justify-content: ${({ isOwnMessage }) =>
 		isOwnMessage ? 'flex-end' : 'flex-start'};
 	margin: 1rem 0;
@@ -173,6 +174,7 @@ const MessageContent = styled.div`
 
 	img {
 		max-width: 100%;
+		max-height: 250px;
 		border-radius: 10px;
 		margin-top: 0.5rem;
 	}
@@ -220,20 +222,21 @@ const UploadIcon = styled.img`
 `;
 
 const DeleteButton = styled.button`
-	margin-top: 0.5rem;
-	padding: 0.2rem 0.5rem;
+	margin-left: 0.5rem;
+	padding: 0.5rem 0.5rem;
 	border: none;
 	background-color: #ff4d4d;
 	color: white;
 	border-radius: 4px;
 	cursor: pointer;
-	font-size: 0.8rem;
+	font-size: 1rem;
 `;
 
 const Preview = styled.div`
-	margin: 1rem 0;
+	margin: auto;
 	img {
 		max-width: 100%;
+		max-height: 150px
 		border-radius: 10px;
 	}
 `;
