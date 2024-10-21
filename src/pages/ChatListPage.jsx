@@ -111,7 +111,7 @@ const ChatListPage = () => {
 				<h1 className="sr-only">채팅 리스트 페이지입니다</h1>
 				<FollowerListContent>
 					{followers.length === 0 ? (
-						<div>팔로워가 없습니다.</div>
+						<div>채팅내역이 없습니다.</div>
 					) : (
 						followers.map((follower) => (
 							<FollowerListItem
