@@ -13,9 +13,8 @@ const CategoryContainer = styled.div`
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(2, 1fr);
 	gap: 20px;
-	width: 631px;
-	height: 308px;
-	margin: 26px auto;
+	margin: auto 2rem 2.4rem;
+
 `;
 
 const CategoryWrapper = styled.div`
@@ -25,13 +24,13 @@ const CategoryWrapper = styled.div`
 `;
 
 const IconContainer = styled.div`
-	width: 100px;
-	height: 100px;
+	width: 48px;
+	height: 48px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: #f5f5f5;
-	border-radius: 12px;
+	border-radius: 1rem;
 	&:hover {
 		transform: translateY(-5px);
 		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -40,19 +39,19 @@ const IconContainer = styled.div`
 `;
 
 const Icon = styled.img`
-	width: 60px;
-	height: 60px;
+	/* width: 60px;
+	height: 60px; */
 `;
 
 const Label = styled.span`
-	margin-top: 10px;
-	font-size: 2rem;
-	color: #333;
+	margin-top: .5rem;
+	font-size: 1.2rem;
+	color: var(--black);
 `;
 
 const Divider = styled.div`
-	height: 42px;
-	background-color: #f5f5f5;
+	height: 32px;
+	background-color: var(--graylight-100);
 `;
 
 const categories = [

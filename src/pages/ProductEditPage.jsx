@@ -9,6 +9,8 @@ import ProductForm from '../components/ProductComponents/ProductForm';
 const Container = styled.div`
 	width: 100%;
 	margin: 0 auto;
+	height: 100vh;
+	height: 100dvh; //모바일 브라우저의 화면 높이 최적화
 `;
 
 const InnerContainer = styled.div`

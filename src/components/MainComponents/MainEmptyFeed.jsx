@@ -10,6 +10,7 @@ const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
+	height: 100dvh; //모바일 브라우저의 화면 높이 최적화
 `;
 
 const Logo = styled.img`

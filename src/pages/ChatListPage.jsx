@@ -4,6 +4,7 @@ import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import imgFollower06 from '../assets/images/img-follower-06.png';
 import imgFollower05 from '../assets/images/img-follower-05.png';
 import imgFollower02 from '../assets/images/img-follower-02.png';
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
 
 // 하드코딩된 JSON 데이터
 const chatData = [
@@ -36,7 +37,7 @@ const chatData = [
 const ChatListPage = () => {
 	return (
 		<>
-			<NavigationBar title="채팅 리스트" />
+			<CustomProfileNavBar title="채팅 리스트" />
 			<ChatListContainer>
 				<h1 className="sr-only">채팅 리스트 페이지입니다</h1>
 				<ChatListContent>
@@ -51,20 +52,27 @@ const ChatListPage = () => {
 							</ChatImageContainer>
 							<ChatInfo>
 								<ChatUsername>{chat.username}</ChatUsername>
-								<ChatMessage>{chat.message}</ChatMessage>
-								<ChatTimestamp>{chat.timestamp}</ChatTimestamp>
+								<ChatTextBox>
+									<ChatMessage>{chat.message}</ChatMessage>
+									<ChatTimestamp>{chat.timestamp}</ChatTimestamp>
+								</ChatTextBox>
 							</ChatInfo>
 						</ChatListItem>
 					))}
 				</ChatListContent>
 			</ChatListContainer>
+			<TabNaviComponent />
 		</>
 	);
 };
 
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
+
 const ChatListContainer = styled.div`
 	width: 100%;
-	margin: 0 auto;
+	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
 `;
@@ -76,25 +84,20 @@ const ChatListContent = styled.ul`
 const ChatListItem = styled.li`
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
-	cursor: pointer; /* Add pointer cursor */
+	cursor: pointer;
 	& + & {
-		margin-top: 1.4rem;
-	}
-	&:focus {
-		background-color: #f0f0f0; /* Light gray background on focus */
+		margin-top: 2rem;
 	}
 	&:hover {
-		background-color: #f0f0f0; /* Light gray background on focus */
+		background-color: #f0f0f0;
+		border-radius: 20px;
 	}
 `;
 
 const ChatImageContainer = styled.div`
 	position: relative;
-	width: 70px;
-	height: 70px;
-	margin-right: 3rem; /* Add margin to the right */
-	cursor: pointer; /* Add pointer cursor */
+	width: 48px;
+	margin-right: 1.2rem;
 `;
 
 const ChatImage = styled.img`
@@ -108,8 +111,8 @@ const NewIndicator = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 15px;
-	height: 15px;
+	width: 12px;
+	height: 12px;
 	background-color: red;
 	border-radius: 50%;
 `;
@@ -118,23 +121,29 @@ const ChatInfo = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	width: 100%;
 `;
 
 const ChatUsername = styled.p`
-	font-size: 2.5rem;
-	font-weight: bold;
+	font-size: 1.6rem;
 	margin-bottom: 0.4rem;
 `;
 
+const ChatTextBox = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`;
+
 const ChatMessage = styled.p`
-	font-size: 2rem;
-	color: #333;
+	font-size: 1.4rem;
+	color: var(--gray-300);
 	margin-bottom: 0.4rem;
 `;
 
 const ChatTimestamp = styled.p`
-	font-size: 2rem;
-	color: var(--gray-300);
+	font-size: 1rem;
+	color: var(--gray);
 	margin-top: 0.4rem;
 `;
 

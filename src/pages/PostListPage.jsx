@@ -6,6 +6,12 @@ import MainEmptyFeed from '../components/MainComponents/MainEmptyFeed';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
 import MainFeed from '../components/MainComponents/MainFeed';
 import Button from '../components/SharedComponents/Button';
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
+import styled from 'styled-components';
+
+const PostListWrapper = styled.div`
+	margin-bottom: 20%;
+`;
 
 // 팔로잉 유저의 피드를 가져오는 함수
 const fetchFollowingFeed = async (token, limit, skip) => {
@@ -153,7 +159,7 @@ const PostListPage = () => {
 	};
 
 	return (
-		<>
+		<PostListWrapper>
 			<NavigationBar title={'핸드펫 피드'} />
 			{posts.length > 0 ? (
 				<>
@@ -172,7 +178,8 @@ const PostListPage = () => {
 			) : (
 				<MainEmptyFeed />
 			)}
-		</>
+			<TabNaviComponent />
+		</PostListWrapper>
 	);
 };
 

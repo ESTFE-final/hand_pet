@@ -4,6 +4,9 @@ import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import Button from '../components/SharedComponents/Button';
 import { NavigationBar } from '../components/SharedComponents/CommonComponents';
+
+import TabNaviComponent from '../components/TabMenuComponents/TabNavi';
+
 import { useNavigate } from 'react-router-dom';
 
 // 로딩 스피너로 적용  try catch finally  그리고 setloading true false 그리고 if loading으로 처리
@@ -29,17 +32,8 @@ const LoadingSpinner = styled.div`
 function FollowerListPage() {
 	const { accountname } = useParams(); // URL에서 accountname 파라미터를 받아옴
 	const [followers, setFollowers] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		const token = localStorage.getItem('authToken');
-		if (!token) {
-			navigate('/login', { replace: true });
-		}
-	}, [navigate, accountname]);
 
 	useEffect(() => {
 		const token = localStorage.getItem('authToken');
@@ -165,12 +159,13 @@ function FollowerListPage() {
 		</>
 	);
 }
-
-export default FollowerListPage;
+const CustomProfileNavBar = styled(NavigationBar)`
+	border: none;
+`;
 
 const InnerWMobileFull = styled.div`
 	width: 100%;
-	margin: 0 auto;
+	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
 `;
@@ -178,7 +173,7 @@ const InnerWMobileFull = styled.div`
 const FollowerInfo = styled.div`
 	display: flex;
 	align-items: flex-start;
-	gap: 1.6rem;
+	gap: 1.2rem;
 `;
 
 const FollowerListContent = styled.ul`
@@ -190,14 +185,14 @@ const FollowerListItem = styled.li`
 	align-items: center;
 	justify-content: space-between;
 	& + & {
-		margin-top: 3.4rem;
+		margin-top: 1.6rem;
 	}
 `;
 
 const FollowerImg = styled.img`
 	background: var(--gray);
-	width: 72px;
-	height: 72px;
+	width: 50px;
+	height: 50px;
 	overflow: hidden;
 	border-radius: 50%;
 	flex-shrink: 0;
@@ -208,11 +203,23 @@ const FollowerText = styled.div`
 `;
 
 const FollowerShopName = styled.p`
-	font-size: 2rem;
+	font-size: 1.6rem;
 	margin-bottom: 0.6rem;
 `;
 
 const FollowerShopDesc = styled.p`
 	color: var(--gray-300);
-	font-size: 1.8rem;
+	font-size: 1.4rem;
 `;
+
+const ErrorMessage = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	font-size: 4rem;
+	font-weight: bold;
+`;
+
+export default FollowerListPage;
