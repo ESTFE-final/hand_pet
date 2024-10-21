@@ -7,15 +7,13 @@ import Button from '../SharedComponents/Button';
 
 const Container = styled.div`
 	width: 100%;
-	/* margin: 52px auto; */
-	padding: 25px 23px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 `;
 
 const ErrorMessage = styled.p`
-	padding-top: 26px;
+	margin-top: 26px;
 	font-size: 1.6rem;
 `;
 

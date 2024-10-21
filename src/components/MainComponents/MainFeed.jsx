@@ -17,6 +17,7 @@ const MainFeed = ({ posts, onPostClick, onLike, onUnLike }) => {
 					onLike={() => onLike(post.id)}
 					onUnlike={() => onUnLike(post.id)}
 					showNavRightButton={false}
+					commentCount={post.commentCount}
 				/>
 			))}
 		</>
