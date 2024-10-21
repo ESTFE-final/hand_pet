@@ -41,7 +41,7 @@ const PostUploadContainer = styled.div`
 
 const PostTextDiv = styled.div`
 	width: calc(100% - 16px);
-	min-height: 120px;
+	min-height: 64px;
 	font-size: 1.4rem;
 	border: none;
 	outline: none;

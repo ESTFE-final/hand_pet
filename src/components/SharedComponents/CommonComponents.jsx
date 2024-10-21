@@ -92,17 +92,16 @@ const PostModalOverlay = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
-	transition: opacity 0.3s;
+	opacity: 0;
+	visibility: hidden;
+	transition:
+		opacity 0.3s,
+		visibility 0.3s;
 	z-index: 998;
 
 	&.visible {
-		display: block;
 		opacity: 1;
-	}
-
-	&.hidden {
-		display: none;
-		opacity: 0;
+		visibility: visible;
 	}
 `;
 
@@ -115,28 +114,17 @@ const PostModalContainer = styled.aside`
 	max-width: 480px;
 	margin: 0 auto;
 	background-color: var(--white);
-
-	border-radius: 20px 20px 0 0;
-	transition: transform 0.3s;
-	z-index: 999;
-
- /*	border-radius: 10px 10px 0 0;
+	border-radius: 10px 10px 0 0;
 	opacity: 0;
 	transform: translateY(100%);
 	transition:
-	opacity 0.3s,
- 		transform 0.3s;
-	z-index: 1000; */
-
+		opacity 0.3s,
+		transform 0.3s;
+	z-index: 1000;
 
 	&.visible {
-		display: block;
+		opacity: 1;
 		transform: translateY(0);
-	}
-
-	&.hidden {
-		display: none;
-		transform: translateY(100%);
 	}
 `;
 

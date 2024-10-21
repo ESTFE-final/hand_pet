@@ -30,128 +30,133 @@ const LoadingSpinner = styled.div`
 	transform: translate(-50%, -50%);
 `;
 
-
 function FollowingListPage() {
+	const { accountname } = useParams();
+	const [followings, setFollowings] = useState([]);
+	const [loading, setLoading] = useState(true); // loading 변수 정의
+	const [error, setError] = useState(null);
 
-    const { accountname } = useParams();
-    const [followings, setFollowings] = useState([]);
-    const [loading, setLoading] = useState(true); // loading 변수 정의
-    const [error, setError] = useState(null);
+	useEffect(() => {
+		const token = localStorage.getItem('authToken');
+		console.log('Token:', token); // 토큰 확인
+		console.log('Accountname:', accountname); // accountname 확인
 
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        console.log('Token:', token); // 토큰 확인
-    console.log('Accountname:', accountname); // accountname 확인
+		const fetchFollowings = async () => {
+			setLoading(true);
+			try {
+				const response = await axios.get(
+					`https://estapi.mandarin.weniv.co.kr/profile/${accountname}/following`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'application/json',
+						},
+					}
+				);
+				setFollowings(response.data);
+			} catch (err) {
+				setError(err.response?.data?.message || err.message);
+				console.error(err);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-        const fetchFollowings = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${accountname}/following`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-type': 'application/json',
-                        },
-                    }
-                );
-                setFollowings(response.data);
-            } catch (err) {
-                setError(err.response?.data?.message || err.message);
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
+		if (accountname) {
+			fetchFollowings();
+		}
+	}, [accountname]);
 
-        if (accountname) {
-            fetchFollowings();
-        }
-    }, [accountname]);
+	const toggleFollow = async (following) => {
+		const token = localStorage.getItem('authToken');
+		const followingAccountname = following.accountname;
 
-    const toggleFollow = async (following) => {
-        const token = localStorage.getItem('authToken');
-        const followingAccountname = following.accountname;
+		try {
+			if (following.isfollow) {
+				await axios.delete(
+					`https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/unfollow`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'application/json',
+						},
+					}
+				);
+				setFollowings((prevFollowings) =>
+					prevFollowings.map((item) =>
+						item._id === following._id ? { ...item, isfollow: false } : item
+					)
+				);
+			} else {
+				await axios.post(
+					`https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/follow`,
+					{},
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'Content-type': 'application/json',
+						},
+					}
+				);
+				setFollowings((prevFollowings) =>
+					prevFollowings.map((item) =>
+						item._id === following._id ? { ...item, isfollow: true } : item
+					)
+				);
+			}
+		} catch (err) {
+			console.error(err);
+			alert(
+				err.response?.data?.message ||
+					'팔로우/언팔로우 처리 중 오류가 발생했습니다.'
+			);
+		}
+	};
 
-        try {
-            if (following.isfollow) {
-                await axios.delete(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/unfollow`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-type': 'application/json',
-                        },
-                    }
-                );
-                setFollowings((prevFollowings) =>
-                    prevFollowings.map((item) =>
-                        item._id === following._id ? { ...item, isfollow: false } : item
-                    )
-                );
-            } else {
-                await axios.post(
-                    `https://estapi.mandarin.weniv.co.kr/profile/${followingAccountname}/follow`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-type': 'application/json',
-                        },
-                    }
-                );
-                setFollowings((prevFollowings) =>
-                    prevFollowings.map((item) =>
-                        item._id === following._id ? { ...item, isfollow: true } : item
-                    )
-                );
-            }
-        } catch (err) {
-            console.error(err);
-            alert(err.response?.data?.message || '팔로우/언팔로우 처리 중 오류가 발생했습니다.');
-        }
-    };
+	if (loading) {
+		return <div>Loading...</div>; // loading이 true일 때 로딩 메시지
+	}
 
-    if (loading) {
-        return <div>Loading...</div>; // loading이 true일 때 로딩 메시지
-    }
+	if (error) {
+		return <div>Error: {error}</div>;
+	}
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    return (
-        <>
-            <NavigationBar title="팔로잉" />
-            <InnerWMobileFull>
-                <h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
-                <FollowingListContent>
-                    {followings.length === 0 ? (
-                        <div>팔로잉이 없습니다.</div>
-                    ) : (
-                        followings.map((following) => (
-                            <FollowingListItem key={following._id}>
-                                <FollowingInfo>
-                                    <FollowingImg
-                                        src={following.image || 'default_image_url'}
-                                        alt={following.username}
-                                    />
-                                    <FollowingText>
-                                        <FollowingShopName>{following.username}</FollowingShopName>
-                                        <FollowingShopDesc>{following.intro}</FollowingShopDesc>
-                                    </FollowingText>
-                                </FollowingInfo>
-                                <Button size="sm" type="button" onClick={() => toggleFollow(following)}>
-                                    {following.isfollow ? '언팔로우' : '팔로우'}
-                                </Button>
-                            </FollowingListItem>
-                        ))
-                    )}
-                </FollowingListContent>
-            </InnerWMobileFull>
-        </>
-    );
-
+	return (
+		<>
+			<CustomProfileNavBar title="팔로잉" />
+			<InnerWMobileFull>
+				<h1 className="sr-only">팔로잉 리스트 페이지입니다</h1>
+				<FollowingListContent>
+					{followings.length === 0 ? (
+						<div>팔로잉이 없습니다.</div>
+					) : (
+						followings.map((following) => (
+							<FollowingListItem key={following._id}>
+								<FollowingInfo>
+									<FollowingImg
+										src={following.image || 'default_image_url'}
+										alt={following.username}
+									/>
+									<FollowingText>
+										<FollowingShopName>{following.username}</FollowingShopName>
+										<FollowingShopDesc>{following.intro}</FollowingShopDesc>
+									</FollowingText>
+								</FollowingInfo>
+								<Button
+									size="sm"
+									type="button"
+									onClick={() => toggleFollow(following)}
+								>
+									{following.isfollow ? '언팔로우' : '팔로우'}
+								</Button>
+							</FollowingListItem>
+						))
+					)}
+				</FollowingListContent>
+			</InnerWMobileFull>
+			<TabNaviComponent />
+		</>
+	);
 }
 
 const CustomProfileNavBar = styled(NavigationBar)`
@@ -159,28 +164,23 @@ const CustomProfileNavBar = styled(NavigationBar)`
 `;
 
 const InnerWMobileFull = styled.div`
-
 	width: 100%;
 	margin: 24px auto;
 	position: relative;
 	padding-bottom: 10rem;
-
 `;
 
 const FollowingInfo = styled.div`
-
 	display: flex;
 	align-items: flex-start;
 	gap: 1.2rem;
-
 `;
 
 const FollowingListContent = styled.ul`
-    padding: 0 1.6rem;
+	padding: 0 1.6rem;
 `;
 
 const FollowingListItem = styled.li`
-
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -196,26 +196,21 @@ const FollowingImg = styled.img`
 	overflow: hidden;
 	border-radius: 50%;
 	flex-shrink: 0;
-
 `;
 
 const FollowingText = styled.div`
-    padding-top: 0.7rem;
+	padding-top: 0.7rem;
+	margin-right: 2rem;
 `;
 
 const FollowingShopName = styled.p`
-
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 	margin-bottom: 0.6rem;
-
 `;
 
 const FollowingShopDesc = styled.p`
-
 	color: var(--gray-300);
-	font-size: 1.4rem;
-
-  
+	font-size: 1.2rem;
 `;
 
 const ErrorMessage = styled.div`
@@ -227,7 +222,6 @@ const ErrorMessage = styled.div`
 	font-size: 4rem;
 	font-weight: bold;
 	color: black;
-
 `;
 
 export default FollowingListPage;

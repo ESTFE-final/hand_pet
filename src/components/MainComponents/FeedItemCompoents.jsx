@@ -8,7 +8,7 @@ import RightmenuIcon from '../../assets/icons/s-icon-more-vertical.svg';
 
 const FeedWrapper = styled.div`
 	max-width: 480px;
-	margin: 20px 21px 34px 21px;
+	margin: 20px 16px 24px 16px;
 	background-color: #fff;
 	position: relative;
 	cursor: pointer;
@@ -34,7 +34,7 @@ const ProfileName = styled.div`
 `;
 
 const PostContent = styled.div`
-	font-size: 1.6rem;
+	font-size: 1.5rem;
 	margin-bottom: 15px;
 `;
 
@@ -100,9 +100,10 @@ const NavRightButton = styled.button`
 `;
 
 const LikeCount = styled.span`
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	color: var(--gray-300);
 	margin-left: 6px;
+	margin-top: 1px;
 `;
 
 const FeedItemCompoents = ({
