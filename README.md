@@ -83,6 +83,13 @@
 - 하단 탭 라우트 기능 구현 및 퍼블리싱
 - 상품등록 페이지 대략적인 모양만 퍼블리싱
 - 채팅리스트 페이지 퍼블리싱 참여
+## 기술 스택
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=figma,firebase,react,css,github" alt="My Skills" />
+  </a>
+</p>
 
 ## 폴더 구조
 ```
