@@ -3,8 +3,8 @@
 ### 배포 [URL]
 **URL :** https://handpet.netlify.app/
 **계정 :** 
-- 아이디 : test22@naver.com
-- 비밀번호 : 123456
+- 아이디 : test88@naver.com
+- 비밀번호 : 123123123
 
 ## 프로젝트 소개
 **[개요]**
