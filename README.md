@@ -162,6 +162,7 @@
 
 
 ## 주요 기능
+
 **로그인** 
 ![로그인](https://github.com/user-attachments/assets/8c864ba0-5b7f-465a-8f1a-34a9d81bf684)
 
@@ -169,14 +170,22 @@
 **회원가입**
 ![회원가입](https://github.com/user-attachments/assets/0a9018c3-8a01-4631-b010-9b6d80c2f706)
 
+
 **메인(홈)** 
 ![메인](https://github.com/user-attachments/assets/26807fe7-db64-4088-b353-ff226d6f11b2)
+
+
 **피드** 
 ![상품 상세](https://github.com/user-attachments/assets/34dc2a2b-1678-442c-b6d4-b8534bcd0522)
+
+
 **피드 상세**
 ![게시글 상세](https://github.com/user-attachments/assets/ee540991-a35e-488f-8a20-f9e5923d9528)
+
+
 **채팅** 
 ![채팅](https://github.com/user-attachments/assets/18092b88-5b16-4686-ba0f-d2351d5f4271)
+
 ## 프로젝트 후기
 **박재영 :** 가장 먼저 컴포넌트를 확장성있게 잘 만드는게 어려웠습니다. 코드를 만들 때 부터 여러 경우의 수를 생각해서 만들어야겠다는 생각이 들었습니다. 프로젝트를 진행하며 깃 사용법에 대해 깊게 공부할 수 있었던 점도 좋았습니다.
 처음 팀장이 되어 프로젝트를 진행해서 많은 부분을 조율해야 하는 점이 조금 어려웠지만, 항상 다 같이 참여해서 논의하며 열정적으로 도와준 팀원들 덕분에 좋은 협업 경험을 한 것 같습니다. 다시 한번 함께 프로젝트를 진행한 팀원분들께 감사드립니다.
