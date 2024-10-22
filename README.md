@@ -87,7 +87,7 @@
 
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=figma,firebase,react,css,github" alt="My Skills" />
+    <img src="https://skillicons.dev/icons?i=figma,firebase,react,css,github,redux" alt="My Skills" />
   </a>
 </p>
 
