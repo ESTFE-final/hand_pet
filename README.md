@@ -25,7 +25,7 @@
 ## 팀원 소개
 |박재영         | 김별            | 이진희            | 유시원            | 김민상            |
 |------------------|------------------|------------------|------------------|------------------|
-| 사진    |사진 | 사진  | 사진  | 사진  |
+|<img width="200" alt="사자" src="https://github.com/user-attachments/assets/e24fc6ea-8514-4368-ab6b-d1c313bf043c">|<img width="200" alt="토끼" src="https://github.com/user-attachments/assets/915d819f-8c35-45d2-92f7-edd2a09c18b3">|<img width="200" alt="팬더" src="https://github.com/user-attachments/assets/b0609663-2679-4b31-b69d-57648fbb02ae">|<img width="200" alt="호랑이" src="https://github.com/user-attachments/assets/6d081a17-bb25-494e-a5c4-4f54f46da457">|<img width="200" alt="곰" src="https://github.com/user-attachments/assets/1aa796c2-5663-40ea-b41a-3b31bba014e2">|
 |[jamesjay1231](https://github.com/jamesjay1231)| [lbyul](https://github.com/lbyul)  | [jinilee9](https://github.com/jinilee9) | [siwon1251](https://github.com/siwon1251)| [AnakinFullStackDevWorker](https://github.com/AnakinFullStackDevWorker) | 
 | 팀장   | 팀원        | 팀원        | 팀원        | 팀원        |
 ## 역할 분담
