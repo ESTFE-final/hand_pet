@@ -170,7 +170,7 @@
 ![회원가입](https://github.com/user-attachments/assets/0a9018c3-8a01-4631-b010-9b6d80c2f706)
 
 **메인(홈)** 
-
+![메인](https://github.com/user-attachments/assets/26807fe7-db64-4088-b353-ff226d6f11b2)
 **피드** 
 ![상품 상세](https://github.com/user-attachments/assets/34dc2a2b-1678-442c-b6d4-b8534bcd0522)
 **피드 상세**
